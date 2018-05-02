@@ -1,21 +1,21 @@
 /*
- This file is part of Privacy Friendly App Example.
+ This file is part of Privacy Friendly Minesweeper.
 
- Privacy Friendly App Example is free software:
+ Privacy Friendly Minesweeper is free software:
  you can redistribute it and/or modify it under the terms of the
  GNU General Public License as published by the Free Software Foundation,
  either version 3 of the License, or any later version.
 
- Privacy Friendly App Example is distributed in the hope
+ Privacy Friendly Minesweeper is distributed in the hope
  that it will be useful, but WITHOUT ANY WARRANTY; without even
  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  See the GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Privacy Friendly App Example. If not, see <http://www.gnu.org/licenses/>.
+ along with Privacy Friendly Minesweeper. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.secuso.privacyfriendlyexample.activities.helper;
+package org.secuso.privacyfriendlyminesweeper.activities.helper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,13 +35,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.secuso.privacyfriendlyexample.R;
-import org.secuso.privacyfriendlyexample.activities.AboutActivity;
-import org.secuso.privacyfriendlyexample.activities.GameActivity;
-import org.secuso.privacyfriendlyexample.activities.HelpActivity;
-import org.secuso.privacyfriendlyexample.activities.MainActivity;
-import org.secuso.privacyfriendlyexample.activities.SettingsActivity;
-import org.secuso.privacyfriendlyexample.activities.TutorialActivity;
+import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.AboutActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.GameActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.HelpActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.TutorialActivity;
 
 /**
  * @author Christopher Beckmann, Karola Marky
@@ -165,13 +165,12 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Intent intent;
 
         switch(itemId) {
-            case R.id.nav_example:
-                intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
             case R.id.nav_game:
                 intent = new Intent(this, GameActivity.class);
+                createBackStack(intent);
+                break;
+            case R.id.nav_play:
+                intent = new Intent(this, PlayActivity.class);
                 createBackStack(intent);
                 break;
             case R.id.nav_tutorial:
@@ -222,6 +221,4 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
     }
-
-
 }

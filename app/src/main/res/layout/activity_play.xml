@@ -13,27 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity">
+        tools:context="org.secuso.privacyfriendlyexample.activities.PlayActivity">
 
         <include layout="@layout/toolbar"/>
 
-        <LinearLayout
-            android:id="@+id/main_content"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:fitsSystemWindows="true"
-            android:orientation="vertical"
-            tools:context=".activities.SettingsActivity"
+            android:layout_gravity="center"
             android:layout_marginTop="?attr/actionBarSize"
-            android:weightSum="1">
-
-        <fragment android:name="org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity$GeneralPreferenceFragment"
-            android:id="@+id/settings_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        </LinearLayout>
+            tools:context=".activities.PlayActivity"
+            android:textSize="30dp"
+            android:text="Here will be the playing area" >
+        </TextView>
 
     </android.support.design.widget.CoordinatorLayout>
 

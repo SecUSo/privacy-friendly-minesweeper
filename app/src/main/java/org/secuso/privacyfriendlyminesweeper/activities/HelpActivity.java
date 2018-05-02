@@ -1,28 +1,28 @@
 /*
- This file is part of Privacy Friendly App Example.
+ This file is part of Privacy Friendly Minesweeper.
 
- Privacy Friendly App Example is free software:
+ Privacy Friendly Minesweeper is free software:
  you can redistribute it and/or modify it under the terms of the
  GNU General Public License as published by the Free Software Foundation,
  either version 3 of the License, or any later version.
 
- Privacy Friendly App Example is distributed in the hope
+ Privacy Friendly Minesweeper is distributed in the hope
  that it will be useful, but WITHOUT ANY WARRANTY; without even
  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  See the GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Privacy Friendly App Example. If not, see <http://www.gnu.org/licenses/>.
+ along with Privacy Friendly Minesweeper. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.secuso.privacyfriendlyexample.activities;
+package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.os.Bundle;
 import android.widget.ExpandableListView;
 
-import org.secuso.privacyfriendlyexample.R;
-import org.secuso.privacyfriendlyexample.activities.adapter.HelpExpandableListAdapter;
-import org.secuso.privacyfriendlyexample.activities.helper.BaseActivity;
+import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.adapter.HelpExpandableListAdapter;
+import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;

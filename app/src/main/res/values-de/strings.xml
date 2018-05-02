@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Beispiel</string>
-    <string name="app_name_long">Privacy Friendly Beispiel</string>
+    <string name="app_name">Minesweeper</string>
+    <string name="app_name_long">Privacy Friendly Minesweeper</string>
 
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
@@ -9,26 +9,17 @@
     <string name="action_main">Hauptmenü</string>
     <string name="action_game">Spiel</string>
     <string name="action_tutorial">Tutorial</string>
+    <string name="action_statistics">Statistik</string>
+    <string name="action_play">Spielen</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- ###MAIN### -->
-    <string name="main_button_text">Button volle Breite</string>
-    <string name="main_button_disabled_text">Inaktiver Button</string>
-    <string name="main_button_1">1</string>
-    <string name="main_button_2">2</string>
-    <string name="main_button_3">3</string>
-    <string name="main_button_4">4</string>
-    <string name="main_button_5">5</string>
-    <string name="main_text_fullwithbutton_desc">Ein Button mit voller breite sieht folgendermaßen aus:</string>
-    <string name="main_text_disabledbutton_desc">Ein inaktiver Button sieht folgendermaßen aus (jede Größe):</string>
-    <string name="main_text_title">Das hier ist eine Beispiel-App zum das Design der Privacy Friendly Apps zu demonstrieren. Weitere Infos gibt es im Privacy Friendly App Guide.</string>
-    <string name="main_text_normalbutton_desc">Es gibt verschiedene Möglichkeiten, um einfache Buttons darzustellen. Button 1 entspricht der Basisform. Wenn Buttons visual abgetrennt werden sollen, ist Button 2 zu verwenden. Die Buttons 3&#8211;5 sind Beispiels für hevorgehobene Buttons. Je nach App können auch andere Farben zum Highlighten verwendet werden.</string>
-    <string name="main_button_welcomedialog_text">Der Button in der Ecke unten links öffnet einen Beispiel-Welcome Dialog.</string>
-
     <!-- ###GAME###-->
     <string name="title_activity_game">Spiel</string>
+    <string name="game_mode_easy">Einfach</string>
+    <string name="game_mode_medium">Mittel</string>
+    <string name="game_mode_difficult">Schwer</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
     <string name="game_desc">Dies ist das Standard-Menü für Spiele-Apps. Der Viewpager oben sollte verwendet werden, um zwischen verschiedenen Spielmodi zu wechseln.</string>
