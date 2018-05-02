@@ -19,6 +19,7 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -45,6 +46,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
     private ImageView mArrowRight;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }
 
-        int index = mSharedPreferences.getInt("firstChosenPage", 0);
+        index = mSharedPreferences.getInt("firstChosenPage", 0);
 
         mViewPager.setCurrentItem(index);
         mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
@@ -103,6 +105,11 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
 
     public void onClick(View view) {
 
+        //param will consist of the information needed to build the playing field with the desired
+        //width, height and number of mines
+        Bundle param;
+        Intent intent_with_param;
+
         if(view == null){
             return;
         }
@@ -110,13 +117,44 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
         switch(view.getId()) {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
+                index--;
                 break;
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
+                index++;
                 break;
             case R.id.game_button_start:
-                //TODO: start game according to selected game mode
-                startActivity(new Intent(this, PlayActivity.class));
+                switch (index) {
+                    case 0:
+                        param = new Bundle();
+                        //values[0] = width, values[1] = height, values[2] = number of mines
+                        //preset values for an easy game are 6,10,7
+                        param.putShortArray("info", new short[]{6, 10, 7});
+                        intent_with_param = new Intent(this, PlayActivity.class);
+                        intent_with_param.putExtras(param);
+                        startActivity(intent_with_param);
+                        break;
+                    case 1:
+                        param = new Bundle();
+                        //values[0] = width, values[1] = height, values[2] = number of mines
+                        //preset values for an medium game are 10,16,24
+                        param.putShortArray("info", new short[]{10, 16, 24});
+                        intent_with_param = new Intent(this, PlayActivity.class);
+                        intent_with_param.putExtras(param);
+                        startActivity(intent_with_param);
+                        break;
+                    case 2:
+                        param = new Bundle();
+                        //values[0] = width, values[1] = height, values[2] = number of mines
+                        //preset values for an hard game are 12,19,46
+                        param.putShortArray("info", new short[]{12, 19, 46});
+                        intent_with_param = new Intent(this, PlayActivity.class);
+                        intent_with_param.putExtras(param);
+                        startActivity(intent_with_param);
+                        break;
+                    default:
+                }
+
                 break;
             case R.id.game_button_continue:
                 //TODO: navigate to list of saved games (if there are any)
@@ -171,7 +209,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
 
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             int id = 0;
             if(getArguments() != null) {

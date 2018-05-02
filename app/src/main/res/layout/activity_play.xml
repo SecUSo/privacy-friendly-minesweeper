@@ -17,13 +17,19 @@
 
         <include layout="@layout/toolbar"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvNumbers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v7.widget.RecyclerView>
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="?attr/actionBarSize"
             tools:context=".activities.PlayActivity"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:text="Here will be the playing area" >
         </TextView>
 

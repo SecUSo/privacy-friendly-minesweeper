@@ -18,7 +18,13 @@
 package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+
 import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 
 /**
@@ -26,11 +32,54 @@ import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
  * @version 20180430
  * This class implements functions required to handle the process of playing
  */
-public class PlayActivity extends BaseActivity {
+public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapter.ItemClickListener{
+    short[][] playingField;
+    PlayRecyclerViewAdapter adapter;
 
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle param){
+        super.onCreate(param);
         setContentView(R.layout.activity_play);
+
+
+        //TODO: fix continuing a game (for now if/else clause)
+        Bundle b = this.getIntent().getExtras();
+        if (b==null){
+
+        }else {
+            short[] test = b.getShortArray("info");
+            int typ = test[0];
+            switch (typ) {
+                case 6:
+                    System.out.println("easy");
+                    break;
+                case 10:
+                    System.out.println("medium");
+                    break;
+                case 12:
+                    System.out.println("hard");
+                    break;
+                default:
+            }
+        }
+
+        //TODO: create playing field of buttons from parameters (so far only testing from this point onwards)
+        //TODO: button for changing between revealing and marking field
+        //TODO: fix positions when screen is being flipped, make fields change size depending on amount in column/row
+        // data to populate the RecyclerView with
+        String[] data = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"};
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvNumbers);
+        int numberOfColumns = 6;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        adapter = new PlayRecyclerViewAdapter(this, data);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
     }
 
     @Override
