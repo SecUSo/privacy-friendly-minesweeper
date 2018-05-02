@@ -1,21 +1,21 @@
 /*
- This file is part of Privacy Friendly App Example.
+ This file is part of Privacy Friendly Minesweeper.
 
- Privacy Friendly App Example is free software:
+ Privacy Friendly Minesweeper is free software:
  you can redistribute it and/or modify it under the terms of the
  GNU General Public License as published by the Free Software Foundation,
  either version 3 of the License, or any later version.
 
- Privacy Friendly App Example is distributed in the hope
+ Privacy Friendly Minesweeper is distributed in the hope
  that it will be useful, but WITHOUT ANY WARRANTY; without even
  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  See the GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Privacy Friendly App Example. If not, see <http://www.gnu.org/licenses/>.
+ along with Privacy Friendly Minesweeper. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.secuso.privacyfriendlyexample.activities;
+package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,19 +26,21 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Intent;
 
-import org.secuso.privacyfriendlyexample.R;
-import org.secuso.privacyfriendlyexample.activities.helper.BaseActivity;
+import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 
 /**
- * @author Christopher Beckmann
- * @version 20161225
- * This activity is an example for the main menu of gaming applications
+ * @author Christopher Beckmann, I3ananas
+ * @version 20180430
+ * This class implements the functions that are available in the main menu / on the start screen
  */
 
-public class GameActivity extends BaseActivity {
+public class GameActivity extends BaseActivity implements View.OnClickListener {
 
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
@@ -49,6 +51,8 @@ public class GameActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        Button button_start_game = (Button) findViewById(R.id.game_button_start);
+        button_start_game.setOnClickListener(this);
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
@@ -57,13 +61,13 @@ public class GameActivity extends BaseActivity {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }
 
-        int index = mSharedPreferences.getInt("lastChosenPage", 0);
+        int index = mSharedPreferences.getInt("firstChosenPage", 0);
 
         mViewPager.setCurrentItem(index);
         mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
         mArrowRight = (ImageView) findViewById(R.id.arrow_right);
 
-        //care for initial postiton of the ViewPager
+        //set initial postiton of the ViewPager
         mArrowLeft.setVisibility((index==0)?View.INVISIBLE:View.VISIBLE);
         mArrowRight.setVisibility((index==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
 
@@ -98,12 +102,24 @@ public class GameActivity extends BaseActivity {
     }
 
     public void onClick(View view) {
+
+        if(view == null){
+            return;
+        }
+
         switch(view.getId()) {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
                 break;
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
+                break;
+            case R.id.game_button_start:
+                //TODO: start game according to selected game mode
+                startActivity(new Intent(this, PlayActivity.class));
+                break;
+            case R.id.game_button_continue:
+                //TODO: navigate to list of saved games (if there are any)
                 break;
             default:
         }
@@ -165,7 +181,17 @@ public class GameActivity extends BaseActivity {
             View rootView = inflater.inflate(R.layout.fragment_game_mode, container, false);
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText("Mode: "+String.valueOf(id));
+            switch (id){
+                case 0:
+                    textView.setText(R.string.game_mode_easy);
+                    break;
+                case 1:
+                    textView.setText(R.string.game_mode_medium);
+                    break;
+                case 2:
+                    textView.setText(R.string.game_mode_difficult);
+                    break;
+            }
             return rootView;
         }
     }
