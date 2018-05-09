@@ -41,6 +41,7 @@ import org.secuso.privacyfriendlyminesweeper.activities.GameActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.HelpActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity;
+import org.secuso.privacyfriendlyminesweeper.activities.StatisticsActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.TutorialActivity;
 
 /**
@@ -167,6 +168,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         switch(itemId) {
             case R.id.nav_game:
                 intent = new Intent(this, GameActivity.class);
+                createBackStack(intent);
+                break;
+            case R.id.nav_statistics:
+                intent = new Intent(this, StatisticsActivity.class);
                 createBackStack(intent);
                 break;
             case R.id.nav_play:

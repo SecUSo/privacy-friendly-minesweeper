@@ -26,7 +26,6 @@
 
     <!--###HELP###-->
     <string name="help">Help</string>
-
     <string name="help_whatis">Was ist Privacy Friendly Beispiel?</string>
     <string name="help_whatis_answer">Privacy Friendly Beispiel zeigt das Standard-Design einer Privacy Friendly App.</string>
     <string name="help_feature_one">Feature 1</string>
@@ -69,5 +68,15 @@
 
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
+
+    <!-- ### STATISTICS ### -->
+    <string name="playedGames">Gespielte Spiele</string>
+    <string name="winrate">Sieg-Quote</string>
+    <string name="averagePlayedTime">Ø gespielte Zeit</string>
+    <string name="numberOfUncoveredFields">Aufgedeckte Felder</string>
+    <string name="topTen">Top 10 - Beste Zeiten</string>
+    <string name="time">Zeit</string>
+    <string name="date">Datum</string>
+    <string name="points">Punkte</string>
 
 </resources>
