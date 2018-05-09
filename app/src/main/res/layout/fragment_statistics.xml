@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TableRow>
+            <TextView
+                android:padding="5dp"
+                android:gravity="end"
+                android:text="@string/playedGames"
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="  -  "
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:id="@+id/value_numberOfPlayedGames"
+                android:padding="5dp"
+                android:gravity="start"
+                android:text="?"
+                android:textSize="20sp">
+            </TextView>
+        </TableRow>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_height="1dp"
+            android:padding="5dp"
+            android:background="@color/colorAccent" />
+
+        <TableRow>
+            <TextView
+                android:padding="5dp"
+                android:gravity="end"
+                android:text="@string/winrate"
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="  -  "
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:id="@+id/value_winrate"
+                android:padding="5dp"
+                android:gravity="start"
+                android:text="?"
+                android:textSize="20sp">
+            </TextView>
+        </TableRow>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_height="1dp"
+            android:padding="5dp"
+            android:background="@color/colorAccent" />
+
+        <TableRow>
+            <TextView
+                android:padding="5dp"
+                android:gravity="end"
+                android:text="@string/averagePlayedTime"
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="  -  "
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:id="@+id/value_averageTime"
+                android:padding="5dp"
+                android:gravity="start"
+                android:text="?"
+                android:textSize="20sp">
+            </TextView>
+        </TableRow>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_height="1dp"
+            android:padding="5dp"
+            android:background="@color/colorAccent" />
+
+        <TableRow>
+            <TextView
+                android:padding="5dp"
+                android:gravity="end"
+                android:text="@string/numberOfUncoveredFields"
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="  -  "
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:id="@+id/value_uncoveredFields"
+                android:padding="5dp"
+                android:gravity="start"
+                android:text="?"
+                android:textSize="20sp">
+            </TextView>
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:padding="5dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/topTenTimes"
+        android:textSize="15sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2"
+        android:padding="5dp">
+
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:text="@string/time"
+                android:textSize="12sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:textSize="12sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:text="@string/points"
+                android:textSize="12sp"/>
+        </TableRow>
+    </TableLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/topList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:padding="5dp" >
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

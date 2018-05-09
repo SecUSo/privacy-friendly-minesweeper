@@ -8,6 +8,10 @@
             android:icon="@drawable/ic_menu_home"
             android:title="@string/action_main" />
         <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_trending_up_black_24dp"
+            android:title="@string/action_statistics"/>
+        <item
             android:id="@+id/nav_tutorial"
             android:icon="@drawable/ic_menu_tutorial"
             android:title="@string/action_tutorial" />
