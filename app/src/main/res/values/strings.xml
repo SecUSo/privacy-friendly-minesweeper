@@ -86,4 +86,8 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="date">Date</string>
     <string name="points">Points</string>
 
+    <!-- ### PLAY ### -->
+    <item type="id" name="height" />
+    <item type="id" name="width" />
+
 </resources>

@@ -15,22 +15,23 @@ import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 
 public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerViewAdapter.ViewHolder> {
 
-    private String[] mData = new String[0];
+    private int[] mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int maxHeightOfCells;
+    private int maxWidthOfCells;
 
     // data is passed into the constructor
-    public PlayRecyclerViewAdapter(Context context, String[] data) {
+    public PlayRecyclerViewAdapter(Context context, int[] data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
     // data is passed into the constructor
-    public PlayRecyclerViewAdapter(Context context, String[] data, int maxHeight) {
+    public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        maxHeightOfCells = maxHeight;
+        maxHeightOfCells = maxHeight;;
     }
 
     // inflates the cell layout from xml when needed
@@ -38,15 +39,13 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.playingfield_cell, parent, false);
-        view.setTag(maxHeightOfCells);
         return new ViewHolder(view);
     }
 
     // binds the data to the textview in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String text = mData[position];
-        holder.myTextView.setText(text);
+  //      holder.myTextView.setText(String.valueOf(mData[position]));
     }
 
     // total number of cells
@@ -63,8 +62,9 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = (CellView) itemView.findViewById(R.id.cell);
-            myTextView.setTag(maxHeightOfCells);
             itemView.setOnClickListener(this);
+            myTextView.setTag(maxHeightOfCells);
+   //         myTextView.setTag(R.id.width ,maxWidthOfCells);
         }
 
         @Override
@@ -74,7 +74,7 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     }
 
     // convenience method for getting data at click position
-    public String getItem(int id) {
+    public int getItem(int id) {
         return mData[id];
     }
 

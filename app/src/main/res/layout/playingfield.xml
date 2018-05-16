@@ -58,19 +58,23 @@
         </TextView>
 
         <Button
+            android:id="@+id/toggle"
             android:layout_weight="6"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="mark"
+            android:background="@drawable/button_highlighted"
             android:padding="0dp"/>
 
         <TextView
-            android:layout_width="10dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/height_test" />
 
 
     </LinearLayout>
+
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/playingfield"

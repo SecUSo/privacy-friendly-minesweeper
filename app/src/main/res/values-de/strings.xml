@@ -79,4 +79,8 @@
     <string name="date">Datum</string>
     <string name="points">Punkte</string>
 
+    <!-- ### PLAY ### -->
+    <item type="id" name="height" />
+    <item type="id" name="width" />
+
 </resources>

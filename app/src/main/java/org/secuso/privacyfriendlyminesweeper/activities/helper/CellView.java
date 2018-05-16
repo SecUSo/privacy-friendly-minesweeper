@@ -3,10 +3,13 @@ package org.secuso.privacyfriendlyminesweeper.activities.helper;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
 
-public class CellView extends android.support.v7.widget.AppCompatButton {
+public class CellView extends android.support.v7.widget.AppCompatTextView {
+
     public CellView(Context context) {
         super(context);
     }
@@ -26,6 +29,7 @@ public class CellView extends android.support.v7.widget.AppCompatButton {
     public void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);
         int maxHeight;
+        int maxWidth;
         if (getTag() == null) {
             maxHeight = getMeasuredHeight();
         } else {
@@ -33,6 +37,9 @@ public class CellView extends android.support.v7.widget.AppCompatButton {
         }
         //turns cell into squares.
         int size = Math.min(getMeasuredWidth(), maxHeight);
+ //       int size = Math.min(maxWidth, maxHeight);
         setMeasuredDimension(size, size);
+        //LinearLayout parent = (LinearLayout) findViewById(R.id.playingfield_row);
+        //parent.set
     }
 }
