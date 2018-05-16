@@ -19,6 +19,7 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -50,7 +51,7 @@ import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 import java.util.Random;
 
 /**
- * @author I3ananas
+ * @author I3ananas, max-dreger
  * @version 20180430
  * This class implements functions required to handle the process of playing
  */
@@ -70,6 +71,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     TextView mines;
     int bombsLeft;
     int countDownToWin;
+    boolean firstClick;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -109,17 +111,96 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         data = new int[numberOfCells];
         countDownToWin = numberOfCells;
 
+        // set up the RecyclerView
+        final View heightTest = findViewById(R.id.height_test);
+        recyclerView = (RecyclerView) findViewById(R.id.playingfield);
+
+        //uses heightTest to measure the height of the usable screen when it is first drawn
+        heightTest.setVisibility(View.VISIBLE);
+        firstTime = true;
+        //after the first drawing we use the measured height to calculate the maximum height of every cell in the grid
+        heightTest.post(new Runnable() {
+            @Override
+            public void run() {
+                //subtract the height of the play_sidebar
+                int height = recyclerView.getHeight()- Math.round(32*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+                //set height of recyclerView so it does not overlap the play_sidebar
+                ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+                params.height = height;
+                maxHeight = height/numberOfRows;
+                //cells have a buffer of 2dp, so substract 1dp*2 transformed into pixel value
+                maxHeight = maxHeight - Math.round(3*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+
+   //             int width = recyclerView.getWidth();
+   //             maxWidth = width/numberOfColumns;
+  //              maxWidth = maxWidth - Math.round(2*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+
+                if (firstTime) {
+                    firstTime=false;
+                    createAdapter(maxHeight);
+                    //after heightTest is made invisible the grid is redrawn, this time with the correct maxheight
+                    heightTest.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        //fistLaunch
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, true));
+        createAdapter(maxHeight);
+
+        firstClick = true;
+
+        //handling the Button that toggles between revealing cells and marking them as mines
+        marking = false;
+        final Button button = (Button) findViewById(R.id.toggle);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (marking) {
+                    button.setBackground(getDrawable(R.drawable.button_highlighted));
+                    marking = false;
+                    button.setText("MARK");
+                } else {
+                    view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
+                    marking = true;
+                    button.setText("MARKING...");
+
+                }
+            }
+        });
+
+        bombsLeft = numberOfBombs;
+        mines = (TextView) findViewById(R.id.mines);
+        mines.setText(String.valueOf(bombsLeft));
+
+        ImageView mines = (ImageView) findViewById(R.id.mines_pic);
+        mines.setImageResource(R.drawable.mine);
+
+    }
+    private void createAdapter(int maximumHeight) {
+        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+    private void fillPlayingField(int notHere){
+
         //put bombs at random positions
         for (int i = 0; i < numberOfBombs; i++) {
             int position;
             Random randomGen = new Random();
             position = randomGen.nextInt(numberOfCells);
-            //10 equals a bomb
-            //redo random position if there is a bomb already
-            if (data[position] == 10) {
+
+            //redo if the first clicked cell would get a bomb
+            if(position == notHere) {
                 i--;
+            } else {
+                //10 equals a bomb
+                //redo random position if there is a bomb already
+                if (data[position] == 10) {
+                    i--;
+                }
+                data[position] = 10;
             }
-            data[position] = 10;
         }
 
         //Fill the Playingfield with numbers depending on bomb position
@@ -284,80 +365,16 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         for (int i = 0; i < numberOfCells; i++) {
             status[i] = 0;
         }
-
-        // set up the RecyclerView
-        final View heightTest = findViewById(R.id.height_test);
-        recyclerView = (RecyclerView) findViewById(R.id.playingfield);
-
-        //uses heightTest to measure the height of the usable screen when it is first drawn
-        heightTest.setVisibility(View.VISIBLE);
-        firstTime = true;
-        //after the first drawing we use the measured height to calculate the maximum height of every cell in the grid
-        heightTest.post(new Runnable() {
-            @Override
-            public void run() {
-                //subtract the height of the play_sidebar
-                int height = recyclerView.getHeight()- Math.round(32*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
-                //set height of recyclerView so it does not overlap the play_sidebar
-                ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
-                params.height = height;
-                maxHeight = height/numberOfRows;
-                //cells have a buffer of 2dp, so substract 1dp*2 transformed into pixel value
-                maxHeight = maxHeight - Math.round(3*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
-
-   //             int width = recyclerView.getWidth();
-   //             maxWidth = width/numberOfColumns;
-  //              maxWidth = maxWidth - Math.round(2*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
-
-                if (firstTime) {
-                    firstTime=false;
-                    createAdapter(maxHeight);
-   //                 createAdapter(maxHeight);
-                    //after heightTest is made invisible the grid is redrawn, this time with the correct maxheight
-                    heightTest.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        //fistLaunch
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, true));
-        createAdapter(maxHeight);
-
-        //handling the Button that toggles between revealing cells and marking them as mines
-        marking = false;
-        final Button button = (Button) findViewById(R.id.toggle);
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if (marking) {
-                    button.setBackground(getDrawable(R.drawable.button_highlighted));
-                    marking = false;
-                    button.setText("MARK");
-                } else {
-                    view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
-                    marking = true;
-                    button.setText("MARKING...");
-
-                }
-            }
-        });
-
-        bombsLeft = numberOfBombs;
-        mines = (TextView) findViewById(R.id.mines);
-        mines.setText(String.valueOf(bombsLeft));
-
-        ImageView mines = (ImageView) findViewById(R.id.mines_pic);
-        mines.setImageResource(R.drawable.mine);
-
-    }
-    private void createAdapter(int maximumHeight) {
-        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onItemClick(View view, int position) {
+        if (firstClick) {
+            fillPlayingField(position);
+            firstClick = false;
+            Log.i("TAG", "here we go boyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyys " + position);
+        }
+
         LinearLayout cellview = (LinearLayout) view;
         RecyclerView.ViewHolder testviewww = recyclerView.findViewHolderForAdapterPosition(position);
         CellView testcell = (CellView) testviewww.itemView.findViewWithTag(maxHeight);
@@ -389,7 +406,6 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                     status[position] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     countDownToWin--;
-                    victoryCheck();
                  //   builder.append(" ");
                   //  builder.setSpan(new ImageSpan(this, R.drawable.flag),builder.length() - 1, builder.length(), 0);
                    // builder.append(" Cree by Dexode");
@@ -404,6 +420,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                    // cell.setText("F");
                     bombsLeft--;
                     mines.setText(String.valueOf(bombsLeft));
+                    victoryCheck();
                 }
             }
         }
@@ -654,7 +671,11 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         if (status[position] == 0) {
             //check for gameloss
             if (data[position] == 10) {
+
                 cell.setText("M");
+                Drawable img = getDrawable(R.drawable.mine);
+                img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
+                cell.setCompoundDrawables(img,null,null,null);
                 //todo: lose game
                 System.out.println("__________YOU LOSE__________");
             } else {
@@ -678,7 +699,10 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     private void victoryCheck() {
         if(countDownToWin == 0) {
             //todo: implement winning
-            System.out.println("!__________YOU Win__________!");
+            if (bombsLeft == 0) {
+                System.out.println("!__________YOU Win__________!");
+                startActivity(new Intent(this, VictoryScreen.class));
+            }
         }
     }
 

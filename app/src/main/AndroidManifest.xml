@@ -82,6 +82,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyminesweeper.activities.GameActivity" />
         </activity>
+        <activity
+            android:name="org.secuso.privacyfriendlyminesweeper.activities.VictoryScreen"
+            android:label="@string/action_statistics"
+            android:theme="@style/AppTheme.Popup"
+            android:screenOrientation="portrait"
+            android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.PlayActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlyminesweeper.activities.PlayActivity" />
+        </activity>
     </application>
 
 </manifest>

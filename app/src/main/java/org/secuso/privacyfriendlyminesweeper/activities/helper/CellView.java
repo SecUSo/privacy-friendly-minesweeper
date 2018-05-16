@@ -8,6 +8,11 @@ import android.widget.LinearLayout;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
 
+/**
+ * @author max-dreger
+ * @version 20180430
+ * This class implements one cell on the Playing Field
+ */
 public class CellView extends android.support.v7.widget.AppCompatTextView {
 
     public CellView(Context context) {
