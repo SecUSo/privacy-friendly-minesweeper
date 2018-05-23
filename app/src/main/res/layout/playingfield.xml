@@ -45,11 +45,19 @@
             android:background="@color/black">
         </ImageView>
 
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/middlegrey"
+            />
         <TextView
             android:id="@+id/timer"
             android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:layout_gravity="center"
             android:text="10:00"
             android:textAlignment="center"

@@ -25,6 +25,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,6 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,6 +74,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     int bombsLeft;
     int countDownToWin;
     boolean firstClick;
+    Bundle parameter;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -82,11 +85,11 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         numberOfBombs = 0;
 
         //TODO: fix continuing a game (for now if/else clause)
-        Bundle b = this.getIntent().getExtras();
-        if (b==null){
+        parameter = this.getIntent().getExtras();
+        if (parameter==null){
 
         }else {
-            short[] test = b.getShortArray("info");
+            short[] test = parameter.getShortArray("info");
             numberOfColumns = test[0];
             numberOfRows = test[1];
             numberOfBombs = test[2];
@@ -175,6 +178,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
         ImageView mines = (ImageView) findViewById(R.id.mines_pic);
         mines.setImageResource(R.drawable.mine);
+
 
     }
     private void createAdapter(int maximumHeight) {
@@ -372,6 +376,11 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         if (firstClick) {
             fillPlayingField(position);
             firstClick = false;
+
+            Chronometer timer = (Chronometer)findViewById(R.id.chronometer);
+            timer.setBase(SystemClock.elapsedRealtime());
+            timer.start();
+
             Log.i("TAG", "here we go boyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyys " + position);
         }
 
@@ -677,6 +686,13 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
                 //todo: lose game
+
+                parameter.putBoolean("victory", false);
+
+                Intent tempI = new Intent(this, VictoryScreen.class);
+                tempI.putExtras(parameter);
+                startActivity(tempI);
+
                 System.out.println("__________YOU LOSE__________");
             } else {
                 //set cell to revealed
@@ -701,7 +717,13 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             //todo: implement winning
             if (bombsLeft == 0) {
                 System.out.println("!__________YOU Win__________!");
-                startActivity(new Intent(this, VictoryScreen.class));
+
+                parameter.putBoolean("victory", true);
+
+                Intent tempI = new Intent(this, VictoryScreen.class);
+                tempI.putExtras(parameter);
+                startActivity(tempI);
+               // startActivity(new Intent(this, VictoryScreen.class));
             }
         }
     }
@@ -712,5 +734,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     }
 
     public int getNumberOfRows() { return numberOfRows; }
+    public int getNumberOfColumns() { return numberOfColumns; }
+    public int getNumberOfMines() { return numberOfBombs; }
     public int getMaxHeight() { return maxHeight; }
 }
