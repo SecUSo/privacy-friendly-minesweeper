@@ -23,7 +23,7 @@ package org.secuso.privacyfriendlyminesweeper.database;
  * This class represents the "data type" of general statistics that will be stored in a table
  * Each column of the table is a private variable in this class
  */
-public class PFMinesweeperGeneralStatisticsDataType {
+public class PFMGeneralStatisticsDataType {
 
     private int ID;
     private String GAME_MODE;
@@ -32,7 +32,7 @@ public class PFMinesweeperGeneralStatisticsDataType {
     private int NR_OF_UNCOVERED_FIELDS;
     private int TOTAL_PLAYING_TIME;
 
-    public PFMinesweeperGeneralStatisticsDataType() {    }
+    public PFMGeneralStatisticsDataType() {    }
 
     /**
      * This constructor generates a single data set of general statistics
@@ -43,7 +43,7 @@ public class PFMinesweeperGeneralStatisticsDataType {
      * @param NR_OF_UNCOVERED_FIELDS Number of uncovered fields
      * @param TOTAL_PLAYING_TIME Total playing time
      */
-    public PFMinesweeperGeneralStatisticsDataType(int ID, String GAME_MODE, int NR_OF_PLAYED_GAMES, int NR_OF_WON_GAMES, int NR_OF_UNCOVERED_FIELDS, int TOTAL_PLAYING_TIME) {
+    public PFMGeneralStatisticsDataType(int ID, String GAME_MODE, int NR_OF_PLAYED_GAMES, int NR_OF_WON_GAMES, int NR_OF_UNCOVERED_FIELDS, int TOTAL_PLAYING_TIME) {
 
         this.ID = ID;
         this.GAME_MODE = GAME_MODE;

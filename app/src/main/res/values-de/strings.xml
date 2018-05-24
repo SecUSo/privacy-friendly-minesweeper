@@ -18,7 +18,7 @@
     <!-- ###GAME###-->
     <string name="title_activity_game">Spiel</string>
     <string name="game_mode_easy">Einfach</string>
-    <string name="game_mode_medium">Mittel</string>
+    <string name="game_mode_medium">Normal</string>
     <string name="game_mode_difficult">Schwer</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
@@ -77,7 +77,6 @@
     <string name="topTen">Top 10 - Beste Zeiten</string>
     <string name="time">Zeit</string>
     <string name="date">Datum</string>
-    <string name="points">Punkte</string>
 
     <!-- ### PLAY ### -->
     <item type="id" name="height" />

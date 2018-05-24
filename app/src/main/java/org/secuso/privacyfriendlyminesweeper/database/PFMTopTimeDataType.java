@@ -17,28 +17,33 @@
 
 package org.secuso.privacyfriendlyminesweeper.database;
 
+import java.util.Date;
+
 /**
  * @author Karola Marky, I3ananas
- * @version 20180518
+ * @version 20180524
  * This class represents the "data type" of top times that will be stored in a table
  * Each column of the table is a private variable in this class
  */
-public class PFMinesweeperTopTimeDataType {
+public class PFMTopTimeDataType {
 
     private int ID;
-    private String TIME;
+    private String GAME_MODE;
+    private int TIME;
     private String DATE;
 
-    public PFMinesweeperTopTimeDataType() {    }
+    public PFMTopTimeDataType() {    }
 
     /**
      * This constructor generates a single data set of a top playing time
      * @param ID The primary key for the table (automatically set by the DB)
+     * @param GAME_MODE Game mode of the top playing time
      * @param TIME Playing time of a finished game
      * @param DATE Date and time the game was played
      */
-    public PFMinesweeperTopTimeDataType(int ID, String TIME, String DATE) {
+    public PFMTopTimeDataType(int ID, String GAME_MODE, int TIME, String DATE) {
         this.ID = ID;
+        this.GAME_MODE = GAME_MODE;
         this.TIME = TIME;
         this.DATE = DATE;
     }
@@ -51,11 +56,19 @@ public class PFMinesweeperTopTimeDataType {
         this.ID = ID;
     }
 
-    public String getTIME() {
+    public String getGAME_MODE() {
+        return GAME_MODE;
+    }
+
+    public void setGAME_MODE(String GAME_MODE) {
+        this.GAME_MODE = GAME_MODE;
+    }
+
+    public int getTIME() {
         return TIME;
     }
 
-    public void setTIME(String TIME) {
+    public void setTIME(int TIME) {
         this.TIME = TIME;
     }
 

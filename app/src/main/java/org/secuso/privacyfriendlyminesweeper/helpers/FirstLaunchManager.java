@@ -20,7 +20,7 @@ package org.secuso.privacyfriendlyminesweeper.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.secuso.privacyfriendlyminesweeper.database.PFASQLiteHelper;
+import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 /**
  * @author Karola Marky
@@ -28,7 +28,7 @@ import org.secuso.privacyfriendlyminesweeper.database.PFASQLiteHelper;
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  */
 public class FirstLaunchManager {
-    private PFASQLiteHelper dbHandler;
+    private PFMSQLiteHelper dbHandler;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -42,7 +42,7 @@ public class FirstLaunchManager {
 
     public FirstLaunchManager(Context context) {
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        dbHandler = new PFASQLiteHelper(context);
+        dbHandler = new PFMSQLiteHelper(context);
         editor = pref.edit();
     }
 
