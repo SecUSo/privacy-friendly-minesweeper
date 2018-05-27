@@ -34,6 +34,12 @@ import android.content.Intent;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
+import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Christopher Beckmann, I3ananas
@@ -95,7 +101,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
             public void onPageScrollStateChanged(int state) {
             }
         });
-
     }
 
     @Override

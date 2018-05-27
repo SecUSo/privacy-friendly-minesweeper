@@ -49,7 +49,12 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
+import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -59,6 +64,7 @@ import java.util.Random;
  */
 public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapter.ItemClickListener{
     PlayRecyclerViewAdapter adapter;
+    String game_mode;
     int numberOfRows;
     int numberOfColumns;
     int numberOfBombs;
@@ -96,12 +102,15 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             switch (numberOfColumns) {
                 case 6:
                     System.out.println("easy");
+                    game_mode = "easy";
                     break;
                 case 10:
                     System.out.println("medium");
+                    game_mode = "medium";
                     break;
                 case 12:
                     System.out.println("hard");
+                    game_mode = "hard";
                     break;
                 default:
             }
@@ -693,6 +702,18 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 tempI.putExtras(parameter);
                 startActivity(tempI);
 
+
+                //TODO: Code executed when losing should contain the following code to write in the database
+                    //first parameter: game mode
+                    //second parameter: 1 as one match was played
+                    //third parameter: 1 if game was won, 0 if game was lost
+                    //fourth parameter: number of uncovered fields
+                    //TODO: fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+                    //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
+                    Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 300, "lost"};
+                    DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
+                    writer.execute(result_params);
+
                 System.out.println("__________YOU LOSE__________");
             } else {
                 //set cell to revealed
@@ -725,6 +746,21 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 startActivity(tempI);
                // startActivity(new Intent(this, VictoryScreen.class));
             }
+
+            //TODO: Code executed when winning should contain the following code to write in the database
+                //update general statistics
+                //first parameter: game mode
+                //second parameter: 1 as one match was played
+                //third parameter: 1 if game was won, 0 if game was lost
+                //fourth parameter: number of uncovered fields
+                //TODO: fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+                //sixth parameter: actual date and time
+                DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
+                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), 300, df.format(new Date())};
+                DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
+                writer.execute(result_params);
+
+            System.out.println("!__________YOU Win__________!");
         }
     }
 

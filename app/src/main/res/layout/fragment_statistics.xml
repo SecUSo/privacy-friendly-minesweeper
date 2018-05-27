@@ -147,10 +147,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/date"
                 android:textSize="12sp"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:text="@string/points"
-                android:textSize="12sp"/>
         </TableRow>
     </TableLayout>
 
