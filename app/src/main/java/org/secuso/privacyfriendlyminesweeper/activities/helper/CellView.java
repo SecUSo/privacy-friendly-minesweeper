@@ -45,6 +45,6 @@ public class CellView extends android.support.v7.widget.AppCompatTextView {
  //       int size = Math.min(maxWidth, maxHeight);
         setMeasuredDimension(size, size);
         //LinearLayout parent = (LinearLayout) findViewById(R.id.playingfield_row);
-        //parent.set
+        //parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 }

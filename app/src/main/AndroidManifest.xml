@@ -84,7 +84,7 @@
         </activity>
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.VictoryScreen"
-            android:label="@string/action_statistics"
+            android:label="@string/action_end"
             android:theme="@style/AppTheme.Popup"
             android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.PlayActivity">

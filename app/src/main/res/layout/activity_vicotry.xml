@@ -14,8 +14,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="3"
-        android:text="Congratulations!
-You were lucky or skilled enough to win the game in 10:00"
+        android:text="@string/victory"
         android:textAlignment="center"
         android:textSize="25sp">
     </TextView>
@@ -32,9 +31,9 @@ You were lucky or skilled enough to win the game in 10:00"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_highlighted"
+            android:background="@drawable/button_highlighted_clicked"
             android:padding="2dp"
-            android:text="Go to stats">
+            android:text="@string/statistics">
         </Button>
 
         <Button
@@ -52,9 +51,9 @@ You were lucky or skilled enough to win the game in 10:00"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_highlighted"
+            android:background="@drawable/button_disabled"
             android:padding="2dp"
-            android:text="replay same gamemode">
+            android:text="@string/replay">
 
         </Button>
 
@@ -69,12 +68,12 @@ You were lucky or skilled enough to win the game in 10:00"
 
         <Button
             android:id="@+id/victory_continue"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_highlighted"
+            android:background="@drawable/button_highlighted_2"
             android:padding="10dp"
-            android:text="OK, sweet!">
+            android:text="@string/ok">
 
         </Button>
     </LinearLayout>

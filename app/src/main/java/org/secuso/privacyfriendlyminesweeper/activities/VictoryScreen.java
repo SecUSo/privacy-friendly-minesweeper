@@ -18,13 +18,13 @@ import org.secuso.privacyfriendlyminesweeper.R;
  * This class implements the popup when winning
  */
 public class VictoryScreen extends Activity{
-    Bundle infoForSameGamemode;
+    Bundle infoForScreen;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        infoForSameGamemode = this.getIntent().getExtras();
+        infoForScreen = this.getIntent().getExtras();
 
         setContentView(R.layout.activity_vicotry);
 
@@ -40,11 +40,33 @@ public class VictoryScreen extends Activity{
 
         getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
 
+        //get time and get it ready for correct display
+        int time = infoForScreen.getInt("time");
+        int minutes = 0;
+        while (time > 59) {
+            minutes++;
+            time = time - 60;
+        }
+        boolean padding = false;
+        if (time < 10) {
+            padding = true;
+        }
+
+        //set the text
         TextView text = (TextView) findViewById(R.id.victory_text);
-        boolean victory = infoForSameGamemode.getBoolean("victory");
+        boolean victory = infoForScreen.getBoolean("victory");
         if (victory) {
+            if (padding) {
+                text.setText(getString(R.string.victory) + " " + minutes + ":0" + time);
+            } else {
+                text.setText(getString(R.string.victory) + " " + minutes + ":" + time);
+            }
         } else {
-            text.setText("You Suck!");
+            if (padding) {
+                text.setText(getString(R.string.defeat1) + " " + minutes + ":0" + time + " " + getString(R.string.defeat2));
+            } else {
+                text.setText(getString(R.string.defeat1) + " " + minutes + ":" + time + " " + getString(R.string.defeat2));
+            }
         }
 
         final Button ok = (Button) findViewById(R.id.victory_continue);
@@ -71,24 +93,28 @@ public class VictoryScreen extends Activity{
             }
         });
 
-
-
-      //  height = (int) (height*0.5);
-       // width = (int) (width*0.8);
+        //result is important for the correct closing of the playactivity
+        setResult(RESULT_OK, null);
 
     }
 
     private void toGameActivity() {
-        startActivity(new Intent(this, GameActivity.class));
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        finish();
     }
     private void toStatsActivity() {
         startActivity(new Intent(this, StatisticsActivity.class));
+
+        finish();
     }
     private void replaySameGamemode() {
 
         Intent intent_for_replay = new Intent(this, PlayActivity.class);
-        intent_for_replay.putExtras(infoForSameGamemode);
-
+        intent_for_replay.putExtras(infoForScreen);
         startActivity(intent_for_replay);
+        finish();
     }
 }

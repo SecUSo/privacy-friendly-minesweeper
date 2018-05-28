@@ -11,6 +11,7 @@
     <string name="action_tutorial">Tutorial</string>
     <string name="action_statistics">Statistik</string>
     <string name="action_play">Spielen</string>
+    <string name="action_end">Spiel beendet</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -81,5 +82,18 @@
     <!-- ### PLAY ### -->
     <item type="id" name="height" />
     <item type="id" name="width" />
+    <string name="untoggled">Minen markieren</string>
+    <string name="toggled">Am markieren…</string>
+
+    <!-- ### GAME END ### -->
+    <string name="victory">Gratulation!
+Alle Minen wurden gefunden ohne sie auszulösen. Und das alles in nur </string>
+    <string name="defeat1">Unglücklich…
+Diese Mine hat dich erwischt nach </string>
+    <string name="defeat2">
+        Mehr Glück beim nächsten Mal!</string>
+    <string name="statistics">Zur Statisik</string>
+    <string name="replay">Versuchen wirs nochmal</string>
+    <string name="ok">Alles klar!</string>
 
 </resources>

@@ -12,6 +12,7 @@
     <string name="action_tutorial">Tutorial</string>
     <string name="action_statistics">Statistics</string>
     <string name="action_play">Play</string>
+    <string name="action_end">Game ended</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -88,5 +89,18 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <!-- ### PLAY ### -->
     <item type="id" name="height" />
     <item type="id" name="width" />
+    <string name="untoggled">Mark mines</string>
+    <string name="toggled">Marking…</string>
+
+    <!-- ### GAME END ### -->
+    <string name="victory">Congratulations!\n
+You found all the mines without triggering one of them.\nAnd all that in just </string>
+    <string name="defeat1">Unfortunate…\n
+That mine got you after </string>
+    <string name="defeat2">
+        \nBetter luck next time!</string>
+    <string name="statistics">Go to stats</string>
+    <string name="replay">Replay same gamemode</string>
+    <string name="ok">OK, sweet!</string>
 
 </resources>

@@ -81,6 +81,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     int countDownToWin;
     boolean firstClick;
     Bundle parameter;
+    Chronometer timer;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -116,7 +117,6 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             }
         }
 
-        //TODO: create playing field of buttons from parameters
         //TODO: fix positions when screen is being flipped
         //Filling the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
@@ -130,6 +130,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         //uses heightTest to measure the height of the usable screen when it is first drawn
         heightTest.setVisibility(View.VISIBLE);
         firstTime = true;
+
         //after the first drawing we use the measured height to calculate the maximum height of every cell in the grid
         heightTest.post(new Runnable() {
             @Override
@@ -171,11 +172,11 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 if (marking) {
                     button.setBackground(getDrawable(R.drawable.button_highlighted));
                     marking = false;
-                    button.setText("MARK");
+                    button.setText(getString(R.string.untoggled));
                 } else {
                     view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
                     marking = true;
-                    button.setText("MARKING...");
+                    button.setText(getString(R.string.toggled));
 
                 }
             }
@@ -386,18 +387,15 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             fillPlayingField(position);
             firstClick = false;
 
-            Chronometer timer = (Chronometer)findViewById(R.id.chronometer);
+            timer = (Chronometer)findViewById(R.id.chronometer);
             timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
 
-            Log.i("TAG", "here we go boyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyys " + position);
         }
 
         LinearLayout cellview = (LinearLayout) view;
         RecyclerView.ViewHolder testviewww = recyclerView.findViewHolderForAdapterPosition(position);
         CellView testcell = (CellView) testviewww.itemView.findViewWithTag(maxHeight);
-
-        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
         CellView cell = (CellView) cellview.getChildAt(0);
 
@@ -694,27 +692,31 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 Drawable img = getDrawable(R.drawable.mine);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
-                //todo: lose game
+
+                timer.stop();
+
+                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+                long gametime = gametimeInMillis / 1000;
+                int time = (int) gametime;
 
                 parameter.putBoolean("victory", false);
+                parameter.putInt("time", time);
 
                 Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
-                startActivity(tempI);
-
+                startActivityForResult(tempI, 0);
 
                 //TODO: Code executed when losing should contain the following code to write in the database
                     //first parameter: game mode
                     //second parameter: 1 as one match was played
                     //third parameter: 1 if game was won, 0 if game was lost
                     //fourth parameter: number of uncovered fields
-                    //TODO: fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+                    //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
                     //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
-                    Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 300, "lost"};
+                    Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
                     DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
                     writer.execute(result_params);
 
-                System.out.println("__________YOU LOSE__________");
             } else {
                 //set cell to revealed
                 status[position] = 1;
@@ -735,32 +737,34 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
     private void victoryCheck() {
         if(countDownToWin == 0) {
-            //todo: implement winning
             if (bombsLeft == 0) {
-                System.out.println("!__________YOU Win__________!");
+
+                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+                long gametime = gametimeInMillis / 1000;
+                int time = (int) gametime;
+
+                timer.stop();
 
                 parameter.putBoolean("victory", true);
+                parameter.putInt("time", time);
 
                 Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
-                startActivity(tempI);
-               // startActivity(new Intent(this, VictoryScreen.class));
-            }
+                startActivityForResult(tempI, 0);
 
-            //TODO: Code executed when winning should contain the following code to write in the database
+                //TODO: Code executed when winning should contain the following code to write in the database
                 //update general statistics
                 //first parameter: game mode
                 //second parameter: 1 as one match was played
                 //third parameter: 1 if game was won, 0 if game was lost
                 //fourth parameter: number of uncovered fields
-                //TODO: fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+                //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
                 //sixth parameter: actual date and time
                 DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
-                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), 300, df.format(new Date())};
+                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
                 DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
                 writer.execute(result_params);
-
-            System.out.println("!__________YOU Win__________!");
+            }
         }
     }
 
@@ -769,6 +773,15 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         return R.id.nav_play;
     }
 
+    //We use this Method so this Activity closes when a button in the Victory screen gets pressed
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+            }
+        }
+    }
     public int getNumberOfRows() { return numberOfRows; }
     public int getNumberOfColumns() { return numberOfColumns; }
     public int getNumberOfMines() { return numberOfBombs; }
