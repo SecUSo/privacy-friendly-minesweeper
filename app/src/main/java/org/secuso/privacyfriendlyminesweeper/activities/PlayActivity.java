@@ -121,7 +121,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         //Filling the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
-        countDownToWin = numberOfCells;
+        countDownToWin = numberOfCells - numberOfBombs;
 
         // set up the RecyclerView
         final View heightTest = findViewById(R.id.height_test);
@@ -166,6 +166,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         //handling the Button that toggles between revealing cells and marking them as mines
         marking = false;
         final Button button = (Button) findViewById(R.id.toggle);
+        button.setTextColor(getResources().getColor(R.color.white));
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -173,10 +174,12 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                     button.setBackground(getDrawable(R.drawable.button_highlighted));
                     marking = false;
                     button.setText(getString(R.string.untoggled));
+                    button.setTextColor(getResources().getColor(R.color.white));
                 } else {
                     view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
                     marking = true;
                     button.setText(getString(R.string.toggled));
+                    button.setTextColor(getResources().getColor(R.color.black));
 
                 }
             }
@@ -411,17 +414,14 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 if (status[position] == 2) {
                     status[position] = 0;
                     cell.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    countDownToWin++;
                  //   cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
                 //    cell.setBackgroundResource(R.color.colorAccent);
 
-              //      cell.setText("");
                     bombsLeft++;
                     mines.setText(String.valueOf(bombsLeft));
                 } else {
                     status[position] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
-                    countDownToWin--;
                  //   builder.append(" ");
                   //  builder.setSpan(new ImageSpan(this, R.drawable.flag),builder.length() - 1, builder.length(), 0);
                    // builder.append(" Cree by Dexode");
@@ -433,7 +433,6 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                    // img.setColorFilter(new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null), PorterDuff.Mode.SRC_IN));
                    // img.setAlpha(0);
                     cell.setCompoundDrawables(img,null,null,null);
-                   // cell.setText("F");
                     bombsLeft--;
                     mines.setText(String.valueOf(bombsLeft));
                     victoryCheck();
@@ -721,8 +720,45 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 //set cell to revealed
                 status[position] = 1;
 
+                switch (data[position]) {
+                    case 0:
+                        cell.setText("");
+                        break;
+                    case 1:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.darkblue));
+                        break;
+                    case 2:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.darkgreen));
+                        break;
+                    case 3:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.red));
+                        break;
+                    case 4:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.darkblue));
+                        break;
+                    case 5:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.brown));
+                        break;
+                    case 6:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.cyan));
+                        break;
+                    case 7:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.black));
+                        break;
+                    case 8:
+                        cell.setText(String.valueOf(data[position]));
+                        cell.setTextColor(getResources().getColor(R.color.black));
+                        break;
+                }
+
                 cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
-                cell.setText(String.valueOf(data[position]));
 
                 countDownToWin--;
                 victoryCheck();
@@ -737,34 +773,32 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
     private void victoryCheck() {
         if(countDownToWin == 0) {
-            if (bombsLeft == 0) {
 
-                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
-                long gametime = gametimeInMillis / 1000;
-                int time = (int) gametime;
+            long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+            long gametime = gametimeInMillis / 1000;
+            int time = (int) gametime;
 
-                timer.stop();
+            timer.stop();
 
-                parameter.putBoolean("victory", true);
-                parameter.putInt("time", time);
+            parameter.putBoolean("victory", true);
+            parameter.putInt("time", time);
 
-                Intent tempI = new Intent(this, VictoryScreen.class);
-                tempI.putExtras(parameter);
-                startActivityForResult(tempI, 0);
+            Intent tempI = new Intent(this, VictoryScreen.class);
+            tempI.putExtras(parameter);
+            startActivityForResult(tempI, 0);
 
-                //TODO: Code executed when winning should contain the following code to write in the database
-                //update general statistics
-                //first parameter: game mode
-                //second parameter: 1 as one match was played
-                //third parameter: 1 if game was won, 0 if game was lost
-                //fourth parameter: number of uncovered fields
-                //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
-                //sixth parameter: actual date and time
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
-                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
-                DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
-                writer.execute(result_params);
-            }
+            //TODO: Code executed when winning should contain the following code to write in the database
+            //update general statistics
+            //first parameter: game mode
+            //second parameter: 1 as one match was played
+            //third parameter: 1 if game was won, 0 if game was lost
+            //fourth parameter: number of uncovered fields
+            //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+            //sixth parameter: actual date and time
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
+            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
+            DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
+            writer.execute(result_params);
         }
     }
 
