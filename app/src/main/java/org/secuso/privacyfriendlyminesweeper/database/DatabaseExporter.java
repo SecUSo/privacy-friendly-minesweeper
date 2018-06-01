@@ -28,8 +28,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author Karola Marky
- * @version 20161225
+ * @author Karola Marky, I3ananas
+ * @version 20180530
  * Structure based on http://tech.sarathdr.com/android-app/convert-database-cursor-result-to-json-array-android-app-development/
  * accessed at 25th December 2016
  * <p>
@@ -56,9 +56,14 @@ public class DatabaseExporter {
 
         SQLiteDatabase dataBase = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
 
+        Cursor cursor = dataBase.query(TABLE_NAME, null,
+                null, null, null, null, null, null);
 
-        String searchQuery = "SELECT  * FROM " + TABLE_NAME;
-        Cursor cursor = dataBase.rawQuery(searchQuery, null);
+        //order top times by playing time for top 10 list
+        if(TABLE_NAME.equals("TOP_TIMES")){
+            cursor = dataBase.query(TABLE_NAME, null,
+                null, null, null, null, "playing_time", null);
+        }
 
         JSONArray resultSet = new JSONArray();
 
@@ -72,18 +77,21 @@ public class DatabaseExporter {
                 if (cursor.getColumnName(i) != null) {
 
                     try {
-
-                        if (cursor.getString(i) != null) {
-                            //Log.d(DEBUG_TAG, cursor.getString(i));
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
+                        if(cursor.getType(i) == Cursor.FIELD_TYPE_STRING){
+                            if(cursor.getString(i) != null){
+                                rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                            }
+                            else{
+                                rowObject.put(cursor.getColumnName(i), "");
+                            }
+                        }
+                        else if(cursor.getType(i) == Cursor.FIELD_TYPE_INTEGER){
+                            rowObject.put(cursor.getColumnName(i), cursor.getInt(i));
                         }
                     } catch (Exception e) {
                         Log.d(DEBUG_TAG, e.getMessage());
                     }
                 }
-
             }
 
             resultSet.put(rowObject);
@@ -99,7 +107,6 @@ public class DatabaseExporter {
             e.printStackTrace();
         }
 
-        //Log.d(DEBUG_TAG, finalJSON.toString());
         return resultSet;
 
     }

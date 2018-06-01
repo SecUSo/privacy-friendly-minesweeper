@@ -10,18 +10,14 @@
         android:id="@+id/topList_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="-time-"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/topList_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="-date-"
         android:textSize="12sp"/>
-
-    <TextView
-        android:id="@+id/topList_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
 
 </LinearLayout>

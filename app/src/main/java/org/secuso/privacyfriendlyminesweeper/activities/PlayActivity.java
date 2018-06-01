@@ -49,6 +49,8 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader.BestTimeReaderReceiver;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
@@ -62,7 +64,7 @@ import java.util.Random;
  * @version 20180430
  * This class implements functions required to handle the process of playing
  */
-public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapter.ItemClickListener{
+public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
     PlayRecyclerViewAdapter adapter;
     String game_mode;
     int numberOfRows;
@@ -82,6 +84,10 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     boolean firstClick;
     Bundle parameter;
     Chronometer timer;
+    DatabaseBestTimeReader bestTimeReader;
+    DatabaseWriter writer;
+    int bestTime;
+    boolean newBestTime;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -90,6 +96,8 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         numberOfColumns = 0;
         numberOfRows = 0;
         numberOfBombs = 0;
+
+        newBestTime = false;
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
@@ -189,8 +197,11 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         ImageView mines = (ImageView) findViewById(R.id.mines_pic);
         mines.setImageResource(R.drawable.mine);
 
-
+        bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
+        bestTimeReader.execute(game_mode);
+        writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
     }
+
     private void createAdapter(int maximumHeight) {
         adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
         adapter.setClickListener(this);
@@ -701,21 +712,21 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
                 parameter.putBoolean("victory", false);
                 parameter.putInt("time", time);
+                parameter.putString("gameMode", game_mode);
+                parameter.putBoolean("newBestTime", newBestTime);
 
                 Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
                 startActivityForResult(tempI, 0);
 
-                //TODO: Code executed when losing should contain the following code to write in the database
-                    //first parameter: game mode
-                    //second parameter: 1 as one match was played
-                    //third parameter: 1 if game was won, 0 if game was lost
-                    //fourth parameter: number of uncovered fields
-                    //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
-                    //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
-                    Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
-                    DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
-                    writer.execute(result_params);
+                //first parameter: game mode
+                //second parameter: 1 as one match was played
+                //third parameter: 1 if game was won, 0 if game was lost
+                //fourth parameter: number of uncovered fields
+                //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+                //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
+                Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
+                writer.execute(result_params);
 
             } else {
                 //set cell to revealed
@@ -745,14 +756,19 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
                 timer.stop();
 
+                if(bestTime > time){
+                    newBestTime = true;
+                }
+
                 parameter.putBoolean("victory", true);
                 parameter.putInt("time", time);
+                parameter.putString("gameMode", game_mode);
+                parameter.putBoolean("newBestTime", newBestTime);
 
                 Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
                 startActivityForResult(tempI, 0);
 
-                //TODO: Code executed when winning should contain the following code to write in the database
                 //update general statistics
                 //first parameter: game mode
                 //second parameter: 1 as one match was played
@@ -762,7 +778,6 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 //sixth parameter: actual date and time
                 DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
                 Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
-                DatabaseWriter writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
                 writer.execute(result_params);
             }
         }
@@ -786,4 +801,8 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     public int getNumberOfColumns() { return numberOfColumns; }
     public int getNumberOfMines() { return numberOfBombs; }
     public int getMaxHeight() { return maxHeight; }
+
+    public void setBestTime(int bt){
+        bestTime = bt;
+    }
 }
