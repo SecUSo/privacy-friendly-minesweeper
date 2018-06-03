@@ -88,6 +88,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     DatabaseWriter writer;
     int bestTime;
     boolean newBestTime;
+    Boolean revealingAround;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -193,6 +194,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             }
         });
 
+        revealingAround = false;
         bombsLeft = numberOfBombs;
         mines = (TextView) findViewById(R.id.mines);
         mines.setText(String.valueOf(bombsLeft));
@@ -415,7 +417,9 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
         //check if cell is already revealed and has the right amount of mines marked
          if (status[position] == 1) {
+             revealingAround = true;
              revealAroundCell(position, true);
+             revealingAround = false;
          } else
         //check if we are in marking mode
         if (marking) {
@@ -726,6 +730,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
                 Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
                 writer.execute(result_params);
+                return;
 
             } else {
                 //set cell to revealed
@@ -778,6 +783,9 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 if (data[position] == 0) {
                     revealAroundCell(position, false);
                 }
+          //      if (revealingAround && data[position] != 0) {
+          //          revealAroundCell(position, true);
+          //      }
             }
         }
     }
@@ -791,29 +799,29 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
             timer.stop();
 
+            if(bestTime > time){
+                newBestTime = true;
+            }
+
             parameter.putBoolean("victory", true);
             parameter.putInt("time", time);
-                if(bestTime > time){
-                    newBestTime = true;
-                }
-
-                parameter.putString("gameMode", game_mode);
-                parameter.putBoolean("newBestTime", newBestTime);
+            parameter.putString("gameMode", game_mode);
+            parameter.putBoolean("newBestTime", newBestTime);
 
             Intent tempI = new Intent(this, VictoryScreen.class);
             tempI.putExtras(parameter);
             startActivityForResult(tempI, 0);
 
-                //update general statistics
-                //first parameter: game mode
-                //second parameter: 1 as one match was played
-                //third parameter: 1 if game was won, 0 if game was lost
-                //fourth parameter: number of uncovered fields
-                //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
-                //sixth parameter: actual date and time
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
-                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
-                writer.execute(result_params);
+            //update general statistics
+            //first parameter: game mode
+            //second parameter: 1 as one match was played
+            //third parameter: 1 if game was won, 0 if game was lost
+            //fourth parameter: number of uncovered fields
+            //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
+            //sixth parameter: actual date and time
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
+            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
+            writer.execute(result_params);
         }
     }
 
