@@ -27,7 +27,6 @@
                 android:id="@+id/value_numberOfPlayedGames"
                 android:padding="5dp"
                 android:gravity="start"
-                android:text="?"
                 android:textSize="20sp">
             </TextView>
         </TableRow>
@@ -55,7 +54,6 @@
                 android:id="@+id/value_winrate"
                 android:padding="5dp"
                 android:gravity="start"
-                android:text="?"
                 android:textSize="20sp">
             </TextView>
         </TableRow>
@@ -83,7 +81,6 @@
                 android:id="@+id/value_averageTime"
                 android:padding="5dp"
                 android:gravity="start"
-                android:text="?"
                 android:textSize="20sp">
             </TextView>
         </TableRow>
@@ -111,7 +108,6 @@
                 android:id="@+id/value_uncoveredFields"
                 android:padding="5dp"
                 android:gravity="start"
-                android:text="?"
                 android:textSize="20sp">
             </TextView>
         </TableRow>
@@ -135,7 +131,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0,1,2"
+        android:stretchColumns="0,1"
         android:padding="5dp">
 
         <TableRow>
@@ -148,15 +144,115 @@
                 android:text="@string/date"
                 android:textSize="12sp"/>
         </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime1"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate1"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime2"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate2"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime3"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate3"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime4"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate4"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime5"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate5"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime6"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate6"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime7"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate7"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime8"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate8"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime9"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate9"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/topTime10"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/topTimeDate10"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </TableRow>
     </TableLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/topList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:padding="5dp" >
-
-    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

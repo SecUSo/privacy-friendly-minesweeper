@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author I3ananas
  * @version 20180524
- * This class writes data in the database (in background / asynchronous)
+ * This class writes statistics data in the database (in background / asynchronous)
  */
 public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
 
@@ -62,7 +62,7 @@ public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
             helper.updateGeneralStatisticsData(data_gs);
         }
 
-        //if game was won (String date is not empty)
+        //if game was won (String date does not equal "lost")
         if(!date.equals("lost")){
 
             PFMTopTimeDataType data_tt = null;
@@ -70,6 +70,7 @@ public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
             String[] gm = {game_mode};
             List<PFMTopTimeDataType> list = helper.getAllTopTimeData(gm);
 
+            //add data set to data base or update worst data set in database if playing time is in the top ten
             if(list.size() < 10){
                 //id is set automatically in the database but constructor requires a parameter, used 0 randomly
                 data_tt = new PFMTopTimeDataType(0, game_mode, playing_time, date);

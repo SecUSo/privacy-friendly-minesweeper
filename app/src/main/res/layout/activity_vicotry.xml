@@ -13,10 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:text="@string/victory"
         android:textAlignment="center"
-        android:textSize="25sp">
+        android:textSize="20sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/victory_text_game_mode"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:textAlignment="center"
+        android:textSize="20sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/victory_text_new_best_time"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="20sp">
     </TextView>
 
     <LinearLayout
@@ -33,7 +54,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_highlighted_clicked"
             android:padding="2dp"
-            android:text="@string/statistics">
+            android:text="@string/statistics"
+            android:textSize="12sp">
         </Button>
 
         <Button
@@ -44,7 +66,7 @@
             android:padding="2dp"
             android:background="@color/transparent"
             android:text="">
-    </Button>
+        </Button>
 
         <Button
             android:id="@+id/victory_redo"
@@ -53,7 +75,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_disabled"
             android:padding="2dp"
-            android:text="@string/replay">
+            android:text="@string/replay"
+            android:textSize="12sp">
 
         </Button>
 

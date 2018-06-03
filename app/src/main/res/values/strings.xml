@@ -24,7 +24,7 @@
     <string name="game_mode_difficult">Difficult</string>
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
-    <string name="game_desc">This is the default main menu for game apps. The viewpager above should be used to switch between game modes.</string>
+    <string name="game_desc">Choose a game mode and start the game.</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
@@ -94,11 +94,13 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
 
     <!-- ### GAME END ### -->
     <string name="victory">Congratulations!\n
-You found all the mines without triggering one of them.\nAnd all that in just </string>
+        You found all the mines without triggering one of them.\nAnd all that in just </string>
     <string name="defeat1">Unfortunate…\n
-That mine got you after </string>
+        That mine got you after </string>
     <string name="defeat2">
         \nBetter luck next time!</string>
+    <string name="gameMode">Mode</string>
+    <string name="newBestTime">New best time!</string>
     <string name="statistics">Go to stats</string>
     <string name="replay">Replay same gamemode</string>
     <string name="ok">OK, sweet!</string>

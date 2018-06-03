@@ -306,11 +306,41 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * This method returns all top time data sets from the DB as a list
+     * @return A list of all available top time data sets in the database
+     */
+    public List<PFMTopTimeDataType> getAllTopTimeData() {
+        List<PFMTopTimeDataType> topTimeDataList = new ArrayList<PFMTopTimeDataType>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TOP_TIMES;
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        PFMTopTimeDataType dataSetTopTime;
+
+        if (cursor.moveToFirst()) {
+            do {
+                dataSetTopTime = new PFMTopTimeDataType();
+                dataSetTopTime.setID(Integer.parseInt(cursor.getString(0)));
+                dataSetTopTime.setGAME_MODE(cursor.getString(1));
+                dataSetTopTime.setTIME(Integer.parseInt(cursor.getString(2)));
+                dataSetTopTime.setDATE(cursor.getString(3));
+                topTimeDataList.add(dataSetTopTime);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+        return topTimeDataList;
+    }
+
+
+    /**
      * Deletes a single top time data set from the DB
      * This method takes the data set and extracts its key to build the delete-query
      * @param dataSetTopTime Data set that will be deleted
      */
-    public void deleteGeneralStatisticsData(PFMTopTimeDataType dataSetTopTime) {
+    public void deleteTopTimeData(PFMTopTimeDataType dataSetTopTime) {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_TOP_TIMES, KEY_ID + " = ?",
                 new String[] { Integer.toString(dataSetTopTime.getID()) });
@@ -332,5 +362,31 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
 
         return database.update(TABLE_TOP_TIMES, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(dataSetTopTime.getID()) });
+    }
+
+    /**
+     * Reads the best saved playing time
+     * @param game_mode Game_mode, for which the best saved playing time is read
+     */
+    public int readBestTime(String game_mode){
+        int bestTime = Integer.MAX_VALUE;
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.query(TABLE_TOP_TIMES, new String[]{KEY_ID, KEY_GAME_MODE,
+                        KEY_PLAYING_TIME, KEY_DATE}, KEY_GAME_MODE + "=?",
+                        new String[]{game_mode}, null, null, null, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(1).equals(game_mode)) {
+                    if(cursor.getInt(2) < bestTime){
+                        bestTime = cursor.getInt(2);
+                    }
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+
+        return bestTime;
     }
 }

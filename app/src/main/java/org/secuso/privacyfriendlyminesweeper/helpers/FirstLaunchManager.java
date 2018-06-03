@@ -19,18 +19,20 @@ package org.secuso.privacyfriendlyminesweeper.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 /**
- * @author Karola Marky
- * @version 20161214
+ * @author Karola Marky, I3ananas
+ * @version 20180601
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  */
 public class FirstLaunchManager {
     private PFMSQLiteHelper dbHandler;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private Context context;
 
     // shared pref mode
     private int PRIVATE_MODE = 0;
@@ -41,6 +43,7 @@ public class FirstLaunchManager {
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
     public FirstLaunchManager(Context context) {
+        this.context = context;
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         dbHandler = new PFMSQLiteHelper(context);
         editor = pref.edit();
@@ -57,7 +60,8 @@ public class FirstLaunchManager {
 
     public void initFirstTimeLaunch() {
         if(pref.getBoolean(IS_FIRST_TIME_LAUNCH, true)) {
-            // First time setup in here
+            //create database on first launch
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath("PF_MINESWEEPER_DB"),null);
         }
     }
 

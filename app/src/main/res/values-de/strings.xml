@@ -23,7 +23,7 @@
     <string name="game_mode_difficult">Schwer</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
-    <string name="game_desc">Dies ist das Standard-Menü für Spiele-Apps. Der Viewpager oben sollte verwendet werden, um zwischen verschiedenen Spielmodi zu wechseln.</string>
+    <string name="game_desc">Wähle einen Spielmodus und starte das Spiel.</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
@@ -87,11 +87,13 @@
 
     <!-- ### GAME END ### -->
     <string name="victory">Gratulation!
-Alle Minen wurden gefunden ohne sie auszulösen. Und das alles in nur </string>
+        Alle Minen wurden gefunden ohne sie auszulösen. Und das alles in nur </string>
     <string name="defeat1">Unglücklich…
-Diese Mine hat dich erwischt nach </string>
+        Diese Mine hat dich erwischt nach </string>
     <string name="defeat2">
         Mehr Glück beim nächsten Mal!</string>
+    <string name="gameMode">Modus</string>
+    <string name="newBestTime">Neue Bestzeit!</string>
     <string name="statistics">Zur Statisik</string>
     <string name="replay">Versuchen wirs nochmal</string>
     <string name="ok">Alles klar!</string>

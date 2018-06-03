@@ -69,6 +69,33 @@ public class VictoryScreen extends Activity{
             }
         }
 
+        //set text about game mode
+        TextView textGameMode = (TextView) findViewById(R.id.victory_text_game_mode);
+        String textGM = getString(R.string.gameMode);
+        String game_mode = infoForScreen.getString("gameMode");
+        if(game_mode.equals("easy")){
+            textGM = textGM + ": " + getString(R.string.game_mode_easy);
+            textGameMode.setText(textGM);
+        }
+        if(game_mode.equals("medium")){
+            textGM = textGM + ": " + getString(R.string.game_mode_medium);
+            textGameMode.setText(textGM);
+        }
+        if(game_mode.equals("hard")){
+            textGM = textGM + ": " + getString(R.string.game_mode_difficult);
+            textGameMode.setText(textGM);
+        }
+
+        //set text if a new best time was achieved
+        TextView textNewBestTime = (TextView) findViewById(R.id.victory_text_new_best_time);
+        boolean newBestTime = infoForScreen.getBoolean("newBestTime");
+        if(newBestTime){
+            textNewBestTime.setText(getString(R.string.newBestTime));
+        }
+        else{
+            textNewBestTime.setText("");
+        }
+
         final Button ok = (Button) findViewById(R.id.victory_continue);
         final Button stats = (Button) findViewById(R.id.victory_statistics);
         final Button redo = (Button) findViewById(R.id.victory_redo);
