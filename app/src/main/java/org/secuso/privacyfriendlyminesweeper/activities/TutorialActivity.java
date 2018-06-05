@@ -42,8 +42,8 @@ import org.secuso.privacyfriendlyminesweeper.helpers.FirstLaunchManager;
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  *
- * @author Karola Marky, Christopher Beckmann
- * @version 20161214
+ * @author Karola Marky, Christopher Beckmann, I3ananas
+ * @version 20180604
  */
 public class TutorialActivity extends AppCompatActivity {
 

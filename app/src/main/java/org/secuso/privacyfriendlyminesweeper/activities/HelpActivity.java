@@ -30,8 +30,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author Karola Marky, Christopher Beckmann
- * @version 20171016
+ * @author Karola Marky, Christopher Beckmann, I3ananas
+ * @version 20180604
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016
  */
@@ -55,6 +55,11 @@ public class HelpActivity extends BaseActivity {
 
         expandableListDetail.put(getString(R.string.help_whatis), Collections.singletonList(getString(R.string.help_whatis_answer)));
         expandableListDetail.put(getString(R.string.help_feature_one), Collections.singletonList(getString(R.string.help_feature_one_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_two), Collections.singletonList(getString(R.string.help_feature_two_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_three), Collections.singletonList(getString(R.string.help_feature_three_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_four), Collections.singletonList(getString(R.string.help_feature_four_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_five), Collections.singletonList(getString(R.string.help_feature_five_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_six), Collections.singletonList(getString(R.string.help_feature_six_answer)));
         expandableListDetail.put(getString(R.string.help_privacy), Collections.singletonList(getString(R.string.help_privacy_answer)));
         expandableListDetail.put(getString(R.string.help_permission), Collections.singletonList(getString(R.string.help_permission_answer)));
 

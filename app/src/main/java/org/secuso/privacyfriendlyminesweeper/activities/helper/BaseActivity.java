@@ -175,7 +175,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 createBackStack(intent);
                 break;
             case R.id.nav_play:
+                Bundle param = new Bundle();                                    //
+                param.putShortArray("info", new short[]{6, 10, 7});             //
                 intent = new Intent(this, PlayActivity.class);
+                intent.putExtras(param);                                        //
                 createBackStack(intent);
                 break;
             case R.id.nav_tutorial:
