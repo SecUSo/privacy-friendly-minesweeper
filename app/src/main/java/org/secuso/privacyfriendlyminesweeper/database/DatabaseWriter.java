@@ -41,8 +41,9 @@ public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
         int played = (Integer)params[1];
         int won = (Integer)params[2];
         int uncovered_fields = (Integer)params[3];
-        int playing_time = (Integer)params[4];
-        String date = String.valueOf(params[5]);
+        int playing_time_wins = (Integer)params[4];
+        int playing_time = (Integer)params[5];
+        String date = String.valueOf(params[6]);
 
         //general statistics are updated in any case
         PFMGeneralStatisticsDataType data_gs;
@@ -50,7 +51,7 @@ public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
         //if there is no data set for game_mode add one, otherwise update the existing one
         if(helper.checkIfGeneralStatsContainedInDatabase(game_mode) == 0){
             //id is set automatically in the database but constructor requires a parameter, used 0 randomly
-            data_gs = new PFMGeneralStatisticsDataType(0, game_mode, played, won, uncovered_fields, playing_time);
+            data_gs = new PFMGeneralStatisticsDataType(0, game_mode, played, won, uncovered_fields, playing_time_wins, playing_time);
             helper.addGeneralStatisticsData(data_gs);
         }
         else{
@@ -58,6 +59,7 @@ public class DatabaseWriter extends AsyncTask<Object, Void, Void> {
             data_gs.setNR_OF_PLAYED_GAMES(data_gs.getNR_OF_PLAYED_GAMES() + played);
             data_gs.setNR_OF_WON_GAMES(data_gs.getNR_OF_WON_GAMES() + won);
             data_gs.setNR_OF_UNCOVERED_FIELDS(data_gs.getNR_OF_UNCOVERED_FIELDS() + uncovered_fields);
+            data_gs.setWINS_PLAYING_TIME(data_gs.getWINS_PLAYING_TIME() + playing_time_wins);
             data_gs.setTOTAL_PLAYING_TIME(data_gs.getTOTAL_PLAYING_TIME() + playing_time);
             helper.updateGeneralStatisticsData(data_gs);
         }

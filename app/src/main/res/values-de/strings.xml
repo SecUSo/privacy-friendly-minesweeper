@@ -85,7 +85,7 @@
     <string name="winrate">Sieg-Quote</string>
     <string name="averagePlayedTime">Ø gespielte Zeit</string>
     <string name="numberOfUncoveredFields">Aufgedeckte Felder</string>
-    <string name="topTen">Top 10 - Beste Zeiten</string>
+    <string name="topTenTimes">Top 10 - Bestzeiten</string>
     <string name="time">Zeit</string>
     <string name="date">Datum</string>
 
@@ -94,6 +94,9 @@
     <item type="id" name="width" />
     <string name="untoggled">Minen markieren</string>
     <string name="toggled">Am markieren…</string>
+
+    <!-- ### SAVED GAMES ### -->
+    <string name="continueSavedGame">Spiel fortsetzen</string>
 
     <!-- ### GAME END ### -->
     <string name="victory">Gratulation!

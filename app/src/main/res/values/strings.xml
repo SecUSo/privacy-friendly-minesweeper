@@ -97,6 +97,9 @@
     <string name="untoggled">Mark mines</string>
     <string name="toggled">Marking…</string>
 
+    <!-- ### SAVED GAMES ### -->
+    <string name="continueSavedGame">Continue Game</string>
+
     <!-- ### GAME END ### -->
     <string name="victory">Congratulations!\n
         You found all the mines without triggering one of them.\nAnd all that in just </string>

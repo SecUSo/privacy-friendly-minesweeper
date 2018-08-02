@@ -19,7 +19,7 @@ package org.secuso.privacyfriendlyminesweeper.database;
 
 /**
  * @author Karola Marky, I3ananas
- * @version 20180518
+ * @version 20180614
  * This class represents the "data type" of general statistics that will be stored in a table
  * Each column of the table is a private variable in this class
  */
@@ -30,6 +30,7 @@ public class PFMGeneralStatisticsDataType {
     private int NR_OF_PLAYED_GAMES;
     private int NR_OF_WON_GAMES;
     private int NR_OF_UNCOVERED_FIELDS;
+    private int WINS_PLAYING_TIME;
     private int TOTAL_PLAYING_TIME;
 
     public PFMGeneralStatisticsDataType() {    }
@@ -41,15 +42,17 @@ public class PFMGeneralStatisticsDataType {
      * @param NR_OF_PLAYED_GAMES Number of played games
      * @param NR_OF_WON_GAMES Number of won games
      * @param NR_OF_UNCOVERED_FIELDS Number of uncovered fields
+     * @param WINS_PLAYING_TIME Total playing time of won games
      * @param TOTAL_PLAYING_TIME Total playing time
      */
-    public PFMGeneralStatisticsDataType(int ID, String GAME_MODE, int NR_OF_PLAYED_GAMES, int NR_OF_WON_GAMES, int NR_OF_UNCOVERED_FIELDS, int TOTAL_PLAYING_TIME) {
+    public PFMGeneralStatisticsDataType(int ID, String GAME_MODE, int NR_OF_PLAYED_GAMES, int NR_OF_WON_GAMES, int NR_OF_UNCOVERED_FIELDS, int WINS_PLAYING_TIME, int TOTAL_PLAYING_TIME) {
 
         this.ID = ID;
         this.GAME_MODE = GAME_MODE;
         this.NR_OF_PLAYED_GAMES = NR_OF_PLAYED_GAMES;
         this.NR_OF_WON_GAMES = NR_OF_WON_GAMES;
         this.NR_OF_UNCOVERED_FIELDS = NR_OF_UNCOVERED_FIELDS;
+        this.WINS_PLAYING_TIME = WINS_PLAYING_TIME;
         this.TOTAL_PLAYING_TIME = TOTAL_PLAYING_TIME;
     }
 
@@ -92,6 +95,10 @@ public class PFMGeneralStatisticsDataType {
     public void setNR_OF_UNCOVERED_FIELDS(int NR_OF_UNCOVERED_FIELDS) {
         this.NR_OF_UNCOVERED_FIELDS = NR_OF_UNCOVERED_FIELDS;
     }
+
+    public int getWINS_PLAYING_TIME() { return WINS_PLAYING_TIME; }
+
+    public void setWINS_PLAYING_TIME(int WINS_PLAYING_TIME) { this.WINS_PLAYING_TIME = WINS_PLAYING_TIME; }
 
     public int getTOTAL_PLAYING_TIME() { return TOTAL_PLAYING_TIME; }
 

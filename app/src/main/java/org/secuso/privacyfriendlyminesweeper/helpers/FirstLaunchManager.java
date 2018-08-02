@@ -61,7 +61,10 @@ public class FirstLaunchManager {
     public void initFirstTimeLaunch() {
         if(pref.getBoolean(IS_FIRST_TIME_LAUNCH, true)) {
             //create database on first launch
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath("PF_MINESWEEPER_DB"),null);
+            PFMSQLiteHelper helper = new PFMSQLiteHelper(context);
+            SQLiteDatabase database = helper.getWritableDatabase();
+            database.close();
+            helper.close();
         }
     }
 

@@ -43,7 +43,7 @@ import java.util.Date;
 
 /**
  * @author Christopher Beckmann, I3ananas
- * @version 20180430
+ * @version 20180606
  * This class implements the functions that are available in the main menu / on the start screen
  */
 
@@ -163,6 +163,9 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.game_button_continue:
                 //TODO: navigate to list of saved games (if there are any)
+                //TODO: navigating to list of saved games is only enabled if there are any saved games
+                Intent intent = new Intent(this, SavedGamesActivity.class);
+                startActivity(intent);
                 break;
             default:
         }

@@ -20,17 +20,22 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
@@ -47,7 +52,6 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerViewAdapter;
-import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader.BestTimeReaderReceiver;
@@ -61,11 +65,12 @@ import java.util.Random;
 
 /**
  * @author I3ananas, max-dreger
- * @version 20180430
+ * @version 20180606
  * This class implements functions required to handle the process of playing
  */
-public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
+public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
     PlayRecyclerViewAdapter adapter;
+    SharedPreferences sharedPreferences;
     String game_mode;
     int numberOfRows;
     int numberOfColumns;
@@ -93,6 +98,15 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     protected void onCreate(Bundle param){
         super.onCreate(param);
         setContentView(R.layout.activity_play);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(getSupportActionBar() == null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);;
 
         numberOfColumns = 0;
         numberOfRows = 0;
@@ -726,9 +740,10 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 //second parameter: 1 as one match was played
                 //third parameter: 1 if game was won, 0 if game was lost
                 //fourth parameter: number of uncovered fields
-                //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
-                //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
-                Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
+                //fifth parameter: playing time in seconds (for won games only)
+                //sixth parameter: playing time in seconds
+                //seventh parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
+                Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
                 writer.execute(result_params);
                 return;
 
@@ -817,17 +832,13 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             //second parameter: 1 as one match was played
             //third parameter: 1 if game was won, 0 if game was lost
             //fourth parameter: number of uncovered fields
-            //fifth parameter: playing time in seconds --> not implemented yet, 300 is random
-            //sixth parameter: actual date and time
+            //fifth parameter: playing time in seconds (for won games only)
+            //sixth parameter: playing time in seconds
+            //seventh parameter: actual date and time
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
-            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, df.format(new Date())};
+            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, time, df.format(new Date())};
             writer.execute(result_params);
         }
-    }
-
-    @Override
-    protected int getNavigationDrawerID() {
-        return R.id.nav_play;
     }
 
     //We use this Method so this Activity closes when a button in the Victory screen gets pressed
@@ -839,9 +850,13 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             }
         }
     }
+
     public int getNumberOfRows() { return numberOfRows; }
+
     public int getNumberOfColumns() { return numberOfColumns; }
+
     public int getNumberOfMines() { return numberOfBombs; }
+
     public int getMaxHeight() { return maxHeight; }
 
     public void setBestTime(int bt){
