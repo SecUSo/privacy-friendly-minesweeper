@@ -56,14 +56,11 @@ public class DatabaseReader extends AsyncTask<String, Void, JSONObject> {
         }
 
         helper.close();
-
         return statisticsData;
     }
 
     @Override
     protected void onPostExecute(JSONObject statisticsData){
-
         databaseReaderReceiver.setStatistics(statisticsData);
-
     }
 }

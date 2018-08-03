@@ -31,7 +31,7 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        maxHeightOfCells = maxHeight;;
+        maxHeightOfCells = maxHeight;
     }
 
     // inflates the cell layout from xml when needed
@@ -53,7 +53,6 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     public int getItemCount() {
         return mData.length;
     }
-
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

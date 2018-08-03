@@ -230,7 +230,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Deletes all data sets of general statistics from the table
+     * Deletes all data sets of general statistics
      */
     public void deleteAllGeneralStatisticsData() {
         SQLiteDatabase database = this.getWritableDatabase();
@@ -351,6 +351,15 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_TOP_TIMES, KEY_ID + " = ?",
                 new String[] { Integer.toString(dataSetTopTime.getID()) });
+        database.close();
+    }
+
+    /**
+     * Deletes all top time data sets
+     */
+    public void deleteAllTopTimeData(){
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.execSQL("delete from "+ TABLE_TOP_TIMES);
         database.close();
     }
 
