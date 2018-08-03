@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * @author Karola Marky, I3ananas
- * @version 20180524
+ * @version 20180614
  * Structure based on http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
  * accessed at 16th June 2016
  * This class defines structure and methods of the database
@@ -51,6 +51,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_NR_OF_PLAYED_GAMES = "nr_of_played_games";
     private static final String KEY_NR_OF_WON_GAMES = "nr_of_won_games";
     private static final String KEY_NR_OF_UNCOVERED_FIELDS = "nr_of_uncovered_fields";
+    private static final String KEY_WINS_PLAYING_TIME = "wins_playing_time";
     private static final String KEY_TOTAL_PLAYING_TIME = "total_playing_time";
 
     private static final String KEY_PLAYING_TIME = "playing_time";
@@ -69,6 +70,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
                 KEY_NR_OF_PLAYED_GAMES + " INTEGER," +
                 KEY_NR_OF_WON_GAMES + " INTEGER," +
                 KEY_NR_OF_UNCOVERED_FIELDS + " INTEGER," +
+                KEY_WINS_PLAYING_TIME + " INTEGER," +
                 KEY_TOTAL_PLAYING_TIME + " INTEGER);";
 
         String CREATE_TOP_TIMES_TABLE = "CREATE TABLE " + TABLE_TOP_TIMES +
@@ -104,6 +106,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_NR_OF_PLAYED_GAMES, generalStats.getNR_OF_PLAYED_GAMES());
         values.put(KEY_NR_OF_WON_GAMES, generalStats.getNR_OF_WON_GAMES());
         values.put(KEY_NR_OF_UNCOVERED_FIELDS, generalStats.getNR_OF_UNCOVERED_FIELDS());
+        values.put(KEY_WINS_PLAYING_TIME, generalStats.getWINS_PLAYING_TIME());
         values.put(KEY_TOTAL_PLAYING_TIME, generalStats.getTOTAL_PLAYING_TIME());
 
         database.insert(TABLE_GENERAL_STATISTICS, null, values);
@@ -125,6 +128,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_NR_OF_PLAYED_GAMES, generalStats.getNR_OF_PLAYED_GAMES());
         values.put(KEY_NR_OF_WON_GAMES, generalStats.getNR_OF_WON_GAMES());
         values.put(KEY_NR_OF_UNCOVERED_FIELDS, generalStats.getNR_OF_UNCOVERED_FIELDS());
+        values.put(KEY_WINS_PLAYING_TIME, generalStats.getWINS_PLAYING_TIME());
         values.put(KEY_TOTAL_PLAYING_TIME, generalStats.getTOTAL_PLAYING_TIME());
 
         database.insert(TABLE_GENERAL_STATISTICS, null, values);
@@ -140,8 +144,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         Cursor cursor = database.query(TABLE_GENERAL_STATISTICS, new String[]{KEY_ID, KEY_GAME_MODE,
-                        KEY_NR_OF_PLAYED_GAMES, KEY_NR_OF_WON_GAMES, KEY_NR_OF_UNCOVERED_FIELDS, KEY_TOTAL_PLAYING_TIME},
-                        KEY_ID + "=?",
+                        KEY_NR_OF_PLAYED_GAMES, KEY_NR_OF_WON_GAMES, KEY_NR_OF_UNCOVERED_FIELDS, KEY_WINS_PLAYING_TIME,
+                        KEY_TOTAL_PLAYING_TIME}, KEY_ID + "=?",
                         new String[]{String.valueOf(id)}, null, null, null, null);
 
         PFMGeneralStatisticsDataType dataSetGeneralStats = new PFMGeneralStatisticsDataType();
@@ -152,7 +156,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
             dataSetGeneralStats.setNR_OF_PLAYED_GAMES(Integer.parseInt(cursor.getString(2)));
             dataSetGeneralStats.setNR_OF_WON_GAMES(Integer.parseInt(cursor.getString(3)));
             dataSetGeneralStats.setNR_OF_UNCOVERED_FIELDS(Integer.parseInt(cursor.getString(4)));
-            dataSetGeneralStats.setTOTAL_PLAYING_TIME(Integer.parseInt(cursor.getString(5)));
+            dataSetGeneralStats.setWINS_PLAYING_TIME(Integer.parseInt(cursor.getString(5)));
+            dataSetGeneralStats.setTOTAL_PLAYING_TIME(Integer.parseInt(cursor.getString(6)));
 
             cursor.close();
             database.close();
@@ -182,7 +187,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
                 dataSetGeneralStats.setNR_OF_PLAYED_GAMES(Integer.parseInt(cursor.getString(2)));
                 dataSetGeneralStats.setNR_OF_WON_GAMES(Integer.parseInt(cursor.getString(3)));
                 dataSetGeneralStats.setNR_OF_UNCOVERED_FIELDS(Integer.parseInt(cursor.getString(4)));
-                dataSetGeneralStats.setTOTAL_PLAYING_TIME(Integer.parseInt(cursor.getString(5)));
+                dataSetGeneralStats.setWINS_PLAYING_TIME(Integer.parseInt(cursor.getString(5)));
+                dataSetGeneralStats.setTOTAL_PLAYING_TIME(Integer.parseInt(cursor.getString(6)));
                 generalStatsDataList.add(dataSetGeneralStats);
             } while (cursor.moveToNext());
         }
@@ -204,6 +210,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_NR_OF_PLAYED_GAMES, dataSetGeneralStats.getNR_OF_PLAYED_GAMES());
         values.put(KEY_NR_OF_WON_GAMES, dataSetGeneralStats.getNR_OF_WON_GAMES());
         values.put(KEY_NR_OF_UNCOVERED_FIELDS, dataSetGeneralStats.getNR_OF_UNCOVERED_FIELDS());
+        values.put(KEY_WINS_PLAYING_TIME, dataSetGeneralStats.getWINS_PLAYING_TIME());
         values.put(KEY_TOTAL_PLAYING_TIME, dataSetGeneralStats.getTOTAL_PLAYING_TIME());
 
         return database.update(TABLE_GENERAL_STATISTICS, values, KEY_ID + " = ?",
@@ -240,8 +247,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         int id = 0;
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.query(TABLE_GENERAL_STATISTICS, new String[]{KEY_ID, KEY_GAME_MODE,
-                        KEY_NR_OF_PLAYED_GAMES, KEY_NR_OF_WON_GAMES, KEY_NR_OF_UNCOVERED_FIELDS, KEY_TOTAL_PLAYING_TIME},
-                        KEY_GAME_MODE + "=?",
+                        KEY_NR_OF_PLAYED_GAMES, KEY_NR_OF_WON_GAMES, KEY_NR_OF_UNCOVERED_FIELDS, KEY_WINS_PLAYING_TIME,
+                        KEY_TOTAL_PLAYING_TIME}, KEY_GAME_MODE + "=?",
                         new String[]{game_mode}, null, null, null, null);
 
         if(cursor.moveToFirst()) {

@@ -91,7 +91,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
         int index = 0;
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j< 10; j++){
+            for(int j = 0; j < 10; j++){
                 topTimes[i][j][0] = "";
                 topTimes[i][j][1] = "";
             }
@@ -110,8 +110,18 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
                 nrOfPlayedGames[index] = general_statistics.getJSONObject(i).getInt("nr_of_played_games");
                 nrOfUncoveredFields[index] = general_statistics.getJSONObject(i).getInt("nr_of_uncovered_fields");
-                winrate[index] = (general_statistics.getJSONObject(i).getInt("nr_of_won_games")*100)/nrOfPlayedGames[index];
-                averagePlayingTime[index] = general_statistics.getJSONObject(i).getInt("total_playing_time") / nrOfPlayedGames[index];
+                if(nrOfPlayedGames[index] != 0){
+                    winrate[index] = (general_statistics.getJSONObject(i).getInt("nr_of_won_games")*100) / nrOfPlayedGames[index];
+                }
+                else{
+                    winrate[index] = 0;
+                }
+                if(general_statistics.getJSONObject(i).getInt("nr_of_won_games") != 0){
+                    averagePlayingTime[index] = general_statistics.getJSONObject(i).getInt("wins_playing_time") / general_statistics.getJSONObject(i).getInt("nr_of_won_games");
+                }
+                else {
+                    averagePlayingTime[index] = 0;
+                }
             }
 
             //read top times

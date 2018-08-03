@@ -28,19 +28,24 @@
 
     <!--###HELP###-->
     <string name="help">Help</string>
-    <string name="help_whatis">What is Privacy Friendly App Example?</string>
-    <string name="help_whatis_answer">Privacy Friendly App Example is an app that demonstrates the design of a Privacy Friendly App.</string>
-    <string name="help_feature_one">Feature 1</string>
-    <string name="help_feature_one_answer">Description of first feature.
-Lorem ipsum dolor sit amet, eu ius alia fierent indoctum, ad pri sale tation. Elit dictas sit an, ad volumus urbanitas duo. Ei clita iracundia mel, eum et laoreet pertinax abhorreant. Nonumy suavitate dignissim quo id, ius audire prodesset adipiscing ei, altera saperet his et. Nostrud pertinax eu has, qui munere complectitur an.
-
-Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constituto ex. Per soleat impedit delicatissimi cu. Inermis volumus his ea, id quo praesent eloquentiam conclusionemque. Dolores mediocrem ad sit, ex cibo evertitur cotidieque eos.
-
-    </string>
+    <string name="help_whatis">What is Privacy Friendly Minesweeper?</string>
+    <string name="help_whatis_answer">Privacy Friendly Minesweeper is a minesweeper game that belongs to the group of privacy friendly apps.</string>
+    <string name="help_feature_one">Difficulty of the game</string>
+    <string name="help_feature_one_answer">You can choose between different levels of difficulty. More difficult modes contain more fields, more mines and a higher percentage of mines.</string>
+    <string name="help_feature_two">How to find mines?</string>
+    <string name="help_feature_two_answer">Every field has exactly as much mines in its surrounding as the number on the field says when it is uncovered.</string>
+    <string name="help_feature_three">Uncover the surrounding of a field</string>
+    <string name="help_feature_three_answer">If you click on an already uncovered field and the number of flags in its surrounding equals the number of mines in its surrounding, the surrounding is uncovered (except for marked fields).</string>
+    <string name="help_feature_four">Game information bar</string>
+    <string name="help_feature_four_answer">The bar at the top of the playing page gives you information about the difference between marked fields and the total number of mines and the time played so far.</string>
+    <string name="help_feature_five">Mark mines</string>
+    <string name="help_feature_five_answer">You can mark fields with a flag if you think there is a mine. You need to activate the marking mode to do so. Marked fields can not be uncovered. You can remove flags by clicking a marked field again while being in marking mode.</string>
+    <string name="help_feature_six">Performance</string>
+    <string name="help_feature_six_answer">You can track your performance and best times on the statistics page.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
-    <string name="help_privacy_answer">Privacy Friendly App Example does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
+    <string name="help_privacy_answer">Privacy Friendly Minesweeper does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions requires the app?</string>
-    <string name="help_permission_answer">Privacy Friendly App Example does not require any permission.</string>
+    <string name="help_permission_answer">Privacy Friendly Minesweeper does not require any permission.</string>
 
     <!--###ABOUT###-->
     <string name="about">About</string>
@@ -63,13 +68,13 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
-    <string name="slide1_text">This App serves as a guideline to see the basic design of Privacy Friendly Apps. Here introduce your app in one or two sentences.</string>
+    <string name="slide1_text">Start a game and uncover all fields without triggering one of the mines that are under some fields. You can mark suspicious fields with flags.</string>
 
-    <string name="slide2_heading">Key Elements</string>
-    <string name="slide2_text">Introduce key elements of your app. Do not introduce too many details.</string>
+    <string name="slide2_heading">Track your performance</string>
+    <string name="slide2_text">You can check some statistics about your performance on the statistics page.</string>
 
     <string name="slide3_heading">Github and Guide</string>
-    <string name="slide3_text">The sourcecode of this app is available at GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
+    <string name="slide3_text">The sourcecode of this app is available on GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
 
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>
@@ -91,6 +96,9 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <item type="id" name="width" />
     <string name="untoggled">Mark mines</string>
     <string name="toggled">Marking…</string>
+
+    <!-- ### SAVED GAMES ### -->
+    <string name="continueSavedGame">Continue Game</string>
 
     <!-- ### GAME END ### -->
     <string name="victory">Congratulations!\n

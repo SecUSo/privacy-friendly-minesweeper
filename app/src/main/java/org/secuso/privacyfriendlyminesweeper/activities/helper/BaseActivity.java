@@ -47,27 +47,24 @@ import org.secuso.privacyfriendlyminesweeper.activities.TutorialActivity;
 /**
  * @author Christopher Beckmann, Karola Marky
  * @version 20171017
- * This class is a parent class of all activities that can be accessed from the
- * Navigation Drawer (example see MainActivity.java)
- *
- * The default NavigationDrawer functionality is implemented in this class. If you wish to inherit
- * the default behaviour, make sure the content view has a NavigationDrawer with the id 'nav_view',
- * the header should point to 'nav_header_main' and the menu should be loaded from 'main_drawer'.
- *
- * Also the main layout that holds the content of the activity should have the id 'main_content'.
+ * This class is a parent class of all activities that can be accessed from the Navigation Drawer
+ * The default NavigationDrawer functionality is implemented in this class. To inherit the default
+ * behaviour, the content view requires a NavigationDrawer with the id 'nav_view', the header should
+ * point to 'nav_header_main' and the menu should load from 'main_drawer'
+ * The main layout that holds the content of the activity should have the id 'main_content'.
  * This way it will automatically fade in and out every time a transition is happening.
- *
  */
 public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     // delay to launch nav drawer item, to allow close animation to play
     public static final int NAVDRAWER_LAUNCH_DELAY = 250;
+
     // fade in and fade out durations for the main content when switching between
-    // different Activities of the app through the Nav Drawer
+    // different activities of the app through the Navigation Drawer
     public static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
     public static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
-    // Navigation drawer:
+    // Navigation drawer
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
@@ -106,8 +103,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     protected boolean goToNavigationItem(final int itemId) {
 
+        // just close drawer when already in this activity
         if(itemId == getNavigationDrawerID()) {
-            // just close drawer because we are already in this activity
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
@@ -158,7 +155,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     /**
      * This method manages the behaviour of the navigation drawer
-     * Add your menu items (ids) to res/menu/activity_main_drawer.xml
      * @param itemId Item that has been clicked by the user
      */
     private void callDrawerItem(final int itemId) {
@@ -172,10 +168,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 break;
             case R.id.nav_statistics:
                 intent = new Intent(this, StatisticsActivity.class);
-                createBackStack(intent);
-                break;
-            case R.id.nav_play:
-                intent = new Intent(this, PlayActivity.class);
                 createBackStack(intent);
                 break;
             case R.id.nav_tutorial:

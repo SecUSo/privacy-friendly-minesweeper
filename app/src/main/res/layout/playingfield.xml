@@ -16,7 +16,6 @@
     android:orientation="vertical"
     style="@style/AlertDialog.AppCompat">
 
-
     <LinearLayout
         android:id="@+id/play_sidebar"
         android:layout_height="32dp"
@@ -68,10 +67,7 @@
             android:layout_height="match_parent"
             android:id="@+id/height_test" />
 
-
     </LinearLayout>
-
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/playingfield"
@@ -79,8 +75,5 @@
             android:layout_height="match_parent"
             android:layout_gravity="end">
         </android.support.v7.widget.RecyclerView>
-
-
-
 
 </LinearLayout>
