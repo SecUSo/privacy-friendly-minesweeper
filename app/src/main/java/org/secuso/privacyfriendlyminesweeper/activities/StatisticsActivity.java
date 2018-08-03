@@ -24,6 +24,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.adapter.TopTimesRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader.DatabaseReaderReceiver;
@@ -48,9 +52,9 @@ import java.util.List;
  */
 public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver {
 
-    FragmentManager mFragmentManager;
-    StatisticsPagerAdapter mStatisticsPagerAdapter;
-    ViewPager mViewPager;
+    FragmentManager fragmentManager;
+    StatisticsPagerAdapter statisticsPagerAdapter;
+    ViewPager viewPager;
 
     static int[] nrOfPlayedGames = new int[3];
     static int[] nrOfUncoveredFields = new int[3];
@@ -66,10 +70,10 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         super.onCreate(param);
         setContentView(R.layout.activity_statistics);
 
-        mFragmentManager = getSupportFragmentManager();
-        mStatisticsPagerAdapter = new StatisticsPagerAdapter(mFragmentManager);
-        mViewPager = (ViewPager) findViewById(R.id.statistics_pager);
-        mViewPager.setAdapter(mStatisticsPagerAdapter);
+        fragmentManager = getSupportFragmentManager();
+        statisticsPagerAdapter = new StatisticsPagerAdapter(fragmentManager);
+        viewPager = (ViewPager) findViewById(R.id.statistics_pager);
+        viewPager.setAdapter(statisticsPagerAdapter);
 
         TabLayout tabLayout_statistics = (TabLayout) findViewById(R.id.tabLayout_statistics);
         tabLayout_statistics.setupWithViewPager((ViewPager) findViewById(R.id.statistics_pager));
@@ -147,11 +151,12 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
             Log.d("JSONException", e.getMessage() + "  \n" + e.getCause());
         }
 
-        List<Fragment> fragments = mFragmentManager.getFragments();
+        List<Fragment> fragments = fragmentManager.getFragments();
         StatisticsFragment fragment;
         for(int i = 0; i < fragments.size(); i++){
             fragment = (StatisticsFragment) fragments.get(i);
             displayStatistics(fragment.getView(), fragment.getArguments().getInt("statistics_number"));
+            fragment.adapterTopTimes.notifyDataSetChanged();
         }
     }
 
@@ -195,46 +200,6 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         TextView textView_averageTime = (TextView) fragmentView.findViewById(R.id.value_averageTime);
         textView_averageTime.setText(String.valueOf(formatPlayingTime(averagePlayingTime[id])));
 
-        TextView textView_time1 = (TextView) fragmentView.findViewById(R.id.topTime1);
-        textView_time1.setText(topTimes[id][0][0]);
-        TextView textView_date1 = (TextView) fragmentView.findViewById(R.id.topTimeDate1);
-        textView_date1.setText(topTimes[id][0][1]);
-        TextView textView_time2 = (TextView) fragmentView.findViewById(R.id.topTime2);
-        textView_time2.setText(topTimes[id][1][0]);
-        TextView textView_date2 = (TextView) fragmentView.findViewById(R.id.topTimeDate2);
-        textView_date2.setText(topTimes[id][1][1]);
-        TextView textView_time3 = (TextView) fragmentView.findViewById(R.id.topTime3);
-        textView_time3.setText(topTimes[id][2][0]);
-        TextView textView_date3 = (TextView) fragmentView.findViewById(R.id.topTimeDate3);
-        textView_date3.setText(topTimes[id][2][1]);
-        TextView textView_time4 = (TextView) fragmentView.findViewById(R.id.topTime4);
-        textView_time4.setText(topTimes[id][3][0]);
-        TextView textView_date4 = (TextView) fragmentView.findViewById(R.id.topTimeDate4);
-        textView_date4.setText(topTimes[id][3][1]);
-        TextView textView_time5 = (TextView) fragmentView.findViewById(R.id.topTime5);
-        textView_time5.setText(topTimes[id][4][0]);
-        TextView textView_date5 = (TextView) fragmentView.findViewById(R.id.topTimeDate5);
-        textView_date5.setText(topTimes[id][4][1]);
-        TextView textView_time6 = (TextView) fragmentView.findViewById(R.id.topTime6);
-        textView_time6.setText(topTimes[id][5][0]);
-        TextView textView_date6 = (TextView) fragmentView.findViewById(R.id.topTimeDate6);
-        textView_date6.setText(topTimes[id][5][1]);
-        TextView textView_time7 = (TextView) fragmentView.findViewById(R.id.topTime7);
-        textView_time7.setText(topTimes[id][6][0]);
-        TextView textView_date7 = (TextView) fragmentView.findViewById(R.id.topTimeDate7);
-        textView_date7.setText(topTimes[id][6][1]);
-        TextView textView_time8 = (TextView) fragmentView.findViewById(R.id.topTime8);
-        textView_time8.setText(topTimes[id][7][0]);
-        TextView textView_date8 = (TextView) fragmentView.findViewById(R.id.topTimeDate8);
-        textView_date8.setText(topTimes[id][7][1]);
-        TextView textView_time9 = (TextView) fragmentView.findViewById(R.id.topTime9);
-        textView_time9.setText(topTimes[id][8][0]);
-        TextView textView_date9 = (TextView) fragmentView.findViewById(R.id.topTimeDate9);
-        textView_date9.setText(topTimes[id][8][1]);
-        TextView textView_time10 = (TextView) fragmentView.findViewById(R.id.topTime10);
-        textView_time10.setText(topTimes[id][9][0]);
-        TextView textView_date10 = (TextView) fragmentView.findViewById(R.id.topTimeDate10);
-        textView_date10.setText(topTimes[id][9][1]);
     }
 
     /**
@@ -282,6 +247,11 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
         private static final String ARG_STATISTICS_NUMBER = "statistics_number";
 
+        RecyclerView recyclerViewTopTimes;
+        RecyclerView.Adapter adapterTopTimes;
+        LinearLayoutManager layoutManagerTopTimes;
+        DividerItemDecoration listDividerTopTimes;
+        
         public static StatisticsFragment newInstance(int statisticsNumber){
             StatisticsFragment statistic_fragment = new StatisticsFragment();
             Bundle arguments = new Bundle();
@@ -303,6 +273,18 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
             View fragmentView = inflater.inflate(R.layout.fragment_statistics, container, false);
             displayStatistics(fragmentView, id);
+
+            recyclerViewTopTimes = (RecyclerView) fragmentView.findViewById(R.id.topTimesList);
+            recyclerViewTopTimes.setHasFixedSize(true);
+
+            adapterTopTimes = new TopTimesRecyclerViewAdapter(topTimes[id]);
+            recyclerViewTopTimes.setAdapter(adapterTopTimes);
+
+            layoutManagerTopTimes = new LinearLayoutManager(getContext());
+            recyclerViewTopTimes.setLayoutManager(layoutManagerTopTimes);
+
+            listDividerTopTimes = new DividerItemDecoration(recyclerViewTopTimes.getContext(), layoutManagerTopTimes.getOrientation());
+            recyclerViewTopTimes.addItemDecoration(listDividerTopTimes);
 
             return fragmentView;
         }
