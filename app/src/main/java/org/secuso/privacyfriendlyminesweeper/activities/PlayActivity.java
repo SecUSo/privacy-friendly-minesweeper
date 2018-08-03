@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -89,6 +90,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
     int bestTime;
     boolean newBestTime;
     Boolean revealingAround;
+    boolean lost;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -99,6 +101,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         numberOfBombs = 0;
 
         newBestTime = false;
+        lost = false;
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
@@ -130,7 +133,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
         //Filling the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
-        countDownToWin = numberOfCells - numberOfBombs;
+        countDownToWin = numberOfCells;
 
         // set up the RecyclerView
         final View heightTest = findViewById(R.id.height_test);
@@ -427,6 +430,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
             if (status[position] != 1) {
                 //check if already marked
                 if (status[position] == 2) {
+                    countDownToWin++;
                     status[position] = 0;
                     cell.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                  //   cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
@@ -449,6 +453,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                    // img.setAlpha(0);
                     cell.setCompoundDrawables(img,null,null,null);
                     bombsLeft--;
+                    countDownToWin--;
                     mines.setText(String.valueOf(bombsLeft));
                     victoryCheck();
                 }
@@ -694,6 +699,9 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
 
     private void revealCell(int position) {
 
+        if (lost) {
+            return;
+        }
         RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
         CellView cell = (CellView) holder.itemView.findViewWithTag(maxHeight);
 
@@ -730,7 +738,7 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 //sixth parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
                 Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), time, "lost"};
                 writer.execute(result_params);
-                return;
+                lost = true;
 
             } else {
                 //set cell to revealed
@@ -783,9 +791,6 @@ public class PlayActivity extends BaseActivity implements PlayRecyclerViewAdapte
                 if (data[position] == 0) {
                     revealAroundCell(position, false);
                 }
-          //      if (revealingAround && data[position] != 0) {
-          //          revealAroundCell(position, true);
-          //      }
             }
         }
     }
