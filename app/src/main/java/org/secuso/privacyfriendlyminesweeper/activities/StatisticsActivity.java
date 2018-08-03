@@ -251,7 +251,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         RecyclerView.Adapter adapterTopTimes;
         LinearLayoutManager layoutManagerTopTimes;
         DividerItemDecoration listDividerTopTimes;
-        
+
         public static StatisticsFragment newInstance(int statisticsNumber){
             StatisticsFragment statistic_fragment = new StatisticsFragment();
             Bundle arguments = new Bundle();
