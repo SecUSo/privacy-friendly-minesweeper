@@ -32,7 +32,6 @@
         </TableRow>
 
         <View
-            android:id="@+id/divider1"
             android:layout_height="1dp"
             android:padding="5dp"
             android:background="@color/colorAccent" />
@@ -59,7 +58,6 @@
         </TableRow>
 
         <View
-            android:id="@+id/divider2"
             android:layout_height="1dp"
             android:padding="5dp"
             android:background="@color/colorAccent" />
@@ -86,7 +84,6 @@
         </TableRow>
 
         <View
-            android:id="@+id/divider3"
             android:layout_height="1dp"
             android:padding="5dp"
             android:background="@color/colorAccent" />
@@ -114,7 +111,6 @@
     </TableLayout>
 
     <View
-        android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:padding="5dp"
@@ -128,131 +124,11 @@
         android:textSize="15sp"
         android:textColor="@color/colorAccent"/>
 
-    <TableLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/topTimesList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0,1"
-        android:padding="5dp">
-
-        <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:text="@string/time"
-                android:textSize="12sp"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:text="@string/date"
-                android:textSize="12sp"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime1"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate1"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime2"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate2"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime3"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate3"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime4"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate4"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime5"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate5"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime6"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate6"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime7"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate7"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime8"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate8"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime9"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate9"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/topTime10"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-            <TextView
-                android:id="@+id/topTimeDate10"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </TableRow>
-    </TableLayout>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

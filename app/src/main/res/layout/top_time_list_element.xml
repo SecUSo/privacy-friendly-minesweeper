@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lineInTopList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <TextView
-        android:id="@+id/topList_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-time-"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="5dp"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/topList_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-date-"
-        android:textSize="12sp"/>
+        android:layout_alignParentRight="true"
+        android:paddingRight="5dp"
+        android:textSize="12sp" />
 
-</LinearLayout>
+</RelativeLayout>

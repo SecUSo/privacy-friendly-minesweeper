@@ -839,8 +839,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             //fifth parameter: playing time in seconds (for won games only)
             //sixth parameter: playing time in seconds
             //seventh parameter: actual date and time
-            DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH:mm");
-            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, time, df.format(new Date())};
+            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, time, DateFormat.getDateTimeInstance().format(new Date())};
             writer.execute(result_params);
         }
     }
