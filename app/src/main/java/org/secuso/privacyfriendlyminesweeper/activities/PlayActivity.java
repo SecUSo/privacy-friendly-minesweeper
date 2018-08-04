@@ -40,6 +40,8 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -100,14 +102,20 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         super.onCreate(param);
         setContentView(R.layout.activity_play);
 
+        //creating the custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            LayoutInflater toolbar_inflater = LayoutInflater.from(this);
+            View toolbar_customview = toolbar_inflater.inflate(R.layout.custom_toolbar_play, null);
+
+            getSupportActionBar().setCustomView(toolbar_customview);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
         }
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         numberOfColumns = 0;
         numberOfRows = 0;
@@ -142,7 +150,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
-        //TODO: fix positions when screen is being flipped
         //Filling the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
@@ -169,10 +176,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 //cells have a buffer of 2dp, so substract 1dp*2 transformed into pixel value
                 maxHeight = maxHeight - Math.round(3*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
 
-   //             int width = recyclerView.getWidth();
-   //             maxWidth = width/numberOfColumns;
-  //              maxWidth = maxWidth - Math.round(2*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
-
                 if (firstTime) {
                     firstTime=false;
                     createAdapter(maxHeight);
@@ -183,7 +186,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         });
 
         //fistLaunch
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, true));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
         createAdapter(maxHeight);
 
         firstClick = true;
@@ -212,11 +215,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         revealingAround = false;
         bombsLeft = numberOfBombs;
-        mines = (TextView) findViewById(R.id.mines);
+        mines = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.mines);
         mines.setText(String.valueOf(bombsLeft));
 
-        ImageView mines = (ImageView) findViewById(R.id.mines_pic);
-        mines.setImageResource(R.drawable.mine);
+        ImageView mines_pic = (ImageView) getSupportActionBar().getCustomView().findViewById(R.id.mines_pic);
+        mines_pic.setImageResource(R.drawable.mine);
 
         bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
         bestTimeReader.execute(game_mode);
@@ -419,7 +422,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             fillPlayingField(position);
             firstClick = false;
 
-            timer = (Chronometer)findViewById(R.id.chronometer);
+            timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
             timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
 
