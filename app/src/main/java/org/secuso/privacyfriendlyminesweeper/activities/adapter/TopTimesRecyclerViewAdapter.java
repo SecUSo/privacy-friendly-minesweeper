@@ -42,6 +42,7 @@ public class TopTimesRecyclerViewAdapter extends RecyclerView.Adapter<TopTimesRe
     //fill text views with data about top times
     @Override
     public void onBindViewHolder(@NonNull TopTimesRecyclerViewAdapter.ViewHolder holder, int position) {
+        holder.rank.setText(String.valueOf(position + 1));
         holder.topTime.setText(toptimes[position][0]);
         holder.topTimeDate.setText(toptimes[position][1]);
     }
@@ -53,23 +54,25 @@ public class TopTimesRecyclerViewAdapter extends RecyclerView.Adapter<TopTimesRe
     }
 
     //get list element for a single top time
-    public TopTimesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    @Override
+    public TopTimesRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         ViewGroup topTime = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.top_time_list_element, parent, false);
-        TopTimesRecyclerViewAdapter.ViewHolder vh = new TopTimesRecyclerViewAdapter.ViewHolder(topTime);
-        return vh;
+        return new TopTimesRecyclerViewAdapter.ViewHolder(topTime);
     }
 
     //inner class for a list element representing a single top time
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView topTime;
-        public TextView topTimeDate;
+        private TextView rank;
+        private TextView topTime;
+        private TextView topTimeDate;
 
         //get text views to display data about top times
-        public ViewHolder(ViewGroup top_time_list_element){
+        private ViewHolder(ViewGroup top_time_list_element){
             super(top_time_list_element);
-            this.topTime = (TextView) top_time_list_element.getChildAt(0);
-            this.topTimeDate = (TextView) top_time_list_element.getChildAt(1);
+            this.rank = (TextView) top_time_list_element.getChildAt(0);
+            this.topTime = (TextView) top_time_list_element.getChildAt(1);
+            this.topTimeDate = (TextView) top_time_list_element.getChildAt(2);
         }
     }
 }

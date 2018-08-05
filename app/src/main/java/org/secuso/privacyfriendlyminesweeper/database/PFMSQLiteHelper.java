@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * @author Karola Marky, I3ananas
- * @version 20180614
+ * @version 20180803
  * Structure based on http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
  * accessed at 16th June 2016
  * This class defines structure and methods of the database
@@ -43,6 +43,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     //Names of tables in the database
     private static final String TABLE_GENERAL_STATISTICS = "GENERAL_STATISTICS";
     private static final String TABLE_TOP_TIMES = "TOP_TIMES";
+    private static final String TABLE_SAVED_GAMES = "SAVED_GAMES";
 
     //Names of columns in the tables
     private static final String KEY_ID = "id";
@@ -56,6 +57,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String KEY_PLAYING_TIME = "playing_time";
     private static final String KEY_DATE = "date";
+
+    private static final String KEY_PLAYING_FIELD_STATUS_DATA = "playing_field_status_data";
 
     public PFMSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -80,14 +83,24 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
                 KEY_PLAYING_TIME + " INTEGER," +
                 KEY_DATE + " TEXT);";
 
+        String CREATE_SAVED_GAMES_TABLE = "CREATE TABLE " + TABLE_SAVED_GAMES +
+                "(" +
+                KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                KEY_GAME_MODE + "INTEGER," +
+                KEY_PLAYING_TIME + "INTEGER," +
+                KEY_DATE + "TEXT" +
+                KEY_PLAYING_FIELD_STATUS_DATA + "TEXT);";
+
         sqLiteDatabase.execSQL(CREATE_GENERAL_STATISTICS_TABLE);
         sqLiteDatabase.execSQL(CREATE_TOP_TIMES_TABLE);
+        sqLiteDatabase.execSQL(CREATE_SAVED_GAMES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_GENERAL_STATISTICS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TOP_TIMES);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_GAMES);
 
         onCreate(sqLiteDatabase);
     }
@@ -404,5 +417,63 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         database.close();
 
         return bestTime;
+    }
+
+    /**
+     * Adds a single data set of a saved game to the table
+     * As no ID is provided and KEY_ID is autoincremented
+     * the last available key of the table is taken and incremented by 1
+     * @param savedGame Data set of a saved game that is added
+     */
+    public void addSavedGameData(PFMSavedGameDataType savedGame) {
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_GAME_MODE, savedGame.getGAME_MODE());
+        values.put(KEY_PLAYING_TIME, savedGame.getTIME());
+        values.put(KEY_DATE, savedGame.getDATE());
+        values.put(KEY_PLAYING_FIELD_STATUS_DATA, savedGame.getPLAYING_FIELD_STATUS_DATA());
+
+        database.insert(TABLE_SAVED_GAMES, null, values);
+        database.close();
+    }
+
+    /**
+     * This method gets a single data set of a saved game based on its ID
+     * @param id of the data set that is requested, could be get by the get-method
+     * @return the data set of the saved game that is requested
+     */
+    public PFMSavedGameDataType getSavedGameData(int id) {
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE,
+                        KEY_WINS_PLAYING_TIME, KEY_DATE, KEY_PLAYING_FIELD_STATUS_DATA}, KEY_ID + "=?",
+                        new String[]{String.valueOf(id)}, null, null, null, null);
+
+        PFMSavedGameDataType dataSetSavedGame = new PFMSavedGameDataType();
+
+        if( cursor != null && cursor.moveToFirst() ){
+            dataSetSavedGame.setID(Integer.parseInt(cursor.getString(0)));
+            dataSetSavedGame.setGAME_MODE(cursor.getString(1));
+            dataSetSavedGame.setTIME(Integer.parseInt(cursor.getString(2)));
+            dataSetSavedGame.setDATE(cursor.getString(3));
+            dataSetSavedGame.setPLAYING_FIELD_STATUS_DATA(cursor.getString(4));
+
+            cursor.close();
+            database.close();
+        }
+        return dataSetSavedGame;
+    }
+
+    /**
+     * Deletes a single saved game data set from the DB
+     * This method takes the data set and extracts its key to build the delete-query
+     * @param savedGame Data set that will be deleted
+     */
+    public void deleteSavedGameData(PFMSavedGameDataType savedGame) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_SAVED_GAMES, KEY_ID + " = ?",
+                new String[] { Integer.toString(savedGame.getID()) });
+        database.close();
     }
 }

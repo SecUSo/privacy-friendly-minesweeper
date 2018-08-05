@@ -18,32 +18,35 @@
 package org.secuso.privacyfriendlyminesweeper.database;
 
 /**
- * @author Karola Marky, I3ananas
- * @version 20180524
- * This class represents the "data type" of top times that will be stored in a table
- * Each column of the table is a private variable in this class
+ * @author I3ananas
+ * @version 20180803
+ * This class represents the "data type" of a saved game that will be stored in a table
+ * Each column in the table is a private variable in this class
  */
-public class PFMTopTimeDataType {
+public class PFMSavedGameDataType {
 
     private int ID;
     private String GAME_MODE;
     private int TIME;
     private String DATE;
+    private String PLAYING_FIELD_STATUS_DATA;
 
-    public PFMTopTimeDataType() {    }
+    public PFMSavedGameDataType() {    }
 
     /**
-     * This constructor generates a single data set of a top playing time
+     * This constructor generates a single data set of a saved game
      * @param ID The primary key for the table (automatically set by the DB)
-     * @param GAME_MODE Game mode of the top playing time
-     * @param TIME Playing time of a finished game
-     * @param DATE Date and time the game was played
+     * @param GAME_MODE Game mode of the saved game
+     * @param TIME Playing time so far
+     * @param DATE Date and time the game was played the last time
+     * @param PLAYING_FIELD_STATUS_DATA Concatenated String with status information about the cells of the playing field
      */
-    public PFMTopTimeDataType(int ID, String GAME_MODE, int TIME, String DATE) {
+    public PFMSavedGameDataType(int ID, String GAME_MODE, int TIME, String DATE, String PLAYING_FIELD_STATUS_DATA){
         this.ID = ID;
         this.GAME_MODE = GAME_MODE;
         this.TIME = TIME;
         this.DATE = DATE;
+        this.PLAYING_FIELD_STATUS_DATA = PLAYING_FIELD_STATUS_DATA;
     }
 
     public int getID() { return ID; }
@@ -61,5 +64,9 @@ public class PFMTopTimeDataType {
     public String getDATE() { return DATE; }
 
     public void setDATE(String DATE) { this.DATE = DATE; }
+
+    public String getPLAYING_FIELD_STATUS_DATA() { return PLAYING_FIELD_STATUS_DATA; }
+
+    public void setPLAYING_FIELD_STATUS_DATA(String PLAYING_FIELD_STATUS_DATA) { this.PLAYING_FIELD_STATUS_DATA = PLAYING_FIELD_STATUS_DATA; }
 
 }

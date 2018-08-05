@@ -56,45 +56,25 @@ public class PFMGeneralStatisticsDataType {
         this.TOTAL_PLAYING_TIME = TOTAL_PLAYING_TIME;
     }
 
-    public int getID() {
-        return ID;
-    }
+    public int getID() { return ID; }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+    public void setID(int ID) { this.ID = ID; }
 
-    public String getGAME_MODE() {
-        return GAME_MODE;
-    }
+    public String getGAME_MODE() { return GAME_MODE; }
 
-    public void setGAME_MODE(String GAME_MODE) {
-        this.GAME_MODE = GAME_MODE;
-    }
+    public void setGAME_MODE(String GAME_MODE) { this.GAME_MODE = GAME_MODE; }
 
-    public int getNR_OF_PLAYED_GAMES() {
-        return NR_OF_PLAYED_GAMES;
-    }
+    public int getNR_OF_PLAYED_GAMES() { return NR_OF_PLAYED_GAMES; }
 
-    public void setNR_OF_PLAYED_GAMES(int NR_OF_PLAYED_GAMES) {
-        this.NR_OF_PLAYED_GAMES = NR_OF_PLAYED_GAMES;
-    }
+    public void setNR_OF_PLAYED_GAMES(int NR_OF_PLAYED_GAMES) { this.NR_OF_PLAYED_GAMES = NR_OF_PLAYED_GAMES; }
 
-    public int getNR_OF_WON_GAMES() {
-        return NR_OF_WON_GAMES;
-    }
+    public int getNR_OF_WON_GAMES() { return NR_OF_WON_GAMES; }
 
-    public void setNR_OF_WON_GAMES(int NR_OF_WON_GAMES) {
-        this.NR_OF_WON_GAMES = NR_OF_WON_GAMES;
-    }
+    public void setNR_OF_WON_GAMES(int NR_OF_WON_GAMES) { this.NR_OF_WON_GAMES = NR_OF_WON_GAMES; }
 
-    public int getNR_OF_UNCOVERED_FIELDS() {
-        return NR_OF_UNCOVERED_FIELDS;
-    }
+    public int getNR_OF_UNCOVERED_FIELDS() { return NR_OF_UNCOVERED_FIELDS; }
 
-    public void setNR_OF_UNCOVERED_FIELDS(int NR_OF_UNCOVERED_FIELDS) {
-        this.NR_OF_UNCOVERED_FIELDS = NR_OF_UNCOVERED_FIELDS;
-    }
+    public void setNR_OF_UNCOVERED_FIELDS(int NR_OF_UNCOVERED_FIELDS) { this.NR_OF_UNCOVERED_FIELDS = NR_OF_UNCOVERED_FIELDS; }
 
     public int getWINS_PLAYING_TIME() { return WINS_PLAYING_TIME; }
 

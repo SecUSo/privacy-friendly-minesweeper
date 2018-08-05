@@ -64,5 +64,4 @@ public class SavedGamesActivity extends AppCompatActivity {
         listDivider = new DividerItemDecoration(listRecyclerView.getContext(), listLayoutManager.getOrientation());
         listRecyclerView.addItemDecoration(listDivider);
     }
-
 }
