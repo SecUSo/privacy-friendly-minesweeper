@@ -17,24 +17,37 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +61,7 @@ import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -82,25 +96,33 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int bestTime;
     boolean newBestTime;
     Boolean revealingAround;
+    boolean lost;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
         setContentView(R.layout.activity_play);
 
+        //creating the custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            LayoutInflater toolbar_inflater = LayoutInflater.from(this);
+            View toolbar_customview = toolbar_inflater.inflate(R.layout.custom_toolbar_play, null);
+
+            getSupportActionBar().setCustomView(toolbar_customview);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
         }
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         numberOfColumns = 0;
         numberOfRows = 0;
         numberOfBombs = 0;
 
         newBestTime = false;
+        lost = false;
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
@@ -128,11 +150,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
-        //TODO: fix positions when screen is being flipped
         //Filling the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
-        countDownToWin = numberOfCells - numberOfBombs;
+        countDownToWin = numberOfCells;
 
         // set up the RecyclerView
         final View heightTest = findViewById(R.id.height_test);
@@ -155,10 +176,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 //cells have a buffer of 2dp, so substract 1dp*2 transformed into pixel value
                 maxHeight = maxHeight - Math.round(3*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
 
-   //             int width = recyclerView.getWidth();
-   //             maxWidth = width/numberOfColumns;
-  //              maxWidth = maxWidth - Math.round(2*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
-
                 if (firstTime) {
                     firstTime=false;
                     createAdapter(maxHeight);
@@ -169,7 +186,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         });
 
         //fistLaunch
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, true));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
         createAdapter(maxHeight);
 
         firstClick = true;
@@ -198,11 +215,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         revealingAround = false;
         bombsLeft = numberOfBombs;
-        mines = (TextView) findViewById(R.id.mines);
+        mines = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.mines);
         mines.setText(String.valueOf(bombsLeft));
 
-        ImageView mines = (ImageView) findViewById(R.id.mines_pic);
-        mines.setImageResource(R.drawable.mine);
+        ImageView mines_pic = (ImageView) getSupportActionBar().getCustomView().findViewById(R.id.mines_pic);
+        mines_pic.setImageResource(R.drawable.mine);
 
         bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
         bestTimeReader.execute(game_mode);
@@ -405,7 +422,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             fillPlayingField(position);
             firstClick = false;
 
-            timer = (Chronometer)findViewById(R.id.chronometer);
+            timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
             timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
 
@@ -429,6 +446,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             if (status[position] != 1) {
                 //check if already marked
                 if (status[position] == 2) {
+                    countDownToWin++;
                     status[position] = 0;
                     cell.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                  //   cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
@@ -451,6 +469,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                    // img.setAlpha(0);
                     cell.setCompoundDrawables(img,null,null,null);
                     bombsLeft--;
+                    countDownToWin--;
                     mines.setText(String.valueOf(bombsLeft));
                     victoryCheck();
                 }
@@ -696,6 +715,9 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
     private void revealCell(int position) {
 
+        if (lost) {
+            return;
+        }
         RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
         CellView cell = (CellView) holder.itemView.findViewWithTag(maxHeight);
 
@@ -733,7 +755,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 //seventh parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
                 Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
                 writer.execute(result_params);
-                return;
+                lost = true;
 
             } else {
                 //set cell to revealed
@@ -786,9 +808,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 if (data[position] == 0) {
                     revealAroundCell(position, false);
                 }
-          //      if (revealingAround && data[position] != 0) {
-          //          revealAroundCell(position, true);
-          //      }
             }
         }
     }

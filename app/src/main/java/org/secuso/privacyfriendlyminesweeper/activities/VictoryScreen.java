@@ -32,11 +32,16 @@ public class VictoryScreen extends Activity{
        // int height = recyclerView.getMeasuredHeight();
       //  int width = recyclerView.getMeasuredWidth();
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+      //  DisplayMetrics dm = new DisplayMetrics();
+      //  getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        int height = dm.heightPixels;
-        int width = dm.widthPixels;
+       // int height = dm.heightPixels;
+       // int width = dm.widthPixels;
+
+        int height = 1794;
+        int width = 1080;
+
+        System.out.println(height + "------------------------------" + width);
 
         getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
 
