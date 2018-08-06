@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_weight="1"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:text="Minesweeper"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/white">
+</TextView>
+
+    <TextView
+        android:id="@+id/mines"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/mines_pic"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:text="boom"
+        android:background="?attr/colorPrimary">
+    </ImageView>
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        />
+
+</LinearLayout>
