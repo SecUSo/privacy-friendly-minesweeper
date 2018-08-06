@@ -23,6 +23,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.SavedGamesRecyclerViewAdapter;
@@ -40,7 +41,7 @@ public class SavedGamesActivity extends AppCompatActivity {
     DividerItemDecoration listDivider;
 
     //test data set
-    String[][] testParameters = {{"easy", "57/100", "2.8.2018", "00:01:03"}, {"medium", "45/100", "1.8.2018", "00:02:15"}, {"easy", "80/100", "2.8.2018", "00:00:25"}, {"easy", "75/100", "2.8.2018", "00:00:46"}};
+    String[][] testParameters = {{"easy", "0.57", "2.8.2018", "00:01:03"}, {"medium", "0.45", "1.8.2018", "00:02:15"}, {"easy", "0.8", "2.8.2018", "00:00:25"}, {"easy", "0.75", "2.8.2018", "00:00:46"}};
 
     protected void onCreate(Bundle param) {
         super.onCreate(param);

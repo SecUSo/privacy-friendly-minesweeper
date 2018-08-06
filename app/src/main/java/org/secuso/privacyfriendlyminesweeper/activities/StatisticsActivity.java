@@ -43,11 +43,12 @@ import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader.DatabaseReaderReceiver;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author I3ananas
- * @version 20180530
+ * @version 20180803
  * This class implements an activity with three tabs to show statistics about the three different game modes
  */
 public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver {
@@ -60,10 +61,10 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
     static int[] nrOfUncoveredFields = new int[3];
     static int[] winrate = new int[3];
     static int[] averagePlayingTime = new int[3];
-    static String[][][] topTimes = new String[3][10][2];
-    int index_easy = 0;
-    int index_medium = 0;
-    int index_difficult = 0;
+    static ArrayList<ArrayList<ArrayList<String>>> topTimes = new ArrayList<ArrayList<ArrayList<String>>>();
+    static ArrayList<ArrayList<String>> topTimesEasy;
+    static ArrayList<ArrayList<String>> topTimesMedium;
+    static ArrayList<ArrayList<String>> topTimesDifficult;
 
     @Override
     protected void onCreate(Bundle param) {
@@ -77,6 +78,13 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
         TabLayout tabLayout_statistics = (TabLayout) findViewById(R.id.tabLayout_statistics);
         tabLayout_statistics.setupWithViewPager((ViewPager) findViewById(R.id.statistics_pager));
+
+        topTimesEasy = new ArrayList<ArrayList<String>>();
+        topTimesMedium = new ArrayList<ArrayList<String>>();
+        topTimesDifficult = new ArrayList<ArrayList<String>>();
+        topTimes.add(topTimesEasy);
+        topTimes.add(topTimesMedium);
+        topTimes.add(topTimesDifficult);
 
         DatabaseReader reader = new DatabaseReader(new PFMSQLiteHelper(getApplicationContext()), this);
         reader.execute(String.valueOf(getApplicationContext().getDatabasePath("PF_MINESWEEPER_DB")));
@@ -94,12 +102,6 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
     public void setStatistics(JSONObject data){
 
         int index = 0;
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 10; j++){
-                topTimes[i][j][0] = "";
-                topTimes[i][j][1] = "";
-            }
-        }
 
         try{
             //get the tables
@@ -128,24 +130,34 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
                 }
             }
 
-            //read top times
+            topTimesEasy = new ArrayList<ArrayList<String>>();
+            topTimesMedium = new ArrayList<ArrayList<String>>();
+            topTimesDifficult = new ArrayList<ArrayList<String>>();
             for(int i = 0; i < top_times.length(); i++){
                 if(top_times.getJSONObject(i).getString("game_mode").equals("easy")){
-                    topTimes[0][index_easy][0] = formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time"));
-                    topTimes[0][index_easy][1] = top_times.getJSONObject(i).getString("date");
-                    index_easy++;
+                    ArrayList<String> topTime = new ArrayList<String>();
+                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
+                    topTime.add(top_times.getJSONObject(i).getString("date"));
+                    topTimesEasy.add(topTime);
                 }
                 if(top_times.getJSONObject(i).getString("game_mode").equals("medium")){
-                    topTimes[1][index_medium][0] = formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time"));
-                    topTimes[1][index_medium][1] = top_times.getJSONObject(i).getString("date");
-                    index_medium++;
+                    ArrayList<String> topTime = new ArrayList<String>();
+                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
+                    topTime.add(top_times.getJSONObject(i).getString("date"));
+                    topTimesMedium.add(topTime);
                 }
                 if(top_times.getJSONObject(i).getString("game_mode").equals("hard")){
-                    topTimes[2][index_difficult][0] = formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time"));
-                    topTimes[2][index_difficult][1] = top_times.getJSONObject(i).getString("date");
-                    index_difficult++;
+                    ArrayList<String> topTime = new ArrayList<String>();
+                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
+                    topTime.add(top_times.getJSONObject(i).getString("date"));
+                    topTimesDifficult.add(topTime);
                 }
             }
+            topTimes.clear();
+            topTimes.add(topTimesEasy);
+            topTimes.add(topTimesMedium);
+            topTimes.add(topTimesDifficult);
+
         }
         catch(JSONException e){
             Log.d("JSONException", e.getMessage() + "  \n" + e.getCause());
@@ -155,6 +167,8 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         StatisticsFragment fragment;
         for(int i = 0; i < fragments.size(); i++){
             fragment = (StatisticsFragment) fragments.get(i);
+            RecyclerView.Adapter adapterTopTimes = new TopTimesRecyclerViewAdapter(topTimes.get(i));
+            fragment.recyclerViewTopTimes.swapAdapter(adapterTopTimes, true);
             displayStatistics(fragment.getView(), fragment.getArguments().getInt("statistics_number"));
             fragment.adapterTopTimes.notifyDataSetChanged();
         }
@@ -247,6 +261,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
         private static final String ARG_STATISTICS_NUMBER = "statistics_number";
 
+        View fragmentView;
         RecyclerView recyclerViewTopTimes;
         RecyclerView.Adapter adapterTopTimes;
         LinearLayoutManager layoutManagerTopTimes;
@@ -271,13 +286,13 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
                 id = getArguments().getInt(ARG_STATISTICS_NUMBER);
             }
 
-            View fragmentView = inflater.inflate(R.layout.fragment_statistics, container, false);
+            fragmentView = inflater.inflate(R.layout.fragment_statistics, container, false);
             displayStatistics(fragmentView, id);
 
             recyclerViewTopTimes = (RecyclerView) fragmentView.findViewById(R.id.topTimesList);
             recyclerViewTopTimes.setHasFixedSize(true);
 
-            adapterTopTimes = new TopTimesRecyclerViewAdapter(topTimes[id]);
+            adapterTopTimes = new TopTimesRecyclerViewAdapter(topTimes.get(id));
             recyclerViewTopTimes.setAdapter(adapterTopTimes);
 
             layoutManagerTopTimes = new LinearLayoutManager(getContext());

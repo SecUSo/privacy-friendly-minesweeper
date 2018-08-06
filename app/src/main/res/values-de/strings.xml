@@ -83,7 +83,7 @@
     <!-- ### STATISTICS ### -->
     <string name="playedGames">Gespielte Spiele</string>
     <string name="winrate">Sieg-Quote</string>
-    <string name="averagePlayedTime">Ø gespielte Zeit</string>
+    <string name="averagePlayedTime">Ø Zeit pro Sieg</string>
     <string name="numberOfUncoveredFields">Aufgedeckte Felder</string>
     <string name="topTenTimes">Top 10 - Bestzeiten</string>
     <string name="time">Zeit</string>
@@ -97,6 +97,7 @@
 
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Spiel fortsetzen</string>
+    <string name="progress">Fortschritt</string>
 
     <!-- ### GAME END ### -->
     <string name="victory">Gratulation!

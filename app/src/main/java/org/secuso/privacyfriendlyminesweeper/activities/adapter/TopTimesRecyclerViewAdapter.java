@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 
+import java.util.ArrayList;
+
 /**
  * @author I3ananas
  * @version 20180803
@@ -32,25 +34,25 @@ import org.secuso.privacyfriendlyminesweeper.R;
  */
 public class TopTimesRecyclerViewAdapter extends RecyclerView.Adapter<TopTimesRecyclerViewAdapter.ViewHolder> {
 
-    private String[][] toptimes;
+    private ArrayList<ArrayList<String>> topTimes;
 
     //pass data to constructor
-    public TopTimesRecyclerViewAdapter(String[][] parameters){
-        this.toptimes = parameters;
+    public TopTimesRecyclerViewAdapter(ArrayList<ArrayList<String>> parameters){
+        this.topTimes = parameters;
     }
 
     //fill text views with data about top times
     @Override
     public void onBindViewHolder(@NonNull TopTimesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.rank.setText(String.valueOf(position + 1));
-        holder.topTime.setText(toptimes[position][0]);
-        holder.topTimeDate.setText(toptimes[position][1]);
+        holder.topTime.setText(topTimes.get(position).get(0));
+        holder.topTimeDate.setText(topTimes.get(position).get(1));
     }
 
     //get number of top times
     @Override
     public int getItemCount(){
-        return toptimes.length;
+        return topTimes.size();
     }
 
     //get list element for a single top time

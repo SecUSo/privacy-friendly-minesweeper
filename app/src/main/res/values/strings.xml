@@ -99,6 +99,7 @@
 
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Continue Game</string>
+    <string name="progress">Progress</string>
 
     <!-- ### GAME END ### -->
     <string name="victory">Congratulations!\n
