@@ -126,7 +126,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
-        if (parameter==null){
+        boolean savecheck = false;
+        savecheck = parameter.getBoolean("continue");
+        if (savecheck==true){
+
 
         }else {
             short[] test = parameter.getShortArray("info");
