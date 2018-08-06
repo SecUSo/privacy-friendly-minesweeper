@@ -29,7 +29,8 @@ public class PFMSavedGameDataType {
     private String GAME_MODE;
     private int TIME;
     private String DATE;
-    private String PLAYING_FIELD_STATUS_DATA;
+    private String PROGRESS;
+    private String SAVED_GAME;
 
     public PFMSavedGameDataType() {    }
 
@@ -39,14 +40,16 @@ public class PFMSavedGameDataType {
      * @param GAME_MODE Game mode of the saved game
      * @param TIME Playing time so far
      * @param DATE Date and time the game was played the last time
-     * @param PLAYING_FIELD_STATUS_DATA Concatenated String with status information about the cells of the playing field
+     * @param PROGRESS Progress of the saved game (ratio of opened fields)
+     * @param SAVED_GAME Concatenated String with status information about the cells of the playing field
      */
-    public PFMSavedGameDataType(int ID, String GAME_MODE, int TIME, String DATE, String PLAYING_FIELD_STATUS_DATA){
+    public PFMSavedGameDataType(int ID, String GAME_MODE, int TIME, String DATE, String PROGRESS, String SAVED_GAME){
         this.ID = ID;
         this.GAME_MODE = GAME_MODE;
         this.TIME = TIME;
         this.DATE = DATE;
-        this.PLAYING_FIELD_STATUS_DATA = PLAYING_FIELD_STATUS_DATA;
+        this.PROGRESS = PROGRESS;
+        this.SAVED_GAME = SAVED_GAME;
     }
 
     public int getID() { return ID; }
@@ -65,8 +68,12 @@ public class PFMSavedGameDataType {
 
     public void setDATE(String DATE) { this.DATE = DATE; }
 
-    public String getPLAYING_FIELD_STATUS_DATA() { return PLAYING_FIELD_STATUS_DATA; }
+    public String getPROGRESS() { return PROGRESS; }
 
-    public void setPLAYING_FIELD_STATUS_DATA(String PLAYING_FIELD_STATUS_DATA) { this.PLAYING_FIELD_STATUS_DATA = PLAYING_FIELD_STATUS_DATA; }
+    public void setPROGRESS(String PROGRESS) { this.PROGRESS = PROGRESS; }
+
+    public String getSAVED_GAME() { return SAVED_GAME; }
+
+    public void setSAVED_GAME(String SAVED_GAME) { this.SAVED_GAME = SAVED_GAME; }
 
 }

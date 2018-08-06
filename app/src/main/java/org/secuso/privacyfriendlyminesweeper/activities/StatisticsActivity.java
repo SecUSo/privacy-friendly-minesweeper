@@ -61,7 +61,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
     static int[] nrOfUncoveredFields = new int[3];
     static int[] winrate = new int[3];
     static int[] averagePlayingTime = new int[3];
-    static ArrayList<ArrayList<ArrayList<String>>> topTimes = new ArrayList<ArrayList<ArrayList<String>>>();
+    static ArrayList<ArrayList<ArrayList<String>>> topTimes;
     static ArrayList<ArrayList<String>> topTimesEasy;
     static ArrayList<ArrayList<String>> topTimesMedium;
     static ArrayList<ArrayList<String>> topTimesDifficult;
@@ -79,6 +79,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         TabLayout tabLayout_statistics = (TabLayout) findViewById(R.id.tabLayout_statistics);
         tabLayout_statistics.setupWithViewPager((ViewPager) findViewById(R.id.statistics_pager));
 
+        topTimes = new ArrayList<ArrayList<ArrayList<String>>>();
         topTimesEasy = new ArrayList<ArrayList<String>>();
         topTimesMedium = new ArrayList<ArrayList<String>>();
         topTimesDifficult = new ArrayList<ArrayList<String>>();

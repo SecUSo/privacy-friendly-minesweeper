@@ -17,20 +17,19 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities.adapter;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyminesweeper.R;
+
+import java.util.ArrayList;
 
 /**
  * @author I3ananas
@@ -40,26 +39,28 @@ import org.secuso.privacyfriendlyminesweeper.R;
  */
 public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGamesRecyclerViewAdapter.ViewHolder> {
 
-    private String[][] savedGameParameters;
+    private ArrayList<ArrayList<String>> savedGameParameters;
 
     //pass data to constructor
-    public SavedGamesRecyclerViewAdapter(String[][] parameters){
+    public SavedGamesRecyclerViewAdapter(ArrayList<ArrayList<String>> parameters){
         this.savedGameParameters = parameters;
     }
 
     //fill text views with information about saved games
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.savedGameMode.setText(savedGameParameters[position][0]);
-        holder.savedGameDate.setText(savedGameParameters[position][2]);
-        holder.savedGamePlayingTime.setText(savedGameParameters[position][3]);
-        holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters[position][1]) * 100)));
+    public void onBindViewHolder(@NonNull SavedGamesRecyclerViewAdapter.ViewHolder holder, int position) {
+        if(savedGameParameters.get(position).size() > 0) {
+            holder.savedGameMode.setText(savedGameParameters.get(position).get(0));
+            holder.savedGamePlayingTime.setText(savedGameParameters.get(position).get(1));
+            holder.savedGameDate.setText(savedGameParameters.get(position).get(2));
+            holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(3)) * 100)));
+        }
     }
 
     //get number of saved games
     @Override
     public int getItemCount(){
-        return savedGameParameters.length;
+        return savedGameParameters.size();
     }
 
     //get list element for a single saved game
@@ -87,7 +88,7 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             this.savedGameProgress = (ProgressBar) ((RelativeLayout) saved_game_list_element.getChildAt(1)).getChildAt(0);
         }
 
-        //
+        //TODO: Restart saved game
         public void onClick(View view){
             Log.d("D", "Clicked saved game list element " + getAdapterPosition());
         }

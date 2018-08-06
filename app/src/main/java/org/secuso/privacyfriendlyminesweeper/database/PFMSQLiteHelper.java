@@ -20,6 +20,7 @@ package org.secuso.privacyfriendlyminesweeper.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -58,7 +59,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_PLAYING_TIME = "playing_time";
     private static final String KEY_DATE = "date";
 
-    private static final String KEY_PLAYING_FIELD_STATUS_DATA = "playing_field_status_data";
+    private static final String KEY_PROGRESS = "progress";
+    private static final String KEY_SAVED_GAME = "saved_game";
 
     public PFMSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -86,10 +88,11 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_SAVED_GAMES_TABLE = "CREATE TABLE " + TABLE_SAVED_GAMES +
                 "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                KEY_GAME_MODE + "INTEGER," +
-                KEY_PLAYING_TIME + "INTEGER," +
-                KEY_DATE + "TEXT" +
-                KEY_PLAYING_FIELD_STATUS_DATA + "TEXT);";
+                KEY_GAME_MODE + " INTEGER," +
+                KEY_PLAYING_TIME + " INTEGER," +
+                KEY_DATE + " TEXT," +
+                KEY_PROGRESS + " TEXT," +
+                KEY_SAVED_GAME + " TEXT);";
 
         sqLiteDatabase.execSQL(CREATE_GENERAL_STATISTICS_TABLE);
         sqLiteDatabase.execSQL(CREATE_TOP_TIMES_TABLE);
@@ -421,20 +424,35 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Adds a single data set of a saved game to the table
+     * If there are more than 10 saved games in the table, the oldest one is deleted
      * As no ID is provided and KEY_ID is autoincremented
      * the last available key of the table is taken and incremented by 1
      * @param savedGame Data set of a saved game that is added
      */
     public void addSavedGameData(PFMSavedGameDataType savedGame) {
+
         SQLiteDatabase database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_GAME_MODE, savedGame.getGAME_MODE());
         values.put(KEY_PLAYING_TIME, savedGame.getTIME());
         values.put(KEY_DATE, savedGame.getDATE());
-        values.put(KEY_PLAYING_FIELD_STATUS_DATA, savedGame.getPLAYING_FIELD_STATUS_DATA());
+        values.put(KEY_PROGRESS, savedGame.getPROGRESS());
+        values.put(KEY_SAVED_GAME, savedGame.getSAVED_GAME());
 
-        database.insert(TABLE_SAVED_GAMES, null, values);
+        if(DatabaseUtils.queryNumEntries(database, TABLE_SAVED_GAMES) >= 10){
+            String selectQuery = "SELECT  * FROM " + TABLE_SAVED_GAMES;
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()){
+                database.delete(TABLE_SAVED_GAMES, KEY_ID + " = ?", new String[] { cursor.getString(0) });
+            }
+            cursor.close();
+            database.insert(TABLE_SAVED_GAMES, null, values);
+        }
+        else{
+            database.insert(TABLE_SAVED_GAMES, null, values);
+        }
+
         database.close();
     }
 
@@ -447,7 +465,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE,
-                        KEY_WINS_PLAYING_TIME, KEY_DATE, KEY_PLAYING_FIELD_STATUS_DATA}, KEY_ID + "=?",
+                        KEY_WINS_PLAYING_TIME, KEY_DATE, KEY_PROGRESS, KEY_SAVED_GAME}, KEY_ID + "=?",
                         new String[]{String.valueOf(id)}, null, null, null, null);
 
         PFMSavedGameDataType dataSetSavedGame = new PFMSavedGameDataType();
@@ -457,7 +475,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
             dataSetSavedGame.setGAME_MODE(cursor.getString(1));
             dataSetSavedGame.setTIME(Integer.parseInt(cursor.getString(2)));
             dataSetSavedGame.setDATE(cursor.getString(3));
-            dataSetSavedGame.setPLAYING_FIELD_STATUS_DATA(cursor.getString(4));
+            dataSetSavedGame.setPROGRESS(cursor.getString(4));
+            dataSetSavedGame.setSAVED_GAME(cursor.getString(5));
 
             cursor.close();
             database.close();

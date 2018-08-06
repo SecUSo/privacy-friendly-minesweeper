@@ -34,6 +34,7 @@ import android.content.Intent;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGameWriter;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
@@ -123,10 +124,22 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
                 index--;
+
+                //TODO: Example for saving a game
+                DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+                Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "123123123"};
+                writer_1.execute(data_1);
+
                 break;
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 index++;
+
+                //TODO: Example for saving a game
+                DatabaseSavedGameWriter writer_2 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+                Object[] data_2 = {"medium", "46", "06.08.2018", "0.46", "321321321"};
+                writer_2.execute(data_2);
+
                 break;
             case R.id.game_button_start:
                 switch (index) {
