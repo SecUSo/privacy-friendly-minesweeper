@@ -111,7 +111,8 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
                 savedGame.add(formatPlayingTime(Integer.valueOf(savedGames.getJSONObject(i).getString("playing_time"))));
                 savedGame.add(savedGames.getJSONObject(i).getString("date"));
                 savedGame.add(savedGames.getJSONObject(i).getString("progress"));
-                savedGame.add(savedGames.getJSONObject(i).getString("saved_game"));
+                savedGame.add(savedGames.getJSONObject(i).getString("saved_game_content"));
+                savedGame.add(savedGames.getJSONObject(i).getString("saved_game_status"));
                 savedGamesData.add(savedGame);
             }
         }

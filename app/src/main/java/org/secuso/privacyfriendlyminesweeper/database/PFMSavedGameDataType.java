@@ -30,7 +30,8 @@ public class PFMSavedGameDataType {
     private int TIME;
     private String DATE;
     private String PROGRESS;
-    private String SAVED_GAME;
+    private String SAVED_GAME_CONTENT;
+    private String SAVED_GAME_STATUS;
 
     public PFMSavedGameDataType() {    }
 
@@ -41,15 +42,17 @@ public class PFMSavedGameDataType {
      * @param TIME Playing time so far
      * @param DATE Date and time the game was played the last time
      * @param PROGRESS Progress of the saved game (ratio of opened fields)
-     * @param SAVED_GAME Concatenated String with status information about the cells of the playing field
+     * @param SAVED_GAME_CONTENT Concatenated String with content information about the cells of the playing field
+     * @param SAVED_GAME_STATUS Concatenated String with status information about the cells of the playing field
      */
-    public PFMSavedGameDataType(int ID, String GAME_MODE, int TIME, String DATE, String PROGRESS, String SAVED_GAME){
+    public PFMSavedGameDataType(int ID, String GAME_MODE, int TIME, String DATE, String PROGRESS, String SAVED_GAME_CONTENT, String SAVED_GAME_STATUS){
         this.ID = ID;
         this.GAME_MODE = GAME_MODE;
         this.TIME = TIME;
         this.DATE = DATE;
         this.PROGRESS = PROGRESS;
-        this.SAVED_GAME = SAVED_GAME;
+        this.SAVED_GAME_CONTENT = SAVED_GAME_CONTENT;
+        this.SAVED_GAME_STATUS = SAVED_GAME_STATUS;
     }
 
     public int getID() { return ID; }
@@ -72,8 +75,12 @@ public class PFMSavedGameDataType {
 
     public void setPROGRESS(String PROGRESS) { this.PROGRESS = PROGRESS; }
 
-    public String getSAVED_GAME() { return SAVED_GAME; }
+    public String getSAVED_GAME_CONTENT() { return SAVED_GAME_CONTENT; }
 
-    public void setSAVED_GAME(String SAVED_GAME) { this.SAVED_GAME = SAVED_GAME; }
+    public void setSAVED_GAME_CONTENT(String SAVED_GAME_CONTENT) { this.SAVED_GAME_CONTENT = SAVED_GAME_CONTENT; }
+
+    public String getSAVED_GAME_STATUS() { return SAVED_GAME_STATUS; }
+
+    public void setSAVED_GAME_STATUS(String SAVED_GAME_STATUS) { this.SAVED_GAME_STATUS = SAVED_GAME_STATUS; }
 
 }

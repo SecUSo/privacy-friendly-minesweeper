@@ -127,7 +127,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
 
                 //TODO: Example for saving a game
                 DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-                Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "123123123"};
+                Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "content123", "status123"};
                 writer_1.execute(data_1);
 
                 break;
@@ -137,7 +137,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
 
                 //TODO: Example for saving a game
                 DatabaseSavedGameWriter writer_2 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-                Object[] data_2 = {"medium", "46", "06.08.2018", "0.46", "321321321"};
+                Object[] data_2 = {"medium", "46", "06.08.2018", "0.46", "content321", "status321"};
                 writer_2.execute(data_2);
 
                 break;

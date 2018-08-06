@@ -40,7 +40,8 @@ public class DatabaseSavedGameWriter extends AsyncTask<Object, Void, Void> {
         dataSavedGame.setTIME(Integer.parseInt((String)params[1]));
         dataSavedGame.setDATE(String.valueOf(params[2]));
         dataSavedGame.setPROGRESS(String.valueOf(params[3]));
-        dataSavedGame.setSAVED_GAME(String.valueOf(params[4]));
+        dataSavedGame.setSAVED_GAME_CONTENT(String.valueOf(params[4]));
+        dataSavedGame.setSAVED_GAME_STATUS(String.valueOf(params[5]));
 
         helper.addSavedGameData(dataSavedGame);
 
