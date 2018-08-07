@@ -103,6 +103,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     boolean newBestTime;
     Boolean revealingAround;
     boolean gameEnded;
+    boolean savecheck;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -132,13 +133,14 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
-        boolean savecheck = false;
+        savecheck = false;
         savecheck = parameter.getBoolean("continue");
+        System.out.println(savecheck);
         if (savecheck==true){
             ArrayList<String> savedInfo = parameter.getStringArrayList("information");
             int id = Integer.valueOf(savedInfo.get(0));
             String savedGameMode = savedInfo.get(1);
-          //  int time = Integer.parseInt(savedInfo.get(2));
+            String time = savedInfo.get(2);
             String savedContent = savedInfo.get(5);
             String savedStatus = savedInfo.get(6);
 
@@ -158,15 +160,26 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 numberOfBombs = 46;
             }
 
+            //Filling the PlayingField
+            numberOfCells = numberOfRows * numberOfColumns;
+            data = new int[numberOfCells];
+            countDownToWin = numberOfCells;
+
+
+            String[] units = time.split(":");
+            int minutes = Integer.parseInt(units[0]);
+            int seconds = Integer.parseInt(units[1]);
+            int totalSeconds = 60 * minutes + seconds;
 
             System.out.println(id);
             System.out.println(numberOfBombs);
-         //   System.out.println(time);
+            System.out.println(time + "=" + totalSeconds);
             System.out.println(savedContent);
             System.out.println(savedStatus);
 
             DatabaseSavedGameProvide provider= new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()), this);
             AsyncTask<Integer, Void, String[]> execute = provider.execute(id);
+
 
         }else {
             short[] test = parameter.getShortArray("info");
@@ -464,13 +477,17 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     @Override
     public void onItemClick(View view, int position) {
         if (firstClick) {
-            fillPlayingField(position);
-            firstClick = false;
-            gameEnded = false;
+            if (!savecheck) {
+                fillPlayingField(position);
+                firstClick = false;
+                gameEnded = false;
 
-            timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
-            timer.setBase(SystemClock.elapsedRealtime());
-            timer.start();
+                timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
+                timer.setBase(SystemClock.elapsedRealtime());
+                timer.start();
+            } else {
+                //TODO: timer start from saved time
+            }
 
         }
 
