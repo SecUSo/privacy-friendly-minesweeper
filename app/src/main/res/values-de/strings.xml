@@ -94,6 +94,7 @@
     <item type="id" name="width" />
     <string name="untoggled">Minen markieren</string>
     <string name="toggled">Am markieren…</string>
+    <string name="gameSaved">Spiel gespeichert...</string>
 
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Spiel fortsetzen</string>

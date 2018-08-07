@@ -35,6 +35,7 @@ import android.content.Intent;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGameWriter;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesCheck;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
@@ -48,12 +49,13 @@ import java.util.Date;
  * This class implements the functions that are available in the main menu / on the start screen
  */
 
-public class GameActivity extends BaseActivity implements View.OnClickListener {
+public class GameActivity extends BaseActivity implements View.OnClickListener, DatabaseSavedGamesCheck.DatabaseSavedGamesCheckReceiver {
 
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
     private ImageView mArrowRight;
     private int index;
+    private Button continueButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
                 mArrowLeft.setVisibility((position==0)?View.INVISIBLE:View.VISIBLE);
                 mArrowRight.setVisibility((position==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
 
+                index = position;
+
                 //save position in settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();
                 editor.putInt("lastChosenPage", position);
@@ -124,22 +128,10 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
                 index--;
-
-                //TODO: Example for saving a game
-                DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-                Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "content123", "status123"};
-                writer_1.execute(data_1);
-
                 break;
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 index++;
-
-                //TODO: Example for saving a game
-                DatabaseSavedGameWriter writer_2 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-                Object[] data_2 = {"medium", "46", "06.08.2018", "0.46", "content321", "status321"};
-                writer_2.execute(data_2);
-
                 break;
             case R.id.game_button_start:
                 switch (index) {
@@ -175,12 +167,30 @@ public class GameActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.game_button_continue:
-                //TODO: navigate to list of saved games (if there are any)
-                //TODO: navigating to list of saved games is only enabled if there are any saved games
                 Intent intent = new Intent(this, SavedGamesActivity.class);
                 startActivity(intent);
                 break;
             default:
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        DatabaseSavedGamesCheck check = new DatabaseSavedGamesCheck(new PFMSQLiteHelper(getApplicationContext()), this);
+        check.execute();
+    }
+
+    @Override
+    public void updateContinueButton(boolean savedGamesExist) {
+        continueButton = (Button) findViewById(R.id.game_button_continue);
+        if(savedGamesExist){
+            continueButton.setEnabled(true);
+            continueButton.setBackground(getResources().getDrawable(R.drawable.button_fullwidth));
+        }
+        else{
+            continueButton.setEnabled(false);
+            continueButton.setBackground(getResources().getDrawable(R.drawable.button_disabled));
         }
     }
 

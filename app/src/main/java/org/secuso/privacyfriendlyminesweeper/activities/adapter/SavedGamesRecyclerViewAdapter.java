@@ -50,10 +50,11 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
     @Override
     public void onBindViewHolder(@NonNull SavedGamesRecyclerViewAdapter.ViewHolder holder, int position) {
         if(savedGameParameters.get(position).size() > 0) {
-            holder.savedGameMode.setText(savedGameParameters.get(position).get(0));
-            holder.savedGamePlayingTime.setText(savedGameParameters.get(position).get(1));
-            holder.savedGameDate.setText(savedGameParameters.get(position).get(2));
-            holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(3)) * 100)));
+            holder.id = Integer.valueOf(savedGameParameters.get(position).get(0));
+            holder.savedGameMode.setText(savedGameParameters.get(position).get(1));
+            holder.savedGamePlayingTime.setText(savedGameParameters.get(position).get(2));
+            holder.savedGameDate.setText(savedGameParameters.get(position).get(3));
+            holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(4)) * 100)));
         }
     }
 
@@ -72,6 +73,7 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
     //inner class for a list element representing a single saved game
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public int id;
         public TextView savedGameMode;
         public TextView savedGameDate;
         public TextView savedGamePlayingTime;
@@ -88,9 +90,9 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             this.savedGameProgress = (ProgressBar) ((RelativeLayout) saved_game_list_element.getChildAt(1)).getChildAt(0);
         }
 
-        //TODO: Restart saved game
         public void onClick(View view){
-            Log.d("D", "Clicked saved game list element " + getAdapterPosition());
+            //TODO: Start play activity as a restart, include variable 'this.id' e.g. as a parameter
+            //TODO: In the started play activity create an instance of 'DatabaseSavedGameProvide' and call execute with the parameter 'this.id'
         }
     }
 

@@ -51,12 +51,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseBestTimeReader.BestTimeReaderReceiver;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGameProvide;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGameWriter;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
@@ -70,7 +73,7 @@ import java.util.Random;
  * @version 20180606
  * This class implements functions required to handle the process of playing
  */
-public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
+public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver, DatabaseSavedGameProvide.DatabaseSavedGameProvideReceiver {
     PlayRecyclerViewAdapter adapter;
     SharedPreferences sharedPreferences;
     String game_mode;
@@ -227,6 +230,19 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
         bestTimeReader.execute(game_mode);
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        //TODO: Example for saving a game
+        DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+        Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "content123", "status123"};
+        writer_1.execute(data_1);
+
+        Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
+        saveGameInfo.show();
     }
 
     private void createAdapter(int maximumHeight) {
@@ -417,6 +433,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         for (int i = 0; i < numberOfCells; i++) {
             status[i] = 0;
         }
+    }
+
+    //TODO: Refill playingfield here with saved data
+    public void restartSavedGame(String[] savedGameData){
+
     }
 
     @Override

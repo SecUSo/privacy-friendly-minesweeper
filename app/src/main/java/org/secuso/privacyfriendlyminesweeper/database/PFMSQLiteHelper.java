@@ -359,7 +359,6 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         return topTimeDataList;
     }
 
-
     /**
      * Deletes a single top time data set from the DB
      * This method takes the data set and extracts its key to build the delete-query
@@ -491,12 +490,28 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     /**
      * Deletes a single saved game data set from the DB
      * This method takes the data set and extracts its key to build the delete-query
-     * @param savedGame Data set that will be deleted
+     * @param id ID of the data set that will be deleted
      */
-    public void deleteSavedGameData(PFMSavedGameDataType savedGame) {
+    public void deleteSavedGameData(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_SAVED_GAMES, KEY_ID + " = ?",
-                new String[] { Integer.toString(savedGame.getID()) });
+                new String[] { Integer.toString(id)});
         database.close();
+    }
+
+    /**
+     * This method checks if there are any saved games in the database
+     * @return true if there are any saved games in the database, false otherwise
+     */
+    public boolean checkForSavedGames (){
+        boolean savedGamesExist = false;
+        SQLiteDatabase database = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_SAVED_GAMES;
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            savedGamesExist = true;
+        }
+
+        return savedGamesExist;
     }
 }

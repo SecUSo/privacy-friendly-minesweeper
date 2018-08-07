@@ -104,6 +104,7 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
                 if (savedGames.getJSONObject(i).getString("game_mode").equals("hard")) { index = 2; }
 
                 savedGame = new ArrayList<String>();
+                savedGame.add(String.valueOf(savedGames.getJSONObject(i).getInt("id")));
                 game_mode = savedGames.getJSONObject(i).getString("game_mode");
                 if(game_mode.equals("easy")){ savedGame.add(getResources().getString(R.string.game_mode_easy)); }
                 if(game_mode.equals("medium")){ savedGame.add(getResources().getString(R.string.game_mode_medium)); }
