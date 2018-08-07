@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nr_of_columns"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/editTextNrOfColumns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nr_of_rows"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/editTextNrOfRows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/degree_of_difficulty"
+        android:textSize="20sp"/>
+
+    <Spinner
+        android:id="@+id/degreeOfDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Spinner>
+
+</LinearLayout>

@@ -188,20 +188,22 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             numberOfColumns = test[0];
             numberOfRows = test[1];
             numberOfBombs = test[2];
-            switch (numberOfColumns) {
-                case 6:
-                    System.out.println("easy");
-                    game_mode = "easy";
-                    break;
-                case 10:
-                    System.out.println("medium");
-                    game_mode = "medium";
-                    break;
-                case 12:
-                    System.out.println("hard");
-                    game_mode = "difficult";
-                    break;
-                default:
+
+            if((numberOfColumns == 6) && (numberOfRows == 10) && (numberOfBombs == 7)){
+                System.out.println("easy");
+                game_mode = "easy";
+            }
+            else if((numberOfColumns == 10) && (numberOfRows == 16) && (numberOfBombs == 24)){
+                System.out.println("medium");
+                game_mode = "medium";
+            }
+            else if((numberOfColumns == 12) && (numberOfRows == 19) && (numberOfBombs == 46)){
+                System.out.println("difficult");
+                game_mode = "difficult";
+            }
+            else{
+                System.out.println("user-defined");
+                game_mode = "user-defined";
             }
         }
 
