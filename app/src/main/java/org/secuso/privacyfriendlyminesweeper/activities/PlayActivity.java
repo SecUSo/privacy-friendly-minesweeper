@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -42,6 +43,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -65,6 +67,7 @@ import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -99,7 +102,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int bestTime;
     boolean newBestTime;
     Boolean revealingAround;
-    boolean lost;
+    boolean gameEnded;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -125,14 +128,45 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         numberOfBombs = 0;
 
         newBestTime = false;
-        lost = false;
+        gameEnded = true;
 
         //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
         boolean savecheck = false;
         savecheck = parameter.getBoolean("continue");
         if (savecheck==true){
+            ArrayList<String> savedInfo = parameter.getStringArrayList("information");
+            int id = Integer.valueOf(savedInfo.get(0));
+            String savedGameMode = savedInfo.get(1);
+          //  int time = Integer.parseInt(savedInfo.get(2));
+            String savedContent = savedInfo.get(5);
+            String savedStatus = savedInfo.get(6);
 
+            System.out.println(savedGameMode);
+
+            if (savedGameMode.equalsIgnoreCase("easy")) {
+                numberOfColumns = 6;
+                numberOfRows = 10;
+                numberOfBombs = 7;
+            } else if (savedGameMode.equalsIgnoreCase("medium")) {
+                numberOfColumns = 10;
+                numberOfRows = 16;
+                numberOfBombs = 24;
+            } else {
+                numberOfColumns = 12;
+                numberOfRows = 19;
+                numberOfBombs = 46;
+            }
+
+
+            System.out.println(id);
+            System.out.println(numberOfBombs);
+         //   System.out.println(time);
+            System.out.println(savedContent);
+            System.out.println(savedStatus);
+
+            DatabaseSavedGameProvide provider= new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()), this);
+            AsyncTask<Integer, Void, String[]> execute = provider.execute(id);
 
         }else {
             short[] test = parameter.getShortArray("info");
@@ -150,7 +184,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     break;
                 case 12:
                     System.out.println("hard");
-                    game_mode = "hard";
+                    game_mode = "difficult";
                     break;
                 default:
             }
@@ -232,19 +266,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-
-        //TODO: Example for saving a game
-        DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-        Object[] data_1 = {"easy", "15", "02.08.2018", "0.70", "content123", "status123"};
-        writer_1.execute(data_1);
-
-        Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
-        saveGameInfo.show();
-    }
-
     private void createAdapter(int maximumHeight) {
         adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
         adapter.setClickListener(this);
@@ -262,165 +283,165 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             if(position == notHere) {
                 i--;
             } else {
-                //10 equals a bomb
+                //9 equals a bomb
                 //redo random position if there is a bomb already
-                if (data[position] == 10) {
+                if (data[position] == 9) {
                     i--;
                 }
-                data[position] = 10;
+                data[position] = 9;
             }
         }
 
         //Fill the Playingfield with numbers depending on bomb position
         for (int pos= 0; pos < numberOfCells; pos++) {
 
-            if (data[pos] != 10) {
+            if (data[pos] != 9) {
                 data[pos] = 0;
                 //check if position is in one corner of the Field
                 //bottom left
                 if (pos == 0) {
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns + 1] == 10) {
+                    if (data[pos + numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //bottom right
                 else if (pos == (numberOfColumns - 1)) {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns - 1] == 10) {
+                    if (data[pos + numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //top left
                 else if (pos == (numberOfCells - numberOfColumns)) {
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns + 1] == 10) {
+                    if (data[pos - numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //top right
                 else if (pos == numberOfCells - 1) {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns - 1] == 10) {
+                    if (data[pos - numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //bottom row
                 else if (pos < numberOfColumns) {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns - 1] == 10) {
+                    if (data[pos + numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns + 1] == 10) {
+                    if (data[pos + numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //top row
                 else if (pos > numberOfCells - numberOfColumns) {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns - 1] == 10) {
+                    if (data[pos - numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns + 1] == 10) {
+                    if (data[pos - numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //left column
                 else if (pos % numberOfColumns == 0) {
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns + 1] == 10) {
+                    if (data[pos + numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns + 1] == 10) {
+                    if (data[pos - numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //right column
                 else if (pos % numberOfColumns == (numberOfColumns - 1)) {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns - 1] == 10) {
+                    if (data[pos + numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns - 1] == 10) {
+                    if (data[pos - numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
                 //the rest (inner cells)
                 else {
-                    if (data[pos - 1] == 10) {
+                    if (data[pos - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + 1] == 10) {
+                    if (data[pos + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns + 1] == 10) {
+                    if (data[pos + numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns] == 10) {
+                    if (data[pos + numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos + numberOfColumns - 1] == 10) {
+                    if (data[pos + numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns + 1] == 10) {
+                    if (data[pos - numberOfColumns + 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns] == 10) {
+                    if (data[pos - numberOfColumns] == 9) {
                         data[pos] = data[pos] + 1;
                     }
-                    if (data[pos - numberOfColumns - 1] == 10) {
+                    if (data[pos - numberOfColumns - 1] == 9) {
                         data[pos] = data[pos] + 1;
                     }
                 }
@@ -445,6 +466,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         if (firstClick) {
             fillPlayingField(position);
             firstClick = false;
+            gameEnded = false;
 
             timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
             timer.setBase(SystemClock.elapsedRealtime());
@@ -739,7 +761,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
     private void revealCell(int position) {
 
-        if (lost) {
+        if (gameEnded) {
             return;
         }
         RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
@@ -748,7 +770,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         //only reveal if the cell is not marked or revealed
         if (status[position] == 0) {
             //check for gameloss
-            if (data[position] == 10) {
+            if (data[position] == 9) {
 
                 cell.setText("M");
                 Drawable img = getDrawable(R.drawable.mine);
@@ -779,7 +801,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 //seventh parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
                 Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
                 writer.execute(result_params);
-                lost = true;
+                gameEnded = true;
 
             } else {
                 //set cell to revealed
@@ -838,6 +860,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
     private void victoryCheck() {
         if(countDownToWin == 0) {
+            gameEnded = true;
 
             long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
             long gametime = gametimeInMillis / 1000;
@@ -879,6 +902,41 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 this.finish();
             }
         }
+    }
+
+    //saving games on exit for later continuing
+    @Override
+    public void onStop(){
+        if (!gameEnded){
+
+            long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+            long gametime = gametimeInMillis / 1000;
+            int time = (int) gametime;
+
+            StringBuilder content = new StringBuilder();
+            StringBuilder states = new StringBuilder();
+            for (int i = 0; i < data.length; i++) {
+                content.append(data[i]);
+                states.append(status[i]);
+                System.out.println(content.toString());
+                System.out.println(states.toString());
+            }
+
+            //Saves Game
+            //first parameter: game mode
+            //second parameter: game time
+            //third parameter: date
+            //fourth parameter: progress
+            //fifth parameter: string coding the content of the playingfield
+            //sixth parameter: string coding the status of the playingfield
+            DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+            Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), ((numberOfCells - countDownToWin)/numberOfCells), content, states};
+            System.out.println(game_mode);
+            writer_1.execute(data);
+            System.out.println("---------------------------------------------------");
+
+        }
+        super.onStop();
     }
 
     public int getNumberOfRows() { return numberOfRows; }

@@ -37,7 +37,7 @@ public class DatabaseSavedGameWriter extends AsyncTask<Object, Void, Void> {
 
         PFMSavedGameDataType dataSavedGame = new PFMSavedGameDataType();
         dataSavedGame.setGAME_MODE(String.valueOf(params[0]));
-        dataSavedGame.setTIME(Integer.parseInt((String)params[1]));
+        dataSavedGame.setTIME((Integer)params[1]);
         dataSavedGame.setDATE(String.valueOf(params[2]));
         dataSavedGame.setPROGRESS(String.valueOf(params[3]));
         dataSavedGame.setSAVED_GAME_CONTENT(String.valueOf(params[4]));

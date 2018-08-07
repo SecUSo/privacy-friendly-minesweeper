@@ -94,7 +94,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                 mArrowLeft.setVisibility((position==0)?View.INVISIBLE:View.VISIBLE);
                 mArrowRight.setVisibility((position==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
 
-                index = position;
+                //index = position;
 
                 //save position in settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();

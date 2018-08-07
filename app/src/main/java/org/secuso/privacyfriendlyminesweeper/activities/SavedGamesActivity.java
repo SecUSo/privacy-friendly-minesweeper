@@ -17,6 +17,7 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author I3ananas
+ * @author I3ananas, max-dreger
  * @version 20180606
  * This class implements functions to handle a list of saved games that can be continued
  */
@@ -149,4 +151,6 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
 
         return time_string;
     }
+
+
 }
