@@ -7,15 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.Bundle;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 
+import java.util.LinkedList;
+
 public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerViewAdapter.ViewHolder> {
 
     private int[] mData;
+    private int[] mStatus;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int maxHeightOfCells;
@@ -28,9 +32,10 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     }
 
     // data is passed into the constructor
-    public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight) {
+    public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight, int[]status) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mStatus = status;
         maxHeightOfCells = maxHeight;
     }
 
@@ -38,7 +43,12 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
+
         View view = mInflater.inflate(R.layout.playingfield_cell, parent, false);
+
+
+        CellView test = (CellView) view.findViewById(R.id.cell);
+
         return new ViewHolder(view);
     }
 

@@ -466,7 +466,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     public PFMSavedGameDataType getSavedGameData(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
 
-        Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE, KEY_WINS_PLAYING_TIME, KEY_DATE,
+        Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE, KEY_PLAYING_TIME, KEY_DATE,
                         KEY_PROGRESS, KEY_SAVED_GAME_CONTENT, KEY_SAVED_GAME_STATUS},KEY_ID + "=?",
                         new String[]{String.valueOf(id)}, null, null, null, null);
 

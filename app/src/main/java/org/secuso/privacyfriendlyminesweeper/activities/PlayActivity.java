@@ -104,6 +104,9 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     Boolean revealingAround;
     boolean gameEnded;
     boolean savecheck;
+    String savedContent;
+    String savedStatus;
+    int totalSavedSeconds;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -136,13 +139,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         savecheck = false;
         savecheck = parameter.getBoolean("continue");
         System.out.println(savecheck);
-        if (savecheck==true){
+        if (savecheck == true){
             ArrayList<String> savedInfo = parameter.getStringArrayList("information");
             int id = Integer.valueOf(savedInfo.get(0));
             String savedGameMode = savedInfo.get(1);
             String time = savedInfo.get(2);
-            String savedContent = savedInfo.get(5);
-            String savedStatus = savedInfo.get(6);
+            savedContent = savedInfo.get(5);
+            savedStatus = savedInfo.get(6);
 
             System.out.println(savedGameMode);
 
@@ -160,20 +163,14 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 numberOfBombs = 46;
             }
 
-            //Filling the PlayingField
-            numberOfCells = numberOfRows * numberOfColumns;
-            data = new int[numberOfCells];
-            countDownToWin = numberOfCells;
-
-
             String[] units = time.split(":");
             int minutes = Integer.parseInt(units[0]);
             int seconds = Integer.parseInt(units[1]);
-            int totalSeconds = 60 * minutes + seconds;
+            totalSavedSeconds = 60 * minutes + seconds;
 
             System.out.println(id);
             System.out.println(numberOfBombs);
-            System.out.println(time + "=" + totalSeconds);
+            System.out.println(time + "=" + totalSavedSeconds);
             System.out.println(savedContent);
             System.out.println(savedStatus);
 
@@ -203,10 +200,30 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
-        //Filling the PlayingField
+        //Creating the right sized the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
         countDownToWin = numberOfCells;
+
+        //status saves the state of the cell
+        //0 = normal, 1 = revealed, 2 = marked
+        status = new int[numberOfCells];
+        for (int i = 0; i < numberOfCells; i++) {
+            status[i] = 0;
+        }
+
+if (savecheck) {
+            String[] parcedContent = savedContent.split("");
+    String[] parcedStatus = savedStatus.split("");
+
+    StringBuilder line = new StringBuilder();
+    for (int i = 0; i < numberOfCells; i++) {
+        line.append(parcedContent[i + 1]);
+        data[i] = Integer.parseInt(parcedContent[i + 1]);
+        status[i] = Integer.parseInt(parcedStatus[i + 1]);
+    }
+}
+
 
         // set up the RecyclerView
         final View heightTest = findViewById(R.id.height_test);
@@ -231,16 +248,21 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
                 if (firstTime) {
                     firstTime=false;
-                    createAdapter(maxHeight);
+                    createAdapter(maxHeight, status);
                     //after heightTest is made invisible the grid is redrawn, this time with the correct maxheight
                     heightTest.setVisibility(View.GONE);
                 }
+
+                System.out.println("test how fast this is2");
+
+
+
             }
         });
 
         //fistLaunch
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
-        createAdapter(maxHeight);
+        createAdapter(maxHeight, status);
 
         firstClick = true;
 
@@ -274,13 +296,18 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         ImageView mines_pic = (ImageView) getSupportActionBar().getCustomView().findViewById(R.id.mines_pic);
         mines_pic.setImageResource(R.drawable.mine);
 
-        bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
-        bestTimeReader.execute(game_mode);
+      //  bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
+      //  bestTimeReader.execute(game_mode);
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
+
+
+        System.out.println("test how fast this is");
+
+
     }
 
-    private void createAdapter(int maximumHeight) {
-        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
+    private void createAdapter(int maximumHeight, int[] stati) {
+        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight, stati);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
@@ -460,17 +487,55 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 }
             }
         }
+    }
 
-        //status saves the state of the cell
-        //0 = normal, 1 = revealed, 2 = marked
-        status = new int[numberOfCells];
-        for (int i = 0; i < numberOfCells; i++) {
-            status[i] = 0;
+    //loading saved game
+    public void restartSavedGame(String[] stuff){
+
+    }
+
+    public void onResume() {
+        super.onResume();
+        System.out.println("test how fast this is3");
+//loading saved game
+        if (savecheck) {
+            fillSavedGame(savedContent, savedStatus);
         }
     }
 
-    //TODO: Refill playingfield here with saved data
-    public void restartSavedGame(String[] savedGameData){
+    public void fillSavedGame(String savedContent, String savedStatus){
+
+        String[] parcedContent = savedContent.split("");
+        String[] parcedStatus = savedStatus.split("");
+
+        System.out.println(parcedContent.length+" ============ "+ numberOfCells);
+        StringBuilder line = new StringBuilder();
+        for (int i = 0; i < numberOfCells; i++) {
+            line.append(parcedContent[i+1]);
+            data[i] = Integer.parseInt(parcedContent[i+1]);
+            status[i] = Integer.parseInt(parcedStatus[i+1]);
+
+            PlayRecyclerViewAdapter adapt = (PlayRecyclerViewAdapter) recyclerView.getAdapter();
+         //   RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(-1);
+        //    CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
+
+       //     RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(i);
+       //     CellView cell = (CellView) holder.itemView;
+
+
+
+            System.out.println(recyclerView.getLayoutManager().getChildCount() + "--------------------------------------------------------------------------------->" + recyclerView.getAdapter().toString());
+
+
+            System.out.println(adapt.getItemCount());
+            // CellView cell = (CellView) cellview.getChildAt(0);
+            if (status[i] == 1) {
+
+            }
+        }
+        System.out.println(line);
+        firstClick = false;
+        gameEnded = false;
 
     }
 
@@ -935,8 +1000,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             for (int i = 0; i < data.length; i++) {
                 content.append(data[i]);
                 states.append(status[i]);
-                System.out.println(content.toString());
-                System.out.println(states.toString());
             }
 
             //Saves Game
@@ -948,9 +1011,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             //sixth parameter: string coding the status of the playingfield
             DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
             Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), ((numberOfCells - countDownToWin)/numberOfCells), content, states};
-            System.out.println(game_mode);
             writer_1.execute(data);
-            System.out.println("---------------------------------------------------");
 
         }
         super.onStop();
