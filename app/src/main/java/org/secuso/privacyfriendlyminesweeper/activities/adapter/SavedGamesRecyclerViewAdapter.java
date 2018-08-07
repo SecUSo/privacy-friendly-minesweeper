@@ -92,15 +92,14 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             saved_game_list_element.setOnClickListener(this);
 
             this.savedGameMode = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(0);
-            this.savedGamePlayingTime = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(1);
-            this.savedGameDate = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(2);
+            this.savedGamePlayingTime = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(2);
+            this.savedGameDate = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(1);
             this.savedGameProgress = (ProgressBar) ((RelativeLayout) saved_game_list_element.getChildAt(1)).getChildAt(0);
         }
 
         public void onClick(View view){
             Bundle param = new Bundle();
             param.putBoolean("continue", true);
-
 
             param.putStringArrayList("information", information);
 
@@ -115,9 +114,7 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             String savedStatus = "";
         //    savedStatus = information.get(6);
 
-
             System.out.println(id);
-            System.out.println(savedGameMode);
             System.out.println(savedGameMode);
             System.out.println(time);
             System.out.println(information.get(3));
