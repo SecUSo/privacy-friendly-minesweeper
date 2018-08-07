@@ -25,6 +25,9 @@
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
     <string name="game_desc">Choose a game mode and start the game.</string>
+    <string name="screenTooSmall">Please note: Limited user experience due to number of fields in this game mode and size of this screen.</string>
+    <string name="startGame">Continue</string>
+    <string name="cancel">Cancel</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>

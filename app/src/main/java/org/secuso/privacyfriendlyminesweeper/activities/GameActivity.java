@@ -17,6 +17,7 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +37,8 @@ import android.content.Intent;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
-import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGameWriter;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesCheck;
-import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Christopher Beckmann, I3ananas
@@ -56,6 +53,9 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView mArrowRight;
     private int index;
     private Button continueButton;
+    private float screen_width_dp;
+    private float screen_height_dp;
+    private float min_dp_per_field;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,12 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
         Button button_start_game = (Button) findViewById(R.id.game_button_start);
         button_start_game.setOnClickListener(this);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screen_width_dp = dm.widthPixels/getResources().getDisplayMetrics().density;
+        screen_height_dp = dm.heightPixels/getResources().getDisplayMetrics().density;
+        min_dp_per_field = 30;
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
@@ -94,7 +100,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                 mArrowLeft.setVisibility((position==0)?View.INVISIBLE:View.VISIBLE);
                 mArrowRight.setVisibility((position==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
 
-                //index = position;
+                index = position;
 
                 //save position in settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();
@@ -115,11 +121,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
     public void onClick(View view) {
 
-        //param will consist of the information needed to build the playing field with the desired
-        //width, height and number of mines
-        Bundle param;
-        Intent intent_with_param;
-
         if(view == null){
             return;
         }
@@ -127,44 +128,46 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         switch(view.getId()) {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
-                index--;
+                //index--;      //satisfied by onPageSelected-method
                 break;
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
-                index++;
+                //index++;      //satisfied by onPageSelected-method
                 break;
             case R.id.game_button_start:
                 switch (index) {
                     case 0:
-                        param = new Bundle();
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an easy game are 6,10,7
-                        param.putShortArray("info", new short[]{6, 10, 7});
-                        intent_with_param = new Intent(this, PlayActivity.class);
-                        intent_with_param.putExtras(param);
-                        startActivity(intent_with_param);
+                        if(!checkIfScreenLargeEnough(6, 10)){
+                            showDialogIfScreenTooSmall(6,10,7);
+                        }
+                        else{
+                            startGame(6,10,7);
+                        }
                         break;
                     case 1:
-                        param = new Bundle();
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an medium game are 10,16,24
-                        param.putShortArray("info", new short[]{10, 16, 24});
-                        intent_with_param = new Intent(this, PlayActivity.class);
-                        intent_with_param.putExtras(param);
-                        startActivity(intent_with_param);
+                        if(!checkIfScreenLargeEnough(10, 16)){ ;
+                            showDialogIfScreenTooSmall(10, 16,24);
+                        }
+                        else {
+                            startGame(10,16,24);
+                        }
                         break;
                     case 2:
-                        param = new Bundle();
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an hard game are 12,19,46
-                        param.putShortArray("info", new short[]{12, 19, 46});
-                        intent_with_param = new Intent(this, PlayActivity.class);
-                        intent_with_param.putExtras(param);
-                        startActivity(intent_with_param);
+                        if(!checkIfScreenLargeEnough(12, 19)){
+                            showDialogIfScreenTooSmall(12, 19, 46);
+                        }
+                        else{
+                            startGame(12,19,46);
+                        }
                         break;
                     default:
                 }
-
                 break;
             case R.id.game_button_continue:
                 Intent intent = new Intent(this, SavedGamesActivity.class);
@@ -192,6 +195,64 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
             continueButton.setEnabled(false);
             continueButton.setBackground(getResources().getDrawable(R.drawable.button_disabled));
         }
+    }
+
+    /**
+     * This method checks if the screen of the device is large enough to play the selected game mode appropriate
+     * @param nrOfColumns number of columns of the playing field
+     * @param nrOfRows number of rows of the playing field
+     * @return true, if screen is large enough for selected game mode, false otherwise
+     */
+    private boolean checkIfScreenLargeEnough(int nrOfColumns, int nrOfRows){
+        boolean screenLargeEnough = false;
+        if(((screen_width_dp / nrOfColumns) >= min_dp_per_field) && ((screen_height_dp / nrOfRows) >= min_dp_per_field)){
+            screenLargeEnough = true;
+        }
+        return screenLargeEnough;
+    }
+
+    /**
+     * This method shows a dialog if the screen is too small to play the selected game mode appropriate
+     * If the user chooses to continue, the game is started
+     * @param columns Number of columns of the playing field
+     * @param rows Number of rows of the playing field
+     * @param nrOfBombs Number of bombs on the playing field
+     */
+    private void showDialogIfScreenTooSmall(final int columns, final int rows, final int nrOfBombs){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.screenTooSmall);
+        builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                System.out.println("not large enough - continue");
+                startGame(columns, rows, nrOfBombs);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //do nothing
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * This method starts a game with the passed parameters
+     * @param columns Number of columns of the playing field
+     * @param rows Number of rows of the playing field
+     * @param nrOfBombs Number of bombs on the playing field
+     */
+    private void startGame(int columns, int rows, int nrOfBombs){
+        //param will consist of the information needed to build the playing field with the desired width, height and number of mines
+        Bundle param = new Bundle();
+        Intent intent_with_param;
+        param.putShortArray("info", new short[]{(short)columns, (short)rows, (short)nrOfBombs});
+        intent_with_param = new Intent(this, PlayActivity.class);
+        intent_with_param.putExtras(param);
+        startActivity(intent_with_param);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

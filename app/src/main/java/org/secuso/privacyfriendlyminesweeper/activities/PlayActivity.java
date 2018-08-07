@@ -150,14 +150,17 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             System.out.println(savedGameMode);
 
             if (savedGameMode.equalsIgnoreCase("easy")) {
+                game_mode = "easy";
                 numberOfColumns = 6;
                 numberOfRows = 10;
                 numberOfBombs = 7;
             } else if (savedGameMode.equalsIgnoreCase("medium")) {
+                game_mode = "medium";
                 numberOfColumns = 10;
                 numberOfRows = 16;
                 numberOfBombs = 24;
             } else {
+                game_mode = "difficult";
                 numberOfColumns = 12;
                 numberOfRows = 19;
                 numberOfBombs = 46;
@@ -296,8 +299,8 @@ if (savecheck) {
         ImageView mines_pic = (ImageView) getSupportActionBar().getCustomView().findViewById(R.id.mines_pic);
         mines_pic.setImageResource(R.drawable.mine);
 
-      //  bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
-      //  bestTimeReader.execute(game_mode);
+        bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
+        bestTimeReader.execute(game_mode);
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
 
 
@@ -1010,9 +1013,13 @@ if (savecheck) {
             //fifth parameter: string coding the content of the playingfield
             //sixth parameter: string coding the status of the playingfield
             DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-            Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), ((numberOfCells - countDownToWin)/numberOfCells), content, states};
+            Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
+            System.out.println(game_mode);
             writer_1.execute(data);
+            System.out.println("---------------------------------------------------");
 
+            Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
+            saveGameInfo.show();
         }
         super.onStop();
     }

@@ -56,9 +56,13 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_WINS_PLAYING_TIME = "wins_playing_time";
     private static final String KEY_TOTAL_PLAYING_TIME = "total_playing_time";
 
+    private static final String KEY_GAME_MODE_TOP_TIME = "game_mode";
     private static final String KEY_PLAYING_TIME = "playing_time";
     private static final String KEY_DATE = "date";
 
+    private static final String KEY_GAME_MODE_SAVED = "game_mode";
+    private static final String KEY_PLAYING_TIME_SAVED = "playing_time";
+    private static final String KEY_DATE_SAVED = "date";
     private static final String KEY_PROGRESS = "progress";
     private static final String KEY_SAVED_GAME_CONTENT = "saved_game_content";
     private static final String KEY_SAVED_GAME_STATUS = "saved_game_status";
@@ -82,7 +86,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TOP_TIMES_TABLE = "CREATE TABLE " + TABLE_TOP_TIMES +
                 "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                KEY_GAME_MODE + " INTEGER," +
+                KEY_GAME_MODE_TOP_TIME + " INTEGER," +
                 KEY_PLAYING_TIME + " INTEGER," +
                 KEY_DATE + " TEXT);";
 
@@ -292,7 +296,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_GAME_MODE, topTime.getGAME_MODE());
+        values.put(KEY_GAME_MODE_TOP_TIME, topTime.getGAME_MODE());
         values.put(KEY_PLAYING_TIME, topTime.getTIME());
         values.put(KEY_DATE, topTime.getDATE());
 
@@ -308,7 +312,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     public List<PFMTopTimeDataType> getAllTopTimeData(String[] game_mode) {
         List<PFMTopTimeDataType> topTimeDataList = new ArrayList<PFMTopTimeDataType>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_TOP_TIMES + " WHERE " + KEY_GAME_MODE  + "=?";
+        String selectQuery = "SELECT  * FROM " + TABLE_TOP_TIMES + " WHERE " + KEY_GAME_MODE_TOP_TIME  + "=?";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, game_mode);
@@ -389,7 +393,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_GAME_MODE, dataSetTopTime.getGAME_MODE());
+        values.put(KEY_GAME_MODE_TOP_TIME, dataSetTopTime.getGAME_MODE());
         values.put(KEY_PLAYING_TIME, dataSetTopTime.getTIME());
         values.put(KEY_DATE, dataSetTopTime.getDATE());
 
@@ -404,8 +408,8 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     public int readBestTime(String game_mode){
         int bestTime = Integer.MAX_VALUE;
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.query(TABLE_TOP_TIMES, new String[]{KEY_ID, KEY_GAME_MODE,
-                        KEY_PLAYING_TIME, KEY_DATE}, KEY_GAME_MODE + "=?",
+        Cursor cursor = database.query(TABLE_TOP_TIMES, new String[]{KEY_ID, KEY_GAME_MODE_TOP_TIME,
+                        KEY_PLAYING_TIME, KEY_DATE}, KEY_GAME_MODE_TOP_TIME + "=?",
                         new String[]{game_mode}, null, null, null, null);
 
         if(cursor.moveToFirst()) {
@@ -435,9 +439,9 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_GAME_MODE, savedGame.getGAME_MODE());
-        values.put(KEY_PLAYING_TIME, savedGame.getTIME());
-        values.put(KEY_DATE, savedGame.getDATE());
+        values.put(KEY_GAME_MODE_SAVED, savedGame.getGAME_MODE());
+        values.put(KEY_PLAYING_TIME_SAVED, savedGame.getTIME());
+        values.put(KEY_DATE_SAVED, savedGame.getDATE());
         values.put(KEY_PROGRESS, savedGame.getPROGRESS());
         values.put(KEY_SAVED_GAME_CONTENT, savedGame.getSAVED_GAME_CONTENT());
         values.put(KEY_SAVED_GAME_STATUS, savedGame.getSAVED_GAME_STATUS());
@@ -466,7 +470,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     public PFMSavedGameDataType getSavedGameData(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
 
-        Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE, KEY_PLAYING_TIME, KEY_DATE,
+        Cursor cursor = database.query(TABLE_SAVED_GAMES, new String[]{KEY_ID, KEY_GAME_MODE_SAVED, KEY_PLAYING_TIME_SAVED, KEY_DATE_SAVED,
                         KEY_PROGRESS, KEY_SAVED_GAME_CONTENT, KEY_SAVED_GAME_STATUS},KEY_ID + "=?",
                         new String[]{String.valueOf(id)}, null, null, null, null);
 

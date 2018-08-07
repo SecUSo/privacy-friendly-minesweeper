@@ -24,6 +24,9 @@
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
     <string name="game_desc">Wähle einen Spielmodus und starte das Spiel.</string>
+    <string name="screenTooSmall">Bitte beachten: Spielerlebnis aufgrund der Spielfeldgröße bei diesem Modus bei dieser Displaygröße eingeschränkt.</string>
+    <string name="startGame">Weiter</string>
+    <string name="cancel">Abbrechen</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
