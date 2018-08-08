@@ -134,7 +134,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         newBestTime = false;
         gameEnded = true;
 
-        //TODO: fix continuing a game (for now if/else clause)
         parameter = this.getIntent().getExtras();
         savecheck = false;
         savecheck = parameter.getBoolean("continue");
@@ -1027,31 +1026,34 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     @Override
     public void onStop(){
         if (!gameEnded){
+            if (game_mode.equals("user-defined")) {
 
-            long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
-            long gametime = gametimeInMillis / 1000;
-            int time = (int) gametime;
+            } else {
+                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+                long gametime = gametimeInMillis / 1000;
+                int time = (int) gametime;
 
-            StringBuilder content = new StringBuilder();
-            StringBuilder states = new StringBuilder();
-            for (int i = 0; i < data.length; i++) {
-                content.append(data[i]);
-                states.append(status[i]);
+                StringBuilder content = new StringBuilder();
+                StringBuilder states = new StringBuilder();
+                for (int i = 0; i < data.length; i++) {
+                    content.append(data[i]);
+                    states.append(status[i]);
+                }
+
+                //Saves Game
+                //first parameter: game mode
+                //second parameter: game time
+                //third parameter: date
+                //fourth parameter: progress
+                //fifth parameter: string coding the content of the playingfield
+                //sixth parameter: string coding the status of the playingfield
+                DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+                Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
+                writer_1.execute(data);
+
+                Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
+                saveGameInfo.show();
             }
-
-            //Saves Game
-            //first parameter: game mode
-            //second parameter: game time
-            //third parameter: date
-            //fourth parameter: progress
-            //fifth parameter: string coding the content of the playingfield
-            //sixth parameter: string coding the status of the playingfield
-            DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-            Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
-            writer_1.execute(data);
-
-            Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
-            saveGameInfo.show();
         }
         super.onStop();
     }
