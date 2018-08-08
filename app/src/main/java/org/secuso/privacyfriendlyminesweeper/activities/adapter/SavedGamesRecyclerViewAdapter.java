@@ -45,10 +45,12 @@ import java.util.ArrayList;
 public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGamesRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<ArrayList<String>> savedGameParameters;
+    private SavedGamesActivity savedGamesActivity;
 
     //pass data to constructor
-    public SavedGamesRecyclerViewAdapter(ArrayList<ArrayList<String>> parameters){
+    public SavedGamesRecyclerViewAdapter(ArrayList<ArrayList<String>> parameters, Context pSavedGamesActivity){
         this.savedGameParameters = parameters;
+        savedGamesActivity = (SavedGamesActivity) pSavedGamesActivity;
     }
 
     //fill text views with information about saved games
@@ -73,7 +75,7 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
     //get list element for a single saved game
     public SavedGamesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         ViewGroup savedGame = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_game_list_element, parent, false);
-        return new ViewHolder(savedGame);
+        return new ViewHolder(savedGame, savedGamesActivity);
     }
 
     //inner class for a list element representing a single saved game
@@ -85,9 +87,10 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
         public TextView savedGamePlayingTime;
         public ProgressBar savedGameProgress;
         public ArrayList<String> information;
+        private SavedGamesActivity activity;
 
         //get text views to display information about saved games
-        public ViewHolder(ViewGroup saved_game_list_element){
+        public ViewHolder(ViewGroup saved_game_list_element, SavedGamesActivity activity){
             super(saved_game_list_element);
             saved_game_list_element.setOnClickListener(this);
 
@@ -95,6 +98,8 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             this.savedGamePlayingTime = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(2);
             this.savedGameDate = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(1);
             this.savedGameProgress = (ProgressBar) ((RelativeLayout) saved_game_list_element.getChildAt(1)).getChildAt(0);
+
+            this.activity = activity;
         }
 
         public void onClick(View view){
@@ -103,30 +108,12 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
 
             param.putStringArrayList("information", information);
 
-            int id = 0;
-            id = Integer.valueOf(information.get(0));
-            String savedGameMode = "";
-            savedGameMode = information.get(1);
-            String time = "";
-            time = information.get(2);
-            String savedContent = "";
-            savedContent = information.get(5);
-            String savedStatus = "";
-        //    savedStatus = information.get(6);
-
-            System.out.println(id);
-            System.out.println(savedGameMode);
-            System.out.println(time);
-            System.out.println(information.get(3));
-            System.out.println(information.get(4));
-            System.out.println(savedContent);
-            System.out.println(savedStatus);
-
             Intent intent_with_param = new Intent(view.getContext(), PlayActivity.class);
             intent_with_param.putExtras(param);
             view.getContext().startActivity(intent_with_param);
-            //TODO: Start play activity as a restart, include variable 'this.id' e.g. as a parameter
-            //TODO: In the started play activity create an instance of 'DatabaseSavedGameProvide' and call execute with the parameter 'this.id'
+
+            activity.finish();
+
         }
     }
 

@@ -41,8 +41,6 @@ public class VictoryScreen extends Activity{
         int height = 1794;
         int width = 1080;
 
-        System.out.println(height + "------------------------------" + width);
-
         getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
 
         //get time and get it ready for correct display

@@ -72,7 +72,7 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
         listRecyclerView = (RecyclerView) findViewById(R.id.savedGamesList);
         listRecyclerView.setHasFixedSize(true);
 
-        listAdapter = new SavedGamesRecyclerViewAdapter(savedGamesData);
+        listAdapter = new SavedGamesRecyclerViewAdapter(savedGamesData, this);
         listRecyclerView.setAdapter(listAdapter);
 
         listLayoutManager = new LinearLayoutManager(this);
@@ -123,7 +123,7 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
             Log.d("JSONException", e.getMessage() + "  \n" + e.getCause());
         }
 
-        RecyclerView.Adapter adapterSavedGames = new SavedGamesRecyclerViewAdapter(savedGamesData);
+        RecyclerView.Adapter adapterSavedGames = new SavedGamesRecyclerViewAdapter(savedGamesData, this);
         listRecyclerView.swapAdapter(adapterSavedGames, true);
         listAdapter.notifyDataSetChanged();
     }

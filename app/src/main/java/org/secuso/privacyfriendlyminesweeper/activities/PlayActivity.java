@@ -138,7 +138,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         parameter = this.getIntent().getExtras();
         savecheck = false;
         savecheck = parameter.getBoolean("continue");
-        System.out.println(savecheck);
         if (savecheck == true){
             ArrayList<String> savedInfo = parameter.getStringArrayList("information");
             int id = Integer.valueOf(savedInfo.get(0));
@@ -147,20 +146,24 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             savedContent = savedInfo.get(5);
             savedStatus = savedInfo.get(6);
 
-            System.out.println(savedGameMode);
-
             if (savedGameMode.equalsIgnoreCase("easy")) {
                 game_mode = "easy";
+                parameter.putShortArray("info", new short[]{(short)6, (short)10, (short)7});
+                parameter.putBoolean("continue", false);
                 numberOfColumns = 6;
                 numberOfRows = 10;
                 numberOfBombs = 7;
             } else if (savedGameMode.equalsIgnoreCase("medium")) {
                 game_mode = "medium";
+                parameter.putShortArray("info", new short[]{(short)10, (short)16, (short)24});
+                parameter.putBoolean("continue", false);
                 numberOfColumns = 10;
                 numberOfRows = 16;
                 numberOfBombs = 24;
             } else {
                 game_mode = "difficult";
+                parameter.putShortArray("info", new short[]{(short)12, (short)19, (short)46});
+                parameter.putBoolean("continue", false);
                 numberOfColumns = 12;
                 numberOfRows = 19;
                 numberOfBombs = 46;
@@ -170,12 +173,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             int minutes = Integer.parseInt(units[0]);
             int seconds = Integer.parseInt(units[1]);
             totalSavedSeconds = 60 * minutes + seconds;
-
-            System.out.println(id);
-            System.out.println(numberOfBombs);
-            System.out.println(time + "=" + totalSavedSeconds);
-            System.out.println(savedContent);
-            System.out.println(savedStatus);
 
             DatabaseSavedGameProvide provider= new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()), this);
             AsyncTask<Integer, Void, String[]> execute = provider.execute(id);
@@ -188,15 +185,12 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             numberOfBombs = test[2];
             switch (numberOfColumns) {
                 case 6:
-                    System.out.println("easy");
                     game_mode = "easy";
                     break;
                 case 10:
-                    System.out.println("medium");
                     game_mode = "medium";
                     break;
                 case 12:
-                    System.out.println("hard");
                     game_mode = "difficult";
                     break;
                 default:
@@ -215,15 +209,15 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             status[i] = 0;
         }
 
-if (savecheck) {
-            String[] parcedContent = savedContent.split("");
-    String[] parcedStatus = savedStatus.split("");
+    if (savecheck) {
+        String[] parcedContent = savedContent.split("");
+        String[] parcedStatus = savedStatus.split("");
 
-    StringBuilder line = new StringBuilder();
-    for (int i = 0; i < numberOfCells; i++) {
-        line.append(parcedContent[i + 1]);
-        data[i] = Integer.parseInt(parcedContent[i + 1]);
-        status[i] = Integer.parseInt(parcedStatus[i + 1]);
+        StringBuilder line = new StringBuilder();
+        for (int i = 0; i < numberOfCells; i++) {
+            line.append(parcedContent[i + 1]);
+            data[i] = Integer.parseInt(parcedContent[i + 1]);
+            status[i] = Integer.parseInt(parcedStatus[i + 1]);
     }
 }
 
@@ -256,8 +250,20 @@ if (savecheck) {
                     heightTest.setVisibility(View.GONE);
                 }
 
-                System.out.println("test how fast this is2");
-
+                recyclerView.postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if(recyclerView.findViewHolderForAdapterPosition(0)!=null )
+                        {
+                            //loading saved game
+                            if (savecheck) {
+                                fillSavedGame(savedContent, savedStatus);
+                            }
+                        }
+                    }
+                },50);
 
 
             }
@@ -303,8 +309,6 @@ if (savecheck) {
         bestTimeReader.execute(game_mode);
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
 
-
-        System.out.println("test how fast this is");
 
 
     }
@@ -497,47 +501,73 @@ if (savecheck) {
 
     }
 
-    public void onResume() {
-        super.onResume();
-        System.out.println("test how fast this is3");
-//loading saved game
-        if (savecheck) {
-            fillSavedGame(savedContent, savedStatus);
-        }
-    }
-
     public void fillSavedGame(String savedContent, String savedStatus){
 
         String[] parcedContent = savedContent.split("");
         String[] parcedStatus = savedStatus.split("");
 
-        System.out.println(parcedContent.length+" ============ "+ numberOfCells);
         StringBuilder line = new StringBuilder();
         for (int i = 0; i < numberOfCells; i++) {
             line.append(parcedContent[i+1]);
             data[i] = Integer.parseInt(parcedContent[i+1]);
             status[i] = Integer.parseInt(parcedStatus[i+1]);
 
-            PlayRecyclerViewAdapter adapt = (PlayRecyclerViewAdapter) recyclerView.getAdapter();
-         //   RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(-1);
-        //    CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
+            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(i);
+            CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
 
-       //     RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(i);
-       //     CellView cell = (CellView) holder.itemView;
-
-
-
-            System.out.println(recyclerView.getLayoutManager().getChildCount() + "--------------------------------------------------------------------------------->" + recyclerView.getAdapter().toString());
-
-
-            System.out.println(adapt.getItemCount());
-            // CellView cell = (CellView) cellview.getChildAt(0);
             if (status[i] == 1) {
+                switch (data[i]) {
+                    case 0:
+                        cell.setText("");
+                        break;
+                    case 1:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.darkblue));
+                        break;
+                    case 2:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.darkgreen));
+                        break;
+                    case 3:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.red));
+                        break;
+                    case 4:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.darkblue));
+                        break;
+                    case 5:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.brown));
+                        break;
+                    case 6:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.cyan));
+                        break;
+                    case 7:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.black));
+                        break;
+                    case 8:
+                        cell.setText(String.valueOf(data[i]));
+                        cell.setTextColor(getResources().getColor(R.color.black));
+                        break;
+                }
 
+                cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
+
+                countDownToWin--;
+            } else if (status[i] == 2) {
+                SpannableStringBuilder builder = new SpannableStringBuilder();
+                Drawable img = getDrawable(R.drawable.flag);
+                img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
+                cell.setCompoundDrawables(img,null,null,null);
+                bombsLeft--;
+                countDownToWin--;
+                mines.setText(String.valueOf(bombsLeft));
             }
         }
-        System.out.println(line);
-        firstClick = false;
+        firstClick = true;
         gameEnded = false;
 
     }
@@ -554,7 +584,9 @@ if (savecheck) {
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
             } else {
-                //TODO: timer start from saved time
+                timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
+                timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
+                timer.start();
             }
 
         }
@@ -1014,9 +1046,7 @@ if (savecheck) {
             //sixth parameter: string coding the status of the playingfield
             DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
             Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
-            System.out.println(game_mode);
             writer_1.execute(data);
-            System.out.println("---------------------------------------------------");
 
             Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
             saveGameInfo.show();

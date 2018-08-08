@@ -24,6 +24,7 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     private ItemClickListener mClickListener;
     private int maxHeightOfCells;
     private int maxWidthOfCells;
+    public LinkedList<CellView> list;
 
     // data is passed into the constructor
     public PlayRecyclerViewAdapter(Context context, int[] data) {
@@ -37,6 +38,7 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
         this.mData = data;
         this.mStatus = status;
         maxHeightOfCells = maxHeight;
+        list = new LinkedList<CellView>();
     }
 
     // inflates the cell layout from xml when needed
@@ -49,6 +51,7 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
 
         CellView test = (CellView) view.findViewById(R.id.cell);
 
+        list.add(test);
         return new ViewHolder(view);
     }
 
