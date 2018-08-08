@@ -21,12 +21,16 @@
     <string name="game_mode_easy">Einfach</string>
     <string name="game_mode_medium">Normal</string>
     <string name="game_mode_difficult">Schwer</string>
+    <string name="game_mode_user_defined">Flexibel</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
     <string name="game_desc">Wähle einen Spielmodus und starte das Spiel.</string>
     <string name="screenTooSmall">Bitte beachten: Spielerlebnis aufgrund der Spielfeldgröße bei diesem Modus bei dieser Displaygröße eingeschränkt.</string>
     <string name="startGame">Weiter</string>
     <string name="cancel">Abbrechen</string>
+    <string name="nr_of_columns">Anzahl Spalten eingeben</string>
+    <string name="nr_of_rows">Anzahl Zeilen eingeben</string>
+    <string name="degree_of_difficulty">Schwierigkeit setzen</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
@@ -115,5 +119,13 @@
     <string name="statistics">Zur Statisik</string>
     <string name="replay">Versuchen wirs nochmal</string>
     <string name="ok">Alles klar!</string>
+
+    <!-- ### USER DEFINED GAME MODE ### -->
+    <string-array name="user_defined_degrees_of_difficulty">
+        <item>Einfach</item>
+        <item>Normal</item>
+        <item>Schwer</item>
+    </string-array>
+    <string name="userDefinedInvalid">Ungültige Parameter - mindestens zwei Spalten und Zeilen erforderlich.</string>
 
 </resources>

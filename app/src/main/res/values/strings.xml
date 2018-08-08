@@ -22,12 +22,16 @@
     <string name="game_mode_easy">Easy</string>
     <string name="game_mode_medium">Medium</string>
     <string name="game_mode_difficult">Difficult</string>
+    <string name="game_mode_user_defined">Flexible</string>
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
     <string name="game_desc">Choose a game mode and start the game.</string>
     <string name="screenTooSmall">Please note: Limited user experience due to number of fields in this game mode and size of this screen.</string>
     <string name="startGame">Continue</string>
     <string name="cancel">Cancel</string>
+    <string name="nr_of_columns">Enter the number of columns</string>
+    <string name="nr_of_rows">Enter the number of rows</string>
+    <string name="degree_of_difficulty">Enter the degree of difficulty</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
@@ -117,5 +121,13 @@
     <string name="statistics">Go to stats</string>
     <string name="replay">Replay same gamemode</string>
     <string name="ok">OK, sweet!</string>
+
+    <!-- ### USER DEFINED GAME MODE ### -->
+    <string-array name="user_defined_degrees_of_difficulty">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Difficult</item>
+    </string-array>
+    <string name="userDefinedInvalid">Invalid parameters - games require at least two columns and rows.</string>
 
 </resources>

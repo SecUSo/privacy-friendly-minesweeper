@@ -30,10 +30,14 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
@@ -166,6 +170,8 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                             startGame(12,19,46);
                         }
                         break;
+                    case 3:
+                        showDialogForUserDefinedGameMode();
                     default:
                 }
                 break;
@@ -224,8 +230,86 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                System.out.println("not large enough - continue");
                 startGame(columns, rows, nrOfBombs);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //do nothing
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * This method shows a dialog, where the user can set up a user-defined game
+     */
+    private void showDialogForUserDefinedGameMode(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View view = this.getLayoutInflater().inflate(R.layout.dialog_user_defined_game_mode, null);
+        builder.setView(view);
+        Spinner spinner = (Spinner) view.findViewById(R.id.degreeOfDifficulty);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_defined_degrees_of_difficulty, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+                int nrOfColumns = 0;
+                int nrOfRows = 0;
+                int nrOfBombs = 0;
+
+                EditText nrOfColumns_editText = (EditText) view.findViewById(R.id.editTextNrOfColumns);
+                EditText nrOfRows_editText = (EditText) view.findViewById(R.id.editTextNrOfRows);
+                Spinner degreeOfDifficulty_spinner = (Spinner) view.findViewById(R.id.degreeOfDifficulty);
+                if(!nrOfColumns_editText.getText().toString().equals("")){
+                    nrOfColumns = Integer.valueOf(nrOfColumns_editText.getText().toString());
+                }
+                else{
+                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
+                    saveGameInfo.show();
+                    return;
+                }
+                if(!nrOfRows_editText.getText().toString().equals("")){
+                    nrOfRows = Integer.valueOf(nrOfRows_editText.getText().toString());
+                }
+                else{
+                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
+                    saveGameInfo.show();
+                    return;
+                }
+
+                String degreeOfDifficulty = degreeOfDifficulty_spinner.getSelectedItem().toString();
+                int nrOfCells = nrOfColumns * nrOfRows;
+
+                //playing field with just one cell is not working, thus do not start a game with this parameters
+                if((nrOfColumns <= 1) || (nrOfRows <= 1)){
+                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
+                    saveGameInfo.show();
+                    return;
+                }
+
+                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_easy))){
+                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.12);
+                }
+                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_medium))){
+                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.15);
+                }
+                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_difficult))){
+                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.2);
+                }
+
+                if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
+                    showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfBombs);
+                }
+                else{
+                    startGame(nrOfColumns, nrOfRows, nrOfBombs);
+                }
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -271,8 +355,8 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
     }
 
@@ -320,6 +404,9 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     break;
                 case 2:
                     textView.setText(R.string.game_mode_difficult);
+                    break;
+                case 3:
+                    textView.setText(R.string.game_mode_user_defined);
                     break;
             }
             return rootView;
