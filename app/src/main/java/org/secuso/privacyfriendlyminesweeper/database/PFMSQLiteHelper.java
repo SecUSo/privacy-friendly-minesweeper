@@ -446,6 +446,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_SAVED_GAME_CONTENT, savedGame.getSAVED_GAME_CONTENT());
         values.put(KEY_SAVED_GAME_STATUS, savedGame.getSAVED_GAME_STATUS());
 
+        //if there are 10 or more saved games, the oldest one is deleted (first data set in the table)
         if(DatabaseUtils.queryNumEntries(database, TABLE_SAVED_GAMES) >= 10){
             String selectQuery = "SELECT  * FROM " + TABLE_SAVED_GAMES;
             Cursor cursor = database.rawQuery(selectQuery, null);
@@ -453,11 +454,9 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
                 database.delete(TABLE_SAVED_GAMES, KEY_ID + " = ?", new String[] { cursor.getString(0) });
             }
             cursor.close();
-            database.insert(TABLE_SAVED_GAMES, null, values);
         }
-        else{
-            database.insert(TABLE_SAVED_GAMES, null, values);
-        }
+
+        database.insert(TABLE_SAVED_GAMES, null, values);
 
         database.close();
     }

@@ -73,10 +73,10 @@ import java.util.Random;
 
 /**
  * @author I3ananas, max-dreger
- * @version 20180606
+ * @version 20180809
  * This class implements functions required to handle the process of playing
  */
-public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver, DatabaseSavedGameProvide.DatabaseSavedGameProvideReceiver {
+public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
     PlayRecyclerViewAdapter adapter;
     SharedPreferences sharedPreferences;
     String game_mode;
@@ -173,30 +173,25 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             int seconds = Integer.parseInt(units[1]);
             totalSavedSeconds = 60 * minutes + seconds;
 
-            DatabaseSavedGameProvide provider= new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()), this);
-            AsyncTask<Integer, Void, String[]> execute = provider.execute(id);
-
-
-        }else {
+            DatabaseSavedGameProvide provider = new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()));
+            provider.execute(id);
+        }
+        else {
             short[] test = parameter.getShortArray("info");
             numberOfColumns = test[0];
             numberOfRows = test[1];
             numberOfBombs = test[2];
 
             if((numberOfColumns == 6) && (numberOfRows == 10) && (numberOfBombs == 7)){
-                System.out.println("easy");
                 game_mode = "easy";
             }
             else if((numberOfColumns == 10) && (numberOfRows == 16) && (numberOfBombs == 24)){
-                System.out.println("medium");
                 game_mode = "medium";
             }
             else if((numberOfColumns == 12) && (numberOfRows == 19) && (numberOfBombs == 46)){
-                System.out.println("difficult");
                 game_mode = "difficult";
             }
             else{
-                System.out.println("user-defined");
                 game_mode = "user-defined";
             }
         }
@@ -213,18 +208,17 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             status[i] = 0;
         }
 
-    if (savecheck) {
-        String[] parcedContent = savedContent.split("");
-        String[] parcedStatus = savedStatus.split("");
+        if (savecheck) {
+            String[] parcedContent = savedContent.split("");
+            String[] parcedStatus = savedStatus.split("");
 
-        StringBuilder line = new StringBuilder();
-        for (int i = 0; i < numberOfCells; i++) {
-            line.append(parcedContent[i + 1]);
-            data[i] = Integer.parseInt(parcedContent[i + 1]);
-            status[i] = Integer.parseInt(parcedStatus[i + 1]);
-    }
-}
-
+            StringBuilder line = new StringBuilder();
+            for (int i = 0; i < numberOfCells; i++) {
+                line.append(parcedContent[i + 1]);
+                data[i] = Integer.parseInt(parcedContent[i + 1]);
+                status[i] = Integer.parseInt(parcedStatus[i + 1]);
+            }
+        }
 
         // set up the RecyclerView
         final View heightTest = findViewById(R.id.height_test);
@@ -268,7 +262,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                         }
                     }
                 },50);
-
 
             }
         });
@@ -495,11 +488,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 }
             }
         }
-    }
-
-    //loading saved game
-    public void restartSavedGame(String[] stuff){
-
     }
 
     public void fillSavedGame(String savedContent, String savedStatus){
@@ -910,15 +898,18 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 tempI.putExtras(parameter);
                 startActivityForResult(tempI, 0);
 
-                //first parameter: game mode
-                //second parameter: 1 as one match was played
-                //third parameter: 1 if game was won, 0 if game was lost
-                //fourth parameter: number of uncovered fields
-                //fifth parameter: playing time in seconds (for won games only)
-                //sixth parameter: playing time in seconds
-                //seventh parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
-                Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
-                writer.execute(result_params);
+                //update general statistics (not for user-defined game mode)
+                if(!game_mode.equals("user-defined")){
+                    //first parameter: game mode
+                    //second parameter: 1 as one match was played
+                    //third parameter: 1 if game was won, 0 if game was lost
+                    //fourth parameter: number of uncovered fields
+                    //fifth parameter: playing time in seconds (for won games only)
+                    //sixth parameter: playing time in seconds
+                    //seventh parameter: actual date and time, here 'lost' to indicate that lost game isn't saved in top times list
+                    Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
+                    writer.execute(result_params);
+                }
                 gameEnded = true;
 
             } else {
@@ -986,7 +977,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
             timer.stop();
 
-            if(bestTime > time){
+            if(bestTime > time && !game_mode.equals("user-defined")){
                 newBestTime = true;
             }
 
@@ -999,16 +990,18 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             tempI.putExtras(parameter);
             startActivityForResult(tempI, 0);
 
-            //update general statistics
-            //first parameter: game mode
-            //second parameter: 1 as one match was played
-            //third parameter: 1 if game was won, 0 if game was lost
-            //fourth parameter: number of uncovered fields
-            //fifth parameter: playing time in seconds (for won games only)
-            //sixth parameter: playing time in seconds
-            //seventh parameter: actual date and time
-            Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, time, DateFormat.getDateTimeInstance().format(new Date())};
-            writer.execute(result_params);
+            //update general statistics (not for user-defined game mode)
+            if(!game_mode.equals("user-defined")){
+                //first parameter: game mode
+                //second parameter: 1 as one match was played
+                //third parameter: 1 if game was won, 0 if game was lost
+                //fourth parameter: number of uncovered fields
+                //fifth parameter: playing time in seconds (for won games only)
+                //sixth parameter: playing time in seconds
+                //seventh parameter: actual date and time
+                Object[] result_params = {game_mode, 1, 1, (numberOfCells - countDownToWin), time, time, DateFormat.getDateTimeInstance().format(new Date())};
+                writer.execute(result_params);
+            }
         }
     }
 
@@ -1040,7 +1033,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     states.append(status[i]);
                 }
 
-                //Saves Game
+                //Save game
                 //first parameter: game mode
                 //second parameter: game time
                 //third parameter: date

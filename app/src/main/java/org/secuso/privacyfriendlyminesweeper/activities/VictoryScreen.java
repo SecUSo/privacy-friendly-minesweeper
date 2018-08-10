@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -84,7 +83,7 @@ public class VictoryScreen extends Activity{
             textGM = textGM + ": " + getString(R.string.game_mode_medium);
             textGameMode.setText(textGM);
         }
-        if(game_mode.equals("hard")){
+        if(game_mode.equals("difficult")){
             textGM = textGM + ": " + getString(R.string.game_mode_difficult);
             textGameMode.setText(textGM);
         }

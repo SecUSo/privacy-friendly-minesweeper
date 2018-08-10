@@ -48,7 +48,7 @@ import java.util.List;
 
 /**
  * @author I3ananas
- * @version 20180803
+ * @version 20180809
  * This class implements an activity with three tabs to show statistics about the three different game modes
  */
 public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver {
@@ -113,7 +113,7 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
             for(int i = 0; i < general_statistics.length(); i++){
                 if(general_statistics.getJSONObject(i).getString("game_mode").equals("easy")){ index = 0; }
                 if(general_statistics.getJSONObject(i).getString("game_mode").equals("medium")){ index = 1; }
-                if(general_statistics.getJSONObject(i).getString("game_mode").equals("hard")){ index = 2; }
+                if(general_statistics.getJSONObject(i).getString("game_mode").equals("difficult")){ index = 2; }
 
                 nrOfPlayedGames[index] = general_statistics.getJSONObject(i).getInt("nr_of_played_games");
                 nrOfUncoveredFields[index] = general_statistics.getJSONObject(i).getInt("nr_of_uncovered_fields");
@@ -135,22 +135,18 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
             topTimesMedium = new ArrayList<ArrayList<String>>();
             topTimesDifficult = new ArrayList<ArrayList<String>>();
             for(int i = 0; i < top_times.length(); i++){
+
+                ArrayList<String> topTime = new ArrayList<String>();
+                topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
+                topTime.add(top_times.getJSONObject(i).getString("date"));
+
                 if(top_times.getJSONObject(i).getString("game_mode").equals("easy")){
-                    ArrayList<String> topTime = new ArrayList<String>();
-                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
-                    topTime.add(top_times.getJSONObject(i).getString("date"));
                     topTimesEasy.add(topTime);
                 }
                 if(top_times.getJSONObject(i).getString("game_mode").equals("medium")){
-                    ArrayList<String> topTime = new ArrayList<String>();
-                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
-                    topTime.add(top_times.getJSONObject(i).getString("date"));
                     topTimesMedium.add(topTime);
                 }
-                if(top_times.getJSONObject(i).getString("game_mode").equals("hard")){
-                    ArrayList<String> topTime = new ArrayList<String>();
-                    topTime.add(formatPlayingTime(top_times.getJSONObject(i).getInt("playing_time")));
-                    topTime.add(top_times.getJSONObject(i).getString("date"));
+                if(top_times.getJSONObject(i).getString("game_mode").equals("difficult")){
                     topTimesDifficult.add(topTime);
                 }
             }
@@ -158,7 +154,6 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
             topTimes.add(topTimesEasy);
             topTimes.add(topTimesMedium);
             topTimes.add(topTimesDifficult);
-
         }
         catch(JSONException e){
             Log.d("JSONException", e.getMessage() + "  \n" + e.getCause());

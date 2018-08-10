@@ -17,32 +17,27 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.adapter.SavedGamesRecyclerViewAdapter;
-import org.secuso.privacyfriendlyminesweeper.activities.adapter.TopTimesRecyclerViewAdapter;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesReader;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author I3ananas, max-dreger
- * @version 20180606
+ * @version 20180809
  * This class implements functions to handle a list of saved games that can be continued
  */
 public class SavedGamesActivity extends AppCompatActivity implements DatabaseSavedGamesReader.DatabaseSavedGamesReaderReceiver {
@@ -91,7 +86,6 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
      */
     public void displaySavedGames(JSONObject data){
 
-        int index = 0;
         String game_mode;
         savedGamesData.clear();
 
@@ -101,16 +95,18 @@ public class SavedGamesActivity extends AppCompatActivity implements DatabaseSav
 
             //read saved games
             for(int i = 0; i < savedGames.length(); i++) {
-                if (savedGames.getJSONObject(i).getString("game_mode").equals("easy")) { index = 0; }
-                if (savedGames.getJSONObject(i).getString("game_mode").equals("medium")) { index = 1; }
-                if (savedGames.getJSONObject(i).getString("game_mode").equals("hard")) { index = 2; }
-
                 savedGame = new ArrayList<String>();
                 savedGame.add(String.valueOf(savedGames.getJSONObject(i).getInt("id")));
                 game_mode = savedGames.getJSONObject(i).getString("game_mode");
-                if(game_mode.equals("easy")){ savedGame.add(getResources().getString(R.string.game_mode_easy)); }
-                if(game_mode.equals("medium")){ savedGame.add(getResources().getString(R.string.game_mode_medium)); }
-                if(game_mode.equals("difficult")){ savedGame.add(getResources().getString(R.string.game_mode_difficult)); }
+                if(game_mode.equals("easy")){
+                    savedGame.add(getResources().getString(R.string.game_mode_easy));
+                }
+                else if(game_mode.equals("medium")){
+                    savedGame.add(getResources().getString(R.string.game_mode_medium));
+                }
+                else if(game_mode.equals("difficult")){
+                    savedGame.add(getResources().getString(R.string.game_mode_difficult));
+                }
                 savedGame.add(formatPlayingTime(Integer.valueOf(savedGames.getJSONObject(i).getString("playing_time"))));
                 savedGame.add(savedGames.getJSONObject(i).getString("date"));
                 savedGame.add(savedGames.getJSONObject(i).getString("progress"));

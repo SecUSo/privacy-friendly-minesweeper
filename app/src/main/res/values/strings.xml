@@ -103,7 +103,7 @@
     <item type="id" name="width" />
     <string name="untoggled">Mark mines</string>
     <string name="toggled">Marking…</string>
-    <string name="gameSaved">Game is saved...</string>
+    <string name="gameSaved">Saved game...</string>
 
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Continue Game</string>

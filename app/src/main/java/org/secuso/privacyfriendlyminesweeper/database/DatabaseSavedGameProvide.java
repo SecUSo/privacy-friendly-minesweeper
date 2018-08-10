@@ -21,21 +21,15 @@ import android.os.AsyncTask;
 
 /**
  * @author I3ananas
- * @version 20180806
+ * @version 20180809
  * This class exports and provides a saved game and deletes it from the database (in background / asynchronous)
  */
 public class DatabaseSavedGameProvide extends AsyncTask<Integer, Void, String[]> {
 
-    public interface DatabaseSavedGameProvideReceiver{
-        void restartSavedGame(String[] savedGameData);
-    }
-
-    private final DatabaseSavedGameProvide.DatabaseSavedGameProvideReceiver databaseSavedGameProvideReceiver;
     private final PFMSQLiteHelper helper;
 
-    public DatabaseSavedGameProvide(PFMSQLiteHelper helper, DatabaseSavedGameProvide.DatabaseSavedGameProvideReceiver databaseSavedGameProvideReceiver){
+    public DatabaseSavedGameProvide(PFMSQLiteHelper helper){
         this.helper = helper;
-        this.databaseSavedGameProvideReceiver = databaseSavedGameProvideReceiver;
     }
 
     @Override
@@ -50,15 +44,11 @@ public class DatabaseSavedGameProvide extends AsyncTask<Integer, Void, String[]>
         savedGameData[4] = savedGame.getSAVED_GAME_CONTENT();
         savedGameData[5] = savedGame.getSAVED_GAME_STATUS();
 
+        //requested saved game is deleted from the database
         helper.deleteSavedGameData(position[0]);
 
         helper.close();
 
         return savedGameData;
-    }
-
-    @Override
-    protected void onPostExecute(String[] savedGameData){
-        databaseSavedGameProvideReceiver.restartSavedGame(savedGameData);
     }
 }
