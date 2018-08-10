@@ -1022,9 +1022,14 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             if (game_mode.equals("user-defined")) {
 
             } else {
-                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
-                long gametime = gametimeInMillis / 1000;
-                int time = (int) gametime;
+                int time;
+                if (firstClick) {
+                    time = totalSavedSeconds;
+                } else {
+                    long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+                    long gametime = gametimeInMillis / 1000;
+                    time = (int) gametime;
+                }
 
                 StringBuilder content = new StringBuilder();
                 StringBuilder states = new StringBuilder();
