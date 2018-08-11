@@ -212,11 +212,14 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             String[] parcedContent = savedContent.split("");
             String[] parcedStatus = savedStatus.split("");
 
-            StringBuilder line = new StringBuilder();
             for (int i = 0; i < numberOfCells; i++) {
-                line.append(parcedContent[i + 1]);
-                data[i] = Integer.parseInt(parcedContent[i + 1]);
-                status[i] = Integer.parseInt(parcedStatus[i + 1]);
+                if (parcedContent.length == data.length) {
+                    data[i] = Integer.parseInt(parcedContent[i]);
+                    status[i] = Integer.parseInt(parcedStatus[i]);
+                }else if (parcedContent.length > data.length) {
+                    data[i] = Integer.parseInt(parcedContent[i + 1]);
+                    status[i] = Integer.parseInt(parcedStatus[i + 1]);
+                }
             }
         }
 
