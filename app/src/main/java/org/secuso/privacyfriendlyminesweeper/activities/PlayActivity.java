@@ -107,23 +107,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     String savedContent;
     String savedStatus;
     int totalSavedSeconds;
+    Toolbar toolbar;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
         setContentView(R.layout.activity_play);
-
-        //creating the custom toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(getSupportActionBar() == null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            LayoutInflater toolbar_inflater = LayoutInflater.from(this);
-            View toolbar_customview = toolbar_inflater.inflate(R.layout.custom_toolbar_play, null);
-
-            getSupportActionBar().setCustomView(toolbar_customview);
-            getSupportActionBar().setDisplayShowCustomEnabled(true);
-        }
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -196,6 +184,26 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar_play);
+        if(getSupportActionBar() == null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            TextView text_game_mode = (TextView) toolbar.findViewById(R.id.game_mode);
+            if(game_mode.equals("easy")){
+                text_game_mode.setText(getResources().getString(R.string.game_mode_easy));
+            }
+            if(game_mode.equals("medium")){
+                text_game_mode.setText(getResources().getString(R.string.game_mode_medium));
+            }
+            if(game_mode.equals("difficult")){
+                text_game_mode.setText(getResources().getString(R.string.game_mode_difficult));
+            }
+            if(game_mode.equals("user-defined")){
+                text_game_mode.setText(getResources().getString(R.string.game_mode_user_defined));
+            }
+        }
+
         //Creating the right sized the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfCells];
@@ -212,14 +220,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             String[] parcedContent = savedContent.split("");
             String[] parcedStatus = savedStatus.split("");
 
+            StringBuilder line = new StringBuilder();
             for (int i = 0; i < numberOfCells; i++) {
-                if (parcedContent.length == data.length) {
-                    data[i] = Integer.parseInt(parcedContent[i]);
-                    status[i] = Integer.parseInt(parcedStatus[i]);
-                }else if (parcedContent.length > data.length) {
-                    data[i] = Integer.parseInt(parcedContent[i + 1]);
-                    status[i] = Integer.parseInt(parcedStatus[i + 1]);
-                }
+                line.append(parcedContent[i + 1]);
+                data[i] = Integer.parseInt(parcedContent[i + 1]);
+                status[i] = Integer.parseInt(parcedStatus[i + 1]);
             }
         }
 
@@ -299,10 +304,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         revealingAround = false;
         bombsLeft = numberOfBombs;
-        mines = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.mines);
+        mines = (TextView) toolbar.findViewById(R.id.mines);
         mines.setText(String.valueOf(bombsLeft));
 
-        ImageView mines_pic = (ImageView) getSupportActionBar().getCustomView().findViewById(R.id.mines_pic);
+        ImageView mines_pic = (ImageView) toolbar.findViewById(R.id.mines_pic);
         mines_pic.setImageResource(R.drawable.mine);
 
         bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
@@ -572,11 +577,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 firstClick = false;
                 gameEnded = false;
 
-                timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
+                timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
             } else {
-                timer = (Chronometer) getSupportActionBar().getCustomView().findViewById(R.id.chronometer);
+                timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
                 timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
                 timer.start();
             }
@@ -1048,10 +1053,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 //fourth parameter: progress
                 //fifth parameter: string coding the content of the playingfield
                 //sixth parameter: string coding the status of the playingfield
-                DatabaseSavedGameWriter writer_1 = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
+                DatabaseSavedGameWriter writer = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
                 Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
-                writer_1.execute(data);
+                writer.execute(data);
 
+                //notify that game is saved
                 Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
                 saveGameInfo.show();
             }

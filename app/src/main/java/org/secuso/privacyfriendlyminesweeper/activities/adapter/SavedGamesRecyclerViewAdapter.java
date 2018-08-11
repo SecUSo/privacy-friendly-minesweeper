@@ -105,6 +105,17 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             Bundle param = new Bundle();
             param.putBoolean("continue", true);
 
+            //language-specific game mode has to be translated into english (database standard)
+            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_easy))){
+                information.set(1, "easy");
+            }
+            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_medium))){
+                information.set(1, "medium");
+            }
+            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_difficult))){
+                information.set(1, "difficult");
+            }
+
             param.putStringArrayList("information", information);
 
             Intent intent_with_param = new Intent(view.getContext(), PlayActivity.class);

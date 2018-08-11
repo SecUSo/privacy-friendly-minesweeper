@@ -28,9 +28,9 @@
     <string name="screenTooSmall">Bitte beachten: Spielerlebnis aufgrund der Spielfeldgröße bei diesem Modus bei dieser Displaygröße eingeschränkt.</string>
     <string name="startGame">Weiter</string>
     <string name="cancel">Abbrechen</string>
-    <string name="nr_of_columns">Anzahl Spalten eingeben</string>
-    <string name="nr_of_rows">Anzahl Zeilen eingeben</string>
-    <string name="degree_of_difficulty">Schwierigkeit setzen</string>
+    <string name="nr_of_columns">Anzahl Spalten</string>
+    <string name="nr_of_rows">Anzahl Zeilen</string>
+    <string name="degree_of_difficulty">Schwierigkeit</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>

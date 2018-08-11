@@ -29,9 +29,9 @@
     <string name="screenTooSmall">Please note: Limited user experience due to number of fields in this game mode and size of this screen.</string>
     <string name="startGame">Continue</string>
     <string name="cancel">Cancel</string>
-    <string name="nr_of_columns">Enter the number of columns</string>
-    <string name="nr_of_rows">Enter the number of rows</string>
-    <string name="degree_of_difficulty">Enter the degree of difficulty</string>
+    <string name="nr_of_columns">Number of columns</string>
+    <string name="nr_of_rows">Number of rows</string>
+    <string name="degree_of_difficulty">Degree of difficulty</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>

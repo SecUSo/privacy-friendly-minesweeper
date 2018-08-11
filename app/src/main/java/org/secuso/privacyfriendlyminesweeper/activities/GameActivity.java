@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.content.Intent;
@@ -251,10 +252,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View view = this.getLayoutInflater().inflate(R.layout.dialog_user_defined_game_mode, null);
         builder.setView(view);
-        Spinner spinner = (Spinner) view.findViewById(R.id.degreeOfDifficulty);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_defined_degrees_of_difficulty, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
         builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
             @Override
@@ -266,42 +263,39 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
                 EditText nrOfColumns_editText = (EditText) view.findViewById(R.id.editTextNrOfColumns);
                 EditText nrOfRows_editText = (EditText) view.findViewById(R.id.editTextNrOfRows);
-                Spinner degreeOfDifficulty_spinner = (Spinner) view.findViewById(R.id.degreeOfDifficulty);
+                SeekBar seekbar = (SeekBar) view.findViewById(R.id.degreeOfDifficulty);
+
                 if(!nrOfColumns_editText.getText().toString().equals("")){
                     nrOfColumns = Integer.valueOf(nrOfColumns_editText.getText().toString());
                 }
                 else{
-                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
-                    saveGameInfo.show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!nrOfRows_editText.getText().toString().equals("")){
                     nrOfRows = Integer.valueOf(nrOfRows_editText.getText().toString());
                 }
                 else{
-                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
-                    saveGameInfo.show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String degreeOfDifficulty = degreeOfDifficulty_spinner.getSelectedItem().toString();
                 int nrOfCells = nrOfColumns * nrOfRows;
 
                 //playing field with just one cell is not working, thus do not start a game with this parameters
                 if((nrOfColumns <= 1) || (nrOfRows <= 1)){
-                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT);
-                    saveGameInfo.show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_easy))){
+                if(seekbar.getProgress() == 0){
                     nrOfBombs = (int)Math.round((double)nrOfCells * 0.12);
                 }
-                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_medium))){
+                if(seekbar.getProgress() == 1){
                     nrOfBombs = (int)Math.round((double)nrOfCells * 0.15);
                 }
-                if(degreeOfDifficulty.equals(getResources().getString(R.string.game_mode_difficult))){
-                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.2);
+                if(seekbar.getProgress() == 2){
+                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.20);
                 }
 
                 if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
