@@ -36,7 +36,7 @@ import org.secuso.privacyfriendlyminesweeper.activities.SavedGamesActivity;
 import java.util.ArrayList;
 
 /**
- * @author I3ananas
+ * @author I3ananas, max-dreger
  * @version 20180802
  * This class implements an adapter to handle the items/views in a list of saved games
  * Saved games can be restarted from this list

@@ -29,6 +29,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -112,8 +113,7 @@ public class SettingsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_settings);
 
-        //setupActionBar();
-
+        setupActionBar();
 
         overridePendingTransition(0, 0);
     }
@@ -126,13 +126,17 @@ public class SettingsActivity extends BaseActivity {
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
-    /*private void setupActionBar() {
+    private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }*/
+    }
 
     /*@Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {

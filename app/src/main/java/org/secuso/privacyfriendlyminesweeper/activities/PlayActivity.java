@@ -86,7 +86,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int numberOfCells;
     RecyclerView recyclerView;
     int maxHeight;
-    int maxWidth;
     boolean firstTime;
     boolean marking;
     int[] data;
@@ -122,9 +121,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         newBestTime = false;
         gameEnded = true;
 
+        //check if this is loading a saved game
         parameter = this.getIntent().getExtras();
         savecheck = false;
         savecheck = parameter.getBoolean("continue");
+        //get the game mode and playingfield size
         if (savecheck == true){
             ArrayList<String> savedInfo = parameter.getStringArrayList("information");
             int id = Integer.valueOf(savedInfo.get(0));
@@ -156,6 +157,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 numberOfBombs = 46;
             }
 
+            //handle the saved time
             String[] units = time.split(":");
             int minutes = Integer.parseInt(units[0]);
             int seconds = Integer.parseInt(units[1]);
@@ -164,6 +166,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             DatabaseSavedGameProvide provider = new DatabaseSavedGameProvide(new PFMSQLiteHelper(getApplicationContext()));
             provider.execute(id);
         }
+        //get game mode and PlayingField size if this is not loading a saved game
         else {
             short[] test = parameter.getShortArray("info");
             numberOfColumns = test[0];
@@ -184,6 +187,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
+        //handle the custom toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar_play);
         if(getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
@@ -216,6 +220,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             status[i] = 0;
         }
 
+        //parce the Content and Status String if this is loading a saved game
         if (savecheck) {
             String[] parcedContent = savedContent.split("");
             String[] parcedStatus = savedStatus.split("");
@@ -251,7 +256,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
                 if (firstTime) {
                     firstTime=false;
-                    createAdapter(maxHeight, status);
+                    createAdapter(maxHeight);
                     //after heightTest is made invisible the grid is redrawn, this time with the correct maxheight
                     heightTest.setVisibility(View.GONE);
                 }
@@ -276,7 +281,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         //fistLaunch
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
-        createAdapter(maxHeight, status);
+        createAdapter(maxHeight);
 
         firstClick = true;
 
@@ -315,11 +320,20 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
     }
 
-    private void createAdapter(int maximumHeight, int[] stati) {
-        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight, stati);
+    /**
+     * This method creates a new PlayRecyclerViewAdapter with the given parameters and connects it to the RecyclerView with the Playing Field
+     * @param maximumHeight the maximum height of the singe Cells of the Playing Field
+     */
+    private void createAdapter(int maximumHeight) {
+        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
+
+    /**
+     * This method fills the playing Field with data. First it puts the needed amount of bombs in random Cells, then Calculates the Number of Neighboring Bomb for each Cell
+     * @param notHere the position of the Cell where the user clicked first. This one can not have a Bomb in it
+     */
     private void fillPlayingField(int notHere){
 
         //put bombs at random positions
@@ -507,14 +521,19 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
+    /**
+     * This method fills the playing Field with the data from the saved game and alters the PlayingField until it is in the same state as the Saved Game and ready to be continued
+     * @param savedContent A String coding the Content of each Cell (if there is a Bomb there and how many neighboring Bombs)
+     * @param savedStatus A string coding the status of each Cell (if it is untouched, revealed or marked)
+     */
     public void fillSavedGame(String savedContent, String savedStatus){
 
+        //Parce the Stings
         String[] parcedContent = savedContent.split("");
         String[] parcedStatus = savedStatus.split("");
 
-        StringBuilder line = new StringBuilder();
+        //Fill the Playing Field by going through Cell by Cell, filling it with the saved content and setting it to the appropriate status
         for (int i = 0; i < numberOfCells; i++) {
-            line.append(parcedContent[i+1]);
             data[i] = Integer.parseInt(parcedContent[i+1]);
             status[i] = Integer.parseInt(parcedStatus[i+1]);
 
@@ -700,8 +719,14 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         return counterBombs;
     }
 
+    /**
+     * This method overrides the onItemClick of the Playing Field cells.
+     * @param view the View Containing the Cell where the event was triggered
+     * @param position the position of the Cell that was clicked
+     */
     @Override
     public void onItemClick(View view, int position) {
+        //on the first click the timer must be started and the PlayingField must be filled
         if (firstClick) {
             if (!savecheck) {
                 fillPlayingField(position);
@@ -720,9 +745,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
 
         LinearLayout cellview = (LinearLayout) view;
-        RecyclerView.ViewHolder testviewww = recyclerView.findViewHolderForAdapterPosition(position);
-        CellView testcell = (CellView) testviewww.itemView.findViewWithTag(maxHeight);
-
         CellView cell = (CellView) cellview.getChildAt(0);
 
         //check if cell is already revealed and has the right amount of mines marked
@@ -740,25 +762,16 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     countDownToWin++;
                     status[position] = 0;
                     cell.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                 //   cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
-                //    cell.setBackgroundResource(R.color.colorAccent);
 
                     bombsLeft++;
                     mines.setText(String.valueOf(bombsLeft));
                 } else {
                     status[position] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
-                 //   builder.append(" ");
-                  //  builder.setSpan(new ImageSpan(this, R.drawable.flag),builder.length() - 1, builder.length(), 0);
-                   // builder.append(" Cree by Dexode");
-
-              //      cell.setText(builder);
-              //      cell.setCompoundDrawablesWithIntrinsicBounds(R.drawable.flag2, 0, 0, 0);
                     Drawable img = getDrawable(R.drawable.flag);
                     img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
-                   // img.setColorFilter(new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null), PorterDuff.Mode.SRC_IN));
-                   // img.setAlpha(0);
                     cell.setCompoundDrawables(img,null,null,null);
+
                     bombsLeft--;
                     countDownToWin--;
                     mines.setText(String.valueOf(bombsLeft));
@@ -772,6 +785,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
+    /**
+     * This method has two functions. Firstly it checks if the right amount of Bombs is marked around a revealed and clicked cell.
+     * Secondly it reveals every Cell that is not marked next to the given Position.
+     * @param position position of the cell on the playing field around witch we want to operate
+     * @param revealed if true we check if there is the right Amount of Bombs marked next to the revealed Cell at position,
+     *                 if false we reaveal all Cells in a Circle around position
+     */
     private void revealAroundCell(int position, boolean revealed) {
 
         //if revealed is true then
@@ -1004,8 +1024,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
+    /**
+     * This method handles the revealing of a Cell at a specific position
+     * @param position position of the cell on the playing field
+     */
     private void revealCell(int position) {
 
+        //if another cell reveal already lost the game this Method doesnt do anything
         if (gameEnded) {
             return;
         }
@@ -1106,8 +1131,12 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
+    /**
+     * This method checks if the game is won and
+     */
     private void victoryCheck() {
-        if(countDownToWin == 0) {
+        //if all Cells are revealed or marked and the right Number of Bombs is marked
+        if(countDownToWin == 0 && bombsLeft == 0) {
             gameEnded = true;
 
             long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
@@ -1125,6 +1154,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             parameter.putString("gameMode", game_mode);
             parameter.putBoolean("newBestTime", newBestTime);
 
+            //start victory screen
             Intent tempI = new Intent(this, VictoryScreen.class);
             tempI.putExtras(parameter);
             startActivityForResult(tempI, 0);
@@ -1144,7 +1174,12 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
-    //We use this Method so this Activity closes when a button in the Victory screen gets pressed
+    /**
+     * This method is used to close the PlayActivity when a button on the Victory Screen is pressed
+     * @param requestCode the Code for the request, should be 0 if all went well
+     * @param resultCode the Code for the result, should be RESULT_OK if nothing broke
+     * @param data the Intent of the Activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
@@ -1154,13 +1189,17 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
     }
 
-    //saving games on exit for later continuing
+    /**
+     * This method is used to save the game if the PlayActivity is exited without winning or losing
+     */
     @Override
     public void onStop(){
+        //check if the game has not ended
         if (!gameEnded){
+            //no saving of user defined mode
             if (game_mode.equals("user-defined")) {
-
             } else {
+                //ready the save Data
                 int time;
                 if (firstClick) {
                     time = totalSavedSeconds;
@@ -1196,14 +1235,9 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         super.onStop();
     }
 
-    public int getNumberOfRows() { return numberOfRows; }
-
-    public int getNumberOfColumns() { return numberOfColumns; }
-
-    public int getNumberOfMines() { return numberOfBombs; }
-
-    public int getMaxHeight() { return maxHeight; }
-
+    /**
+     * This method is used to set the best time for comparison
+     */
     public void setBestTime(int bt){
         bestTime = bt;
     }

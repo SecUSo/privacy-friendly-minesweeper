@@ -15,16 +15,17 @@ import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.CellView;
 
 import java.util.LinkedList;
-
+/**
+ * @author max-dreger
+ * @version 20180809
+ * This class implements an adapter of handle the Views of the Cells in the Playing Field
+ */
 public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerViewAdapter.ViewHolder> {
 
     private int[] mData;
-    private int[] mStatus;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int maxHeightOfCells;
-    private int maxWidthOfCells;
-    public LinkedList<CellView> list;
 
     // data is passed into the constructor
     public PlayRecyclerViewAdapter(Context context, int[] data) {
@@ -33,12 +34,10 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
     }
 
     // data is passed into the constructor
-    public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight, int[]status) {
+    public PlayRecyclerViewAdapter(Context context, int[] data, int maxHeight) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.mStatus = status;
         maxHeightOfCells = maxHeight;
-        list = new LinkedList<CellView>();
     }
 
     // inflates the cell layout from xml when needed
@@ -51,7 +50,6 @@ public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerVi
 
         CellView test = (CellView) view.findViewById(R.id.cell);
 
-        list.add(test);
         return new ViewHolder(view);
     }
 
