@@ -573,6 +573,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 mines.setText(String.valueOf(bombsLeft));
             }
         }
+
+        timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
+        timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
+
         firstClick = true;
         gameEnded = false;
 
@@ -708,6 +712,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
             } else {
+                firstClick = false;
                 timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
                 timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
                 timer.start();
