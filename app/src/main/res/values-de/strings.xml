@@ -43,7 +43,7 @@
     <string name="help_feature_three">Umgebung eines Felds aufdecken</string>
     <string name="help_feature_three_answer">Durch Anklicken eines bereits aufgedeckten Felds wird dessen Umgebung aufgedeckt, falls die Anzahl an Flaggen in der Umgebung mit der Zahl des Felds übereinstimmt.</string>
     <string name="help_feature_four">Symbolleiste im Spiel</string>
-    <string name="help_feature_four_answer">Während eines Spiels wird in der Symbolleiste der Schwierigkeitsgrad, die aktuelle Differenz zwischen markierten Feldern Minen sowie die bisher gespielte Zeit angezeigt.</string>
+    <string name="help_feature_four_answer">Während eines Spiels wird in der Symbolleiste der Schwierigkeitsgrad, die aktuelle Differenz zwischen markierten Feldern und Minen sowie die bisher gespielte Zeit angezeigt.</string>
     <string name="help_feature_five">Minen markieren</string>
     <string name="help_feature_five_answer">Felder, unter denen Minen vermutet werden, können mit Flaggen markiert werden. Dazu muss der Markieren-Modus aktiviert werden. Gesetzte Flaggen können durch erneutes Klicken wieder entfernt werden.</string>
     <string name="help_feature_six">Performance</string>

@@ -331,12 +331,21 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             //redo if the first clicked cell would get a bomb
             if(position == notHere) {
                 i--;
-            } else {
-                //9 equals a bomb
-                //redo random position if there is a bomb already
-                if (data[position] == 9) {
-                    i--;
-                }
+            }
+            //9 equals a bomb
+            //redo random position if there is a bomb already
+            else if (data[position] == 9) {
+                i--;
+            }
+            //redo if placing a bomb at position would produce a cluster of bombs
+            //4 or more horizontally and vertically neighbouring bombs are considered to be a cluster
+            //possible arrangements that are prevented:
+            //1) XX  2) XX   3) XXXX  4) XXX  5) XXX
+            //   XX      XX              X        X
+            else if(numberOfNeighbouringBombs(position, 0, position, new ArrayList<Integer>()) >= 3){
+                i--;
+            }
+            else {
                 data[position] = 9;
             }
         }
@@ -569,6 +578,124 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
     }
 
+    /**
+     * This method counts the number of horizontally and vertically neighbouring bombs of a cell
+     * @param position position of the cell on the playing field
+     * @param counterBombs variable to count number of bombs (recursively)
+     * @param rootPosition position / cell that invokes the method (mustn't considered as neighbour)
+     * @param checkedNeighbours all checked neighbours are stored to ensure that they are not counted twice
+     * @return number of (recursively) neighbouring bombs of the cell at position
+     */
+    private int numberOfNeighbouringBombs(int position, int counterBombs, int rootPosition, ArrayList<Integer> checkedNeighbours){
+
+        //increase counter if there is a bomb on the cell at position and store the position
+        if(data[position] == 9){
+            checkedNeighbours.add(position);
+            counterBombs++;
+        }
+
+        //bottom left
+        if(position == 0){
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //bottom right
+        else if(position == (numberOfColumns - 1)){
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //top left
+        else if(position == (numberOfCells - numberOfColumns)){
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //top right
+        else if(position == (numberOfCells - 1)){
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //bottom row
+        else if(position < numberOfColumns){
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //top row
+        else if(position > (numberOfCells - numberOfColumns)){
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //left column
+        else if((position % numberOfColumns) == 0){
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //right column
+        else if((position % numberOfColumns) == (numberOfColumns - 1)){
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        //inner cells
+        else{
+            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
+                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
+                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
+            }
+            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
+            }
+            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
+                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+            }
+        }
+        return counterBombs;
+    }
+
     @Override
     public void onItemClick(View view, int position) {
         if (firstClick) {
@@ -585,7 +712,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
                 timer.start();
             }
-
         }
 
         LinearLayout cellview = (LinearLayout) view;
