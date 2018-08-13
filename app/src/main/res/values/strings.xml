@@ -97,6 +97,10 @@
     <string name="topTenTimes">Top 10 - Best Times</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
+    <string name="resetAllStatistics">Reset all statistics</string>
+    <string name="resetAllStatisticsDialogText">Reset all statistics?</string>
+    <string name="resetAllStatisticsDialogYes">Yes</string>
+    <string name="resetAllStatisticsDialogNo">No</string>
 
     <!-- ### PLAY ### -->
     <item type="id" name="height" />
@@ -123,11 +127,6 @@
     <string name="ok">OK, sweet!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
-    <string-array name="user_defined_degrees_of_difficulty">
-        <item>Easy</item>
-        <item>Medium</item>
-        <item>Difficult</item>
-    </string-array>
     <string name="userDefinedInvalid">Invalid parameters - games require at least two columns and rows.</string>
 
 </resources>

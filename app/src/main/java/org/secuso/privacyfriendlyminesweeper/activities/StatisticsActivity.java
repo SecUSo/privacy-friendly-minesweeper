@@ -17,6 +17,7 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -24,12 +25,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,17 +45,20 @@ import org.secuso.privacyfriendlyminesweeper.activities.adapter.TopTimesRecycler
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseReader.DatabaseReaderReceiver;
+import org.secuso.privacyfriendlyminesweeper.database.DatabaseReset;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 /**
  * @author I3ananas
  * @version 20180809
  * This class implements an activity with three tabs to show statistics about the three different game modes
  */
-public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver {
+public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver, DatabaseReset.DatabaseResetReceiver {
 
     FragmentManager fragmentManager;
     StatisticsPagerAdapter statisticsPagerAdapter;
@@ -111,24 +117,39 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
             JSONArray top_times = data.getJSONObject("PF_MINESWEEPER_DB").getJSONArray("TOP_TIMES");
 
             //read general statistics
-            for(int i = 0; i < general_statistics.length(); i++){
-                if(general_statistics.getJSONObject(i).getString("game_mode").equals("easy")){ index = 0; }
-                if(general_statistics.getJSONObject(i).getString("game_mode").equals("medium")){ index = 1; }
-                if(general_statistics.getJSONObject(i).getString("game_mode").equals("difficult")){ index = 2; }
+            if(general_statistics.length() > 0) {
+                for (int i = 0; i < general_statistics.length(); i++) {
+                    if (general_statistics.getJSONObject(i).getString("game_mode").equals("easy")) {
+                        index = 0;
+                    }
+                    if (general_statistics.getJSONObject(i).getString("game_mode").equals("medium")) {
+                        index = 1;
+                    }
+                    if (general_statistics.getJSONObject(i).getString("game_mode").equals("difficult")) {
+                        index = 2;
+                    }
 
-                nrOfPlayedGames[index] = general_statistics.getJSONObject(i).getInt("nr_of_played_games");
-                nrOfUncoveredFields[index] = general_statistics.getJSONObject(i).getInt("nr_of_uncovered_fields");
-                if(nrOfPlayedGames[index] != 0){
-                    winrate[index] = (general_statistics.getJSONObject(i).getInt("nr_of_won_games")*100) / nrOfPlayedGames[index];
+                    nrOfPlayedGames[index] = general_statistics.getJSONObject(i).getInt("nr_of_played_games");
+                    nrOfUncoveredFields[index] = general_statistics.getJSONObject(i).getInt("nr_of_uncovered_fields");
+                    if (nrOfPlayedGames[index] != 0) {
+                        winrate[index] = (general_statistics.getJSONObject(i).getInt("nr_of_won_games") * 100) / nrOfPlayedGames[index];
+                    } else {
+                        winrate[index] = 0;
+                    }
+                    if (general_statistics.getJSONObject(i).getInt("nr_of_won_games") != 0) {
+                        averagePlayingTime[index] = general_statistics.getJSONObject(i).getInt("wins_playing_time") / general_statistics.getJSONObject(i).getInt("nr_of_won_games");
+                    } else {
+                        averagePlayingTime[index] = 0;
+                    }
                 }
-                else{
-                    winrate[index] = 0;
-                }
-                if(general_statistics.getJSONObject(i).getInt("nr_of_won_games") != 0){
-                    averagePlayingTime[index] = general_statistics.getJSONObject(i).getInt("wins_playing_time") / general_statistics.getJSONObject(i).getInt("nr_of_won_games");
-                }
-                else {
-                    averagePlayingTime[index] = 0;
+            }
+            else{
+                //reset general statistics if there are no data sets
+                for(int i = 0; i < 3; i++){
+                    nrOfPlayedGames[i] = 0;
+                    nrOfUncoveredFields[i] = 0;
+                    winrate[i] = 0;
+                    averagePlayingTime[i] = 0;
                 }
             }
 
@@ -211,6 +232,47 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         TextView textView_averageTime = (TextView) fragmentView.findViewById(R.id.value_averageTime);
         textView_averageTime.setText(String.valueOf(formatPlayingTime(averagePlayingTime[id])));
 
+    }
+
+    /**
+     * Read and display statistics from database after reset operation
+     */
+    public void resetStatistics(){
+        DatabaseReader reader = new DatabaseReader(new PFMSQLiteHelper(getApplicationContext()), this);
+        reader.execute(String.valueOf(getApplicationContext().getDatabasePath("PF_MINESWEEPER_DB")));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.statistics_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.resetAllStatistics:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.resetAllStatisticsDialogText);
+                builder.setPositiveButton(R.string.resetAllStatisticsDialogYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        DatabaseReset reset = new DatabaseReset(new PFMSQLiteHelper(getApplicationContext()), StatisticsActivity.this);
+                        reset.execute();
+                    }
+                });
+                builder.setNegativeButton(R.string.resetAllStatisticsDialogNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do nothing
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
