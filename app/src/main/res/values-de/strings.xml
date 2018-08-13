@@ -95,6 +95,10 @@
     <string name="topTenTimes">Top 10 - Bestzeiten</string>
     <string name="time">Zeit</string>
     <string name="date">Datum</string>
+    <string name="resetAllStatistics">Alle Statistiken zurücksetzen</string>
+    <string name="resetAllStatisticsDialogText">Alle Statistiken zurücksetzen?</string>
+    <string name="resetAllStatisticsDialogYes">Ja</string>
+    <string name="resetAllStatisticsDialogNo">Nein</string>
 
     <!-- ### PLAY ### -->
     <item type="id" name="height" />
@@ -121,11 +125,6 @@
     <string name="ok">Alles klar!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
-    <string-array name="user_defined_degrees_of_difficulty">
-        <item>Einfach</item>
-        <item>Normal</item>
-        <item>Schwer</item>
-    </string-array>
     <string name="userDefinedInvalid">Ungültige Parameter - mindestens zwei Spalten und Zeilen erforderlich.</string>
 
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.secuso.privacyfriendlyminesweeper.activities.StatisticsActivity"
+    android:foreground="?selectableItemBackgroundBorderless" >
+
+    <item
+        android:id="@+id/resetAllStatistics"
+        android:title="@string/resetAllStatistics"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        app:showAsAction="ifRoom" />
+
+</menu>
