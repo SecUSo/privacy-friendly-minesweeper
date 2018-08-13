@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="sans-serif"/>
 
         </LinearLayout>
@@ -52,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="sans-serif"/>
 
         </LinearLayout>
@@ -104,6 +106,8 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:max="2"
+        android:progressTint="@color/colorAccent"
+        android:thumbTint="@color/colorPrimary"
         android:theme="@style/Base.Widget.AppCompat.SeekBar.Discrete">
     </SeekBar>
 

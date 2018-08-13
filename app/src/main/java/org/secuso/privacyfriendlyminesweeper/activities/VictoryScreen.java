@@ -25,7 +25,7 @@ public class VictoryScreen extends Activity{
 
         infoForScreen = this.getIntent().getExtras();
 
-        setContentView(R.layout.activity_vicotry);
+        setContentView(R.layout.activity_victory);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.playingfield);
        // int height = recyclerView.getMeasuredHeight();
@@ -128,9 +128,14 @@ public class VictoryScreen extends Activity{
     }
 
     private void toGameActivity() {
+
+        //this works, but the screen might be black for a moment as the activity is restarted
+        //omitting this code snippet solves the issue as the existing game activity instance comes to the foreground
+        /*
         Intent intent = new Intent(this, GameActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        */
 
         finish();
     }

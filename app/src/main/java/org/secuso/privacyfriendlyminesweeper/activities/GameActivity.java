@@ -227,6 +227,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
      */
     private void showDialogIfScreenTooSmall(final int columns, final int rows, final int nrOfBombs){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.screenTooSmall_title);
         builder.setMessage(R.string.screenTooSmall);
         builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
             @Override

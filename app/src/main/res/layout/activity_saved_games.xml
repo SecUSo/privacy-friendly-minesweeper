@@ -12,7 +12,8 @@
         android:id="@+id/savedGamesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:overScrollMode="ifContentScrolls">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
