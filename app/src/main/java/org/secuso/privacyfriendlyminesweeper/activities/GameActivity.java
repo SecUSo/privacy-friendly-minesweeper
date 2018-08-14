@@ -404,15 +404,27 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
             View rootView = inflater.inflate(R.layout.fragment_game_mode, container, false);
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            ImageView image_mine1 = (ImageView) rootView.findViewById(R.id.mine1);
+            ImageView image_mine2 = (ImageView) rootView.findViewById(R.id.mine2);
+            ImageView image_mine3 = (ImageView) rootView.findViewById(R.id.mine3);
             switch (id){
                 case 0:
                     textView.setText(R.string.game_mode_easy);
+                    image_mine1.setImageAlpha(255);
+                    image_mine2.setImageAlpha(100);
+                    image_mine3.setImageAlpha(100);
                     break;
                 case 1:
                     textView.setText(R.string.game_mode_medium);
+                    image_mine1.setImageAlpha(255);
+                    image_mine2.setImageAlpha(255);
+                    image_mine3.setImageAlpha(100);
                     break;
                 case 2:
                     textView.setText(R.string.game_mode_difficult);
+                    image_mine1.setImageAlpha(255);
+                    image_mine2.setImageAlpha(255);
+                    image_mine3.setImageAlpha(255);
                     break;
             }
             return rootView;

@@ -24,8 +24,7 @@
         <ImageView
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"
-            android:background="@drawable/flag"
-            />
+            android:background="@drawable/ic_flag" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -25,8 +25,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyminesweeper.R;
@@ -60,6 +60,21 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             holder.savedGameMode.setText(savedGameParameters.get(position).get(1));
             holder.savedGamePlayingTime.setText(savedGameParameters.get(position).get(2));
             holder.savedGameDate.setText(savedGameParameters.get(position).get(3));
+            if(savedGameParameters.get(position).get(1).equals(savedGamesActivity.getResources().getString(R.string.game_mode_easy))){
+                holder.mine1.setImageAlpha(255);
+                holder.mine2.setImageAlpha(100);
+                holder.mine3.setImageAlpha(100);
+            }
+            if(savedGameParameters.get(position).get(1).equals(savedGamesActivity.getResources().getString(R.string.game_mode_medium))){
+                holder.mine1.setImageAlpha(255);
+                holder.mine2.setImageAlpha(255);
+                holder.mine3.setImageAlpha(100);
+            }
+            if(savedGameParameters.get(position).get(1).equals(savedGamesActivity.getResources().getString(R.string.game_mode_difficult))){
+                holder.mine1.setImageAlpha(255);
+                holder.mine2.setImageAlpha(255);
+                holder.mine3.setImageAlpha(255);
+            }
             holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(4)) * 100)));
             holder.information = savedGameParameters.get(position);
         }
@@ -81,11 +96,14 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public int id;
-        public TextView savedGameMode;
-        public TextView savedGameDate;
-        public TextView savedGamePlayingTime;
-        public ProgressBar savedGameProgress;
-        public ArrayList<String> information;
+        private TextView savedGameMode;
+        private TextView savedGameDate;
+        private TextView savedGamePlayingTime;
+        private ImageView mine1;
+        private ImageView mine2;
+        private ImageView mine3;
+        private ProgressBar savedGameProgress;
+        private ArrayList<String> information;
         private SavedGamesActivity activity;
 
         //get text views to display information about saved games
@@ -93,10 +111,13 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             super(saved_game_list_element);
             saved_game_list_element.setOnClickListener(this);
 
-            this.savedGameMode = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(0);
-            this.savedGamePlayingTime = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(2);
-            this.savedGameDate = (TextView) ((RelativeLayout) saved_game_list_element.getChildAt(0)).getChildAt(1);
-            this.savedGameProgress = (ProgressBar) ((RelativeLayout) saved_game_list_element.getChildAt(1)).getChildAt(0);
+            this.savedGameMode = (TextView) saved_game_list_element.findViewById(R.id.saved_game_mode);
+            this.savedGamePlayingTime = (TextView) saved_game_list_element.findViewById(R.id.saved_game_time);
+            this.savedGameDate = (TextView) saved_game_list_element.findViewById(R.id.saved_game_date);
+            this.savedGameProgress = (ProgressBar) saved_game_list_element.findViewById(R.id.saved_game_progress_bar);
+            this.mine1 = (ImageView) saved_game_list_element.findViewById(R.id.saved_game_mine1);
+            this.mine2 = (ImageView) saved_game_list_element.findViewById(R.id.saved_game_mine2);
+            this.mine3 = (ImageView) saved_game_list_element.findViewById(R.id.saved_game_mine3);
 
             this.activity = activity;
         }

@@ -17,39 +17,25 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,7 +52,6 @@ import org.secuso.privacyfriendlyminesweeper.database.DatabaseWriter;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -107,6 +92,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     String savedStatus;
     int totalSavedSeconds;
     Toolbar toolbar;
+    Handler handler;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -313,7 +299,9 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         mines.setText(String.valueOf(bombsLeft));
 
         ImageView mines_pic = (ImageView) toolbar.findViewById(R.id.mines_pic);
-        mines_pic.setImageResource(R.drawable.mine);
+        mines_pic.setImageResource(R.drawable.ic_mine_with_background);
+
+        handler = new Handler();
 
         bestTimeReader = new DatabaseBestTimeReader(new PFMSQLiteHelper(getApplicationContext()), this);
         bestTimeReader.execute(game_mode);
@@ -584,7 +572,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 countDownToWin--;
             } else if (status[i] == 2) {
                 SpannableStringBuilder builder = new SpannableStringBuilder();
-                Drawable img = getDrawable(R.drawable.flag);
+                Drawable img = getDrawable(R.drawable.ic_flag);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
                 bombsLeft--;
@@ -768,7 +756,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 } else {
                     status[position] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
-                    Drawable img = getDrawable(R.drawable.flag);
+                    Drawable img = getDrawable(R.drawable.ic_flag);
                     img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                     cell.setCompoundDrawables(img,null,null,null);
 
@@ -1035,7 +1023,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             return;
         }
         RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
-        CellView cell = (CellView) holder.itemView.findViewWithTag(maxHeight);
+        final CellView cell = (CellView) holder.itemView.findViewWithTag(maxHeight);
 
         //only reveal if the cell is not marked or revealed
         if (status[position] == 0) {
@@ -1043,9 +1031,17 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             if (data[position] == 9) {
 
                 cell.setText("M");
-                Drawable img = getDrawable(R.drawable.mine);
+                Drawable img = getDrawable(R.drawable.ic_mine);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
+
+                cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.yellow, null));
+                    }
+                }, 500);
 
                 timer.stop();
 
@@ -1058,9 +1054,15 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 parameter.putString("gameMode", game_mode);
                 parameter.putBoolean("newBestTime", newBestTime);
 
-                Intent tempI = new Intent(this, VictoryScreen.class);
+                final Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
-                startActivityForResult(tempI, 0);
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        startActivityForResult(tempI, 0);
+                    }
+                }, 1000);
+
 
                 //update general statistics (not for user-defined game mode)
                 if(!game_mode.equals("user-defined")){
