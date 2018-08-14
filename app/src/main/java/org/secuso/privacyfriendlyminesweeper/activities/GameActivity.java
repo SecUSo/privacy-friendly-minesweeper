@@ -19,7 +19,9 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -42,6 +44,8 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesCheck;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Christopher Beckmann, I3ananas
@@ -152,7 +156,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     case 1:
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an medium game are 10,16,24
-                        if(!checkIfScreenLargeEnough(10, 16)){ ;
+                        if(!checkIfScreenLargeEnough(10, 16)){
                             showDialogIfScreenTooSmall(10, 16,24);
                         }
                         else {

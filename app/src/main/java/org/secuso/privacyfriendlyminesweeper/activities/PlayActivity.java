@@ -112,7 +112,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         savecheck = false;
         savecheck = parameter.getBoolean("continue");
         //get the game mode and playingfield size
-        if (savecheck == true){
+        if (savecheck){
             ArrayList<String> savedInfo = parameter.getStringArrayList("information");
             int id = Integer.valueOf(savedInfo.get(0));
             String savedGameMode = savedInfo.get(1);
@@ -1030,7 +1030,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             //check for gameloss
             if (data[position] == 9) {
 
-                cell.setText("M");
                 Drawable img = getDrawable(R.drawable.ic_mine);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
@@ -1041,7 +1040,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     public void run(){
                         cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.yellow, null));
                     }
-                }, 500);
+                }, 0);
 
                 timer.stop();
 
@@ -1061,7 +1060,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     public void run(){
                         startActivityForResult(tempI, 0);
                     }
-                }, 1000);
+                }, 200);
 
 
                 //update general statistics (not for user-defined game mode)
@@ -1200,6 +1199,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         if (!gameEnded){
             //no saving of user defined mode
             if (game_mode.equals("user-defined")) {
+                //do nothing
             } else {
                 //ready the save Data
                 int time;
@@ -1235,6 +1235,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
         super.onStop();
+        finish();
     }
 
     /**

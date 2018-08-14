@@ -25,7 +25,7 @@
     <string name="game_mode_user_defined">User-defined</string>
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
-    <string name="game_button_user_defined">Individual game mode</string>
+    <string name="game_button_user_defined">Customized game mode</string>
     <string name="screenTooSmall_title">Please note</string>
     <string name="screenTooSmall">With this number of fields the user experience might be limited due to the size of the screen.</string>
     <string name="startGame">Continue</string>
@@ -47,12 +47,12 @@
     <string name="help_feature_four">Toolbar while playing</string>
     <string name="help_feature_four_answer">While playing, the toolbar displays the level of difficulty, the difference between marked fields and the number of mines and the time played so far.</string>
     <string name="help_feature_five">Mark mines</string>
-    <string name="help_feature_five_answer">You can mark fields with a flag if you suppose that they contain a mine. You need to activate the marking mode to do so. You can remove flags by clicking on a marked field again.</string>
+    <string name="help_feature_five_answer">You can mark fields with a flag if you think that they contain a mine. You need to activate the marking mode to do so. You can remove flags by clicking on a marked field again.</string>
     <string name="help_feature_six">Performance</string>
     <string name="help_feature_six_answer">You can track your performance and top times on the statistics page.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Minesweeper does not require any permission. It does not include any tracking mechanisms or advertisement.</string>
-    <string name="help_permission">Which permissions requires the app?</string>
+    <string name="help_permission">Which permissions does the app require?</string>
     <string name="help_permission_answer">Privacy Friendly Minesweeper does not require any permission.</string>
 
     <!--###ABOUT###-->
@@ -108,7 +108,7 @@
     <item type="id" name="width" />
     <string name="untoggled">Mark mines</string>
     <string name="toggled">Marking…</string>
-    <string name="gameSaved">Saved game...</string>
+    <string name="gameSaved">Saved game…</string>
 
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Continue Game</string>
