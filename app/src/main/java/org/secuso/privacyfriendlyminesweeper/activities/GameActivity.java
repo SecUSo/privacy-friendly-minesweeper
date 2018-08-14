@@ -169,14 +169,15 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                             startGame(12,19,46);
                         }
                         break;
-                    case 3:
-                        showDialogForUserDefinedGameMode();
                     default:
                 }
                 break;
             case R.id.game_button_continue:
                 Intent intent = new Intent(this, SavedGamesActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.game_button_user_defined:
+                showDialogForUserDefinedGameMode();
                 break;
             default:
         }
@@ -363,8 +364,8 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 3 total pages.
+            return 3;
         }
     }
 
@@ -412,9 +413,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     break;
                 case 2:
                     textView.setText(R.string.game_mode_difficult);
-                    break;
-                case 3:
-                    textView.setText(R.string.game_mode_user_defined);
                     break;
             }
             return rootView;

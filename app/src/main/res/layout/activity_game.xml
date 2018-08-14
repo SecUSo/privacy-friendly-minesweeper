@@ -38,7 +38,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layoutDirection="ltr"
-                android:layout_weight="4">
+                android:layout_weight="4"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
+
                 <android.support.v4.view.ViewPager
                     android:id="@+id/scroller"
                     android:layout_width="match_parent"
@@ -57,6 +59,7 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_centerVertical="true"
                     android:onClick="onClick"/>
+
                 <ImageView
                     android:id="@+id/arrow_right"
                     android:layout_width="wrap_content"
@@ -69,6 +72,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_centerVertical="true"
                     android:onClick="onClick"/>
+
             </RelativeLayout>
 
             <LinearLayout
@@ -87,29 +91,43 @@
                 android:gravity="center_horizontal">
 
                 <Button
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:id="@+id/game_button_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
                     android:background="@drawable/button_fullwidth"
-                    android:textSize="25sp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
                     android:text="@string/game_button_start"
-                    android:id="@+id/game_button_start"
                     android:onClick="onClick"/>
 
                 <Button
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:id="@+id/game_button_continue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
                     android:background="@drawable/button_disabled"
-                    android:textSize="25sp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
                     android:text="@string/game_button_continue"
-                    android:id="@+id/game_button_continue"
+                    android:onClick="onClick"/>
+
+                <Button
+                    android:id="@+id/game_button_user_defined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_normal"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:text="@string/game_button_user_defined"
                     android:onClick="onClick"/>
 
             </LinearLayout>
