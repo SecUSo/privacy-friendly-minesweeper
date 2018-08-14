@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_highlighted_clicked"
+            android:background="@drawable/button_disabled"
             android:padding="2dp"
             android:text="@string/statistics"
             android:textSize="12sp">
@@ -70,15 +70,13 @@
         </Button>
 
         <Button
-            android:id="@+id/victory_redo"
+            android:id="@+id/victory_continue"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_disabled"
             android:padding="2dp"
-            android:text="@string/replay"
-            android:textSize="12sp">
-
+            android:text="@string/ok">
         </Button>
 
     </LinearLayout>
@@ -91,13 +89,15 @@
         android:padding="2dp">
 
         <Button
-            android:id="@+id/victory_continue"
+            android:id="@+id/victory_redo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_highlighted_2"
+            android:background="@drawable/button_highlighted_clicked"
             android:padding="10dp"
-            android:text="@string/ok">
+            android:text="@string/replay"
+            android:textSize="12sp">
+
         </Button>
 
     </LinearLayout>

@@ -126,24 +126,24 @@ public class VictoryScreen extends Activity{
         setResult(RESULT_OK, null);
 
     }
-
+    /**
+     * This method just closes the Victory screen so the user gets put back into the game activity
+     */
     private void toGameActivity() {
-
-        //this works, but the screen might be black for a moment as the activity is restarted
-        //omitting this code snippet solves the issue as the existing game activity instance comes to the foreground
-        /*
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        */
-
         finish();
     }
+    /**
+     * This method starts the stat activity
+     */
     private void toStatsActivity() {
         startActivity(new Intent(this, StatisticsActivity.class));
 
         finish();
     }
+
+    /**
+     * This method starts a new game with the same parameter as before
+     */
     private void replaySameGamemode() {
 
         Intent intent_for_replay = new Intent(this, PlayActivity.class);
