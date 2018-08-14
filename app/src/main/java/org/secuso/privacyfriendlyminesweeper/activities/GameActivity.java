@@ -30,12 +30,10 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
@@ -241,7 +239,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                 //do nothing
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -270,33 +267,49 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     nrOfColumns = Integer.valueOf(nrOfColumns_editText.getText().toString());
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_column), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if(!nrOfRows_editText.getText().toString().equals("")){
                     nrOfRows = Integer.valueOf(nrOfRows_editText.getText().toString());
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_row), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 int nrOfCells = nrOfColumns * nrOfRows;
 
-                //playing field with just one cell is not working, thus do not start a game with this parameters
-                if((nrOfColumns <= 1) || (nrOfRows <= 1)){
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 if(seekbar.getProgress() == 0){
-                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.12);
+                    //game mode easy requires at least 9 cells, otherwise there would be no mine
+                    if(nrOfCells < 9){
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_easy), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.12);
+                    }
                 }
                 if(seekbar.getProgress() == 1){
-                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.15);
+                    //game mode medium requires at least 7 cells, otherwise there would be no mine
+                    if(nrOfCells < 7){
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_medium), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.15);
+                    }
                 }
                 if(seekbar.getProgress() == 2){
-                    nrOfBombs = (int)Math.round((double)nrOfCells * 0.20);
+                    //game mode difficult requires at least 5 cells, otherwise there would be no mine
+                    if(nrOfCells < 5){
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_difficult), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.20);
+                    }
                 }
 
                 if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){

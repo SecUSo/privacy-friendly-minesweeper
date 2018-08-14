@@ -18,7 +18,9 @@
 package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ExpandableListView;
 
 import org.secuso.privacyfriendlyminesweeper.R;
@@ -32,16 +34,28 @@ import java.util.List;
 
 /**
  * @author Karola Marky, Christopher Beckmann, I3ananas
- * @version 20180604
+ * @version 20180813
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016
  */
-public class HelpActivity extends BaseActivity {
+public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(getSupportActionBar() == null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        View mainContent = findViewById(R.id.main_content);
+        if (mainContent != null) {
+            mainContent.setAlpha(0);
+            mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
+        }
 
         LinkedHashMap<String, List<String>> expandableListDetail = buildData();
 
@@ -66,9 +80,4 @@ public class HelpActivity extends BaseActivity {
 
         return expandableListDetail;
     }
-
-    protected int getNavigationDrawerID() {
-        return R.id.nav_help;
-    }
-
 }

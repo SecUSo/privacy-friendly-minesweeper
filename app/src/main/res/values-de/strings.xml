@@ -125,6 +125,10 @@
     <string name="ok">Alles klar!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
-    <string name="userDefinedInvalid">Ungültige Parameter - mindestens zwei Spalten und Zeilen erforderlich.</string>
+    <string name="userDefinedInvalid_column">Bitte Spaltenanzahl eingeben</string>
+    <string name="userDefinedInvalid_row">Bitte Zeilenanzahl eingeben</string>
+    <string name="userDefinedInvalid_easy">Ungültige Parameter - Für den einfachen Modus sind mindestens 9 Felder erforderlich</string>
+    <string name="userDefinedInvalid_medium">Ungültige Parameter - Für den normalen Modus sind mindestens 7 Felder erforderlich</string>
+    <string name="userDefinedInvalid_difficult">Ungültige Parameter - Für den schweren Modus sind mindestens 5 Felder erforderlich</string>
 
 </resources>

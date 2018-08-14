@@ -26,9 +26,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,14 +53,12 @@ import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
 /**
  * @author I3ananas
  * @version 20180809
  * This class implements an activity with three tabs to show statistics about the three different game modes
  */
-public class StatisticsActivity extends BaseActivity implements DatabaseReaderReceiver, DatabaseReset.DatabaseResetReceiver {
+public class StatisticsActivity extends AppCompatActivity implements DatabaseReaderReceiver, DatabaseReset.DatabaseResetReceiver {
 
     FragmentManager fragmentManager;
     StatisticsPagerAdapter statisticsPagerAdapter;
@@ -78,6 +78,20 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
         super.onCreate(param);
         setContentView(R.layout.activity_statistics);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(getSupportActionBar() == null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        View mainContent = findViewById(R.id.main_content);
+        if (mainContent != null) {
+            mainContent.setAlpha(0);
+            mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
+        }
+
+        overridePendingTransition(0, 0);
+
         fragmentManager = getSupportFragmentManager();
         statisticsPagerAdapter = new StatisticsPagerAdapter(fragmentManager);
         viewPager = (ViewPager) findViewById(R.id.statistics_pager);
@@ -96,11 +110,6 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
 
         DatabaseReader reader = new DatabaseReader(new PFMSQLiteHelper(getApplicationContext()), this);
         reader.execute(String.valueOf(getApplicationContext().getDatabasePath("PF_MINESWEEPER_DB")));
-    }
-
-    @Override
-    protected int getNavigationDrawerID() {
-        return R.id.nav_statistics;
     }
 
     /**
@@ -269,6 +278,9 @@ public class StatisticsActivity extends BaseActivity implements DatabaseReaderRe
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                return true;
+            case R.id.home:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

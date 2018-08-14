@@ -127,6 +127,10 @@
     <string name="ok">OK, sweet!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
-    <string name="userDefinedInvalid">Invalid parameters - games require at least two columns and rows.</string>
+    <string name="userDefinedInvalid_column">Please provide the number of columns</string>
+    <string name="userDefinedInvalid_row">Please provide the number of rows</string>
+    <string name="userDefinedInvalid_easy">Invalid parameters - For the easy mode at least 9 fields are necessary</string>
+    <string name="userDefinedInvalid_medium">Invalid parameters - For the medium mode at least 7 fields are necessary</string>
+    <string name="userDefinedInvalid_difficult">Invalid parameters - For the difficult mode at least 5 fields are necessary</string>
 
 </resources>
