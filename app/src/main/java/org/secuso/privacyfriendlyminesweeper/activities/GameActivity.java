@@ -19,9 +19,7 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,8 +42,6 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesCheck;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Christopher Beckmann, I3ananas
@@ -194,7 +190,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         check.execute();
     }
 
-    @Override
     public void updateContinueButton(boolean savedGamesExist) {
         continueButton = (Button) findViewById(R.id.game_button_continue);
         if(savedGamesExist){

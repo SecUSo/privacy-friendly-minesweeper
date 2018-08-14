@@ -76,7 +76,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_disabled"
             android:padding="2dp"
-            android:text="@string/ok">
+            android:text="@string/ok"
+            android:textSize="12sp">
         </Button>
 
     </LinearLayout>
@@ -86,17 +87,16 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="2dp">
 
         <Button
             android:id="@+id/victory_redo"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_disabled"
             android:padding="10dp"
             android:text="@string/replay"
             android:textSize="12sp">
-
         </Button>
 
     </LinearLayout>
