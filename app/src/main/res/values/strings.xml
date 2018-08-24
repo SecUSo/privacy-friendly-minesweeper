@@ -30,9 +30,6 @@
     <string name="screenTooSmall">With this number of fields the user experience might be limited due to the size of the screen.</string>
     <string name="startGame">Continue</string>
     <string name="cancel">Cancel</string>
-    <string name="nr_of_columns">Number of columns</string>
-    <string name="nr_of_rows">Number of rows</string>
-    <string name="degree_of_difficulty">Degree of difficulty</string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
@@ -59,12 +56,12 @@
     <string name="about">About</string>
     <string name="version_number">Version v%s</string>
     <string name="about_author">Authors: </string>
-    <string name="about_author_names" translatable="false">Karola Marky</string>
-    <string name="about_author_contributors">and contributors.</string>
+    <string name="about_author_names" translatable="false">Max Dreger, Benedikt Schulz</string>
+    <string name="about_author_contributors">and contributors</string>
     <string name="about_affiliation">In affiliation with</string>
-    <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under GPLv3. Images copyright TU Darmstadt and Google Inc.</string>
+    <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Karlsruhe Institute of Technology (KIT). Sourcecode licensed under GPLv3. Images copyright KIT and Google Inc.</string>
     <string name="more_info">More information can be found on:</string>
-    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-app-example">Github-Repo</a></string>
+    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-minesweeper">Github-Repo</a></string>
     <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
 
     <!-- ###SETTINGS### -->
@@ -128,6 +125,10 @@
     <string name="ok">OK, sweet!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
+    <string name="title_dialog_user_defined">Settings</string>
+    <string name="nr_of_columns">Columns</string>
+    <string name="nr_of_rows">Rows</string>
+    <string name="degree_of_difficulty">Difficulty</string>
     <string name="userDefinedInvalid_column">Please provide the number of columns</string>
     <string name="userDefinedInvalid_row">Please provide the number of rows</string>
     <string name="userDefinedInvalid_easy">Invalid parameters - For the easy mode at least 9 fields are necessary</string>

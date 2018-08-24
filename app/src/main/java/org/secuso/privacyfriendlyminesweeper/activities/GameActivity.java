@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -31,14 +32,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlyminesweeper.R;
+import org.secuso.privacyfriendlyminesweeper.activities.dialogs.UserDefinedGameModeDialogFragment;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 import org.secuso.privacyfriendlyminesweeper.database.DatabaseSavedGamesCheck;
 import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
@@ -244,91 +244,27 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
-     * This method shows a dialog, where the user can set up a user-defined game
+     * This method starts a dialog, where the user can set up a user-defined game
      */
     private void showDialogForUserDefinedGameMode(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View view = this.getLayoutInflater().inflate(R.layout.dialog_user_defined_game_mode, null);
-        builder.setView(view);
+        DialogFragment dialogFragment = UserDefinedGameModeDialogFragment.newInstance();
+        dialogFragment.show(getSupportFragmentManager(), "userDefinedGameDialog");
+    }
 
-        builder.setPositiveButton(R.string.startGame, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
+    /**
+     * This method implements the reaction to positive clicks ("Continue") in the dialog for setting up a user defined game
+     * @param nrOfColumns Entered number of columns
+     * @param nrOfRows Entered number of rows
+     * @param nrOfMines Number of mines (follows from entered number of columns and rows and degree of difficulty)
+     */
+    public void userDefinedGameDialog_positiveClick(int nrOfColumns, int nrOfRows, int nrOfMines){
 
-                int nrOfColumns = 0;
-                int nrOfRows = 0;
-                int nrOfBombs = 0;
-
-                EditText nrOfColumns_editText = (EditText) view.findViewById(R.id.editTextNrOfColumns);
-                EditText nrOfRows_editText = (EditText) view.findViewById(R.id.editTextNrOfRows);
-                SeekBar seekbar = (SeekBar) view.findViewById(R.id.degreeOfDifficulty);
-
-                if(!nrOfColumns_editText.getText().toString().equals("")){
-                    nrOfColumns = Integer.valueOf(nrOfColumns_editText.getText().toString());
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_column), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if(!nrOfRows_editText.getText().toString().equals("")){
-                    nrOfRows = Integer.valueOf(nrOfRows_editText.getText().toString());
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_row), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                int nrOfCells = nrOfColumns * nrOfRows;
-
-                if(seekbar.getProgress() == 0){
-                    //game mode easy requires at least 9 cells, otherwise there would be no mine
-                    if(nrOfCells < 9){
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_easy), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else {
-                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.12);
-                    }
-                }
-                if(seekbar.getProgress() == 1){
-                    //game mode medium requires at least 7 cells, otherwise there would be no mine
-                    if(nrOfCells < 7){
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_medium), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else {
-                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.15);
-                    }
-                }
-                if(seekbar.getProgress() == 2){
-                    //game mode difficult requires at least 5 cells, otherwise there would be no mine
-                    if(nrOfCells < 5){
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.userDefinedInvalid_difficult), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else {
-                        nrOfBombs = (int) Math.round((double) nrOfCells * 0.20);
-                    }
-                }
-
-                if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
-                    showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfBombs);
-                }
-                else{
-                    startGame(nrOfColumns, nrOfRows, nrOfBombs);
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                //do nothing
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
+            showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfMines);
+        }
+        else{
+            startGame(nrOfColumns, nrOfRows, nrOfMines);
+        }
     }
 
     /**
@@ -363,12 +299,16 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
     }
 
+    /**
+     * Inner class describing the pages of the viewpager that displays the different game modes to select from
+     */
     public static class PageFragment extends Fragment {
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -390,7 +330,6 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         public PageFragment() {
 
         }
-
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -424,6 +363,12 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     image_mine1.setImageAlpha(255);
                     image_mine2.setImageAlpha(255);
                     image_mine3.setImageAlpha(255);
+                    break;
+                case 3:
+                    textView.setText(R.string.game_mode_user_defined);
+                    image_mine1.setImageAlpha(0);
+                    image_mine2.setImageAlpha(0);
+                    image_mine3.setImageAlpha(0);
                     break;
             }
             return rootView;
