@@ -52,7 +52,7 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
         savedGamesActivity = (SavedGamesActivity) pSavedGamesActivity;
     }
 
-    //fill text views with information about saved games
+    //fill views with information corresponding to saved games
     @Override
     public void onBindViewHolder(@NonNull SavedGamesRecyclerViewAdapter.ViewHolder holder, int position) {
         if(savedGameParameters.get(position).size() > 0) {
@@ -75,6 +75,12 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
                 holder.mine2.setImageAlpha(255);
                 holder.mine3.setImageAlpha(255);
             }
+            if(savedGameParameters.get(position).get(1).equals(savedGamesActivity.getResources().getString(R.string.game_mode_user_defined))){
+                holder.mine1.setImageAlpha(0);
+                holder.mine2.setImageAlpha(0);
+                holder.mine3.setImageAlpha(0);
+            }
+
             holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(4)) * 100)));
             holder.information = savedGameParameters.get(position);
         }
@@ -133,8 +139,11 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_medium))){
                 information.set(1, "medium");
             }
-            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_difficult))){
+            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_difficult))) {
                 information.set(1, "difficult");
+            }
+            if(information.get(1).equals(view.getContext().getResources().getString(R.string.game_mode_user_defined))){
+                information.set(1, "user-defined");
             }
 
             param.putStringArrayList("information", information);

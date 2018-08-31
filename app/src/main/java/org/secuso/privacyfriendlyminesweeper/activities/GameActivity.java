@@ -169,15 +169,15 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                             startGame(12,19,46);
                         }
                         break;
+                    case 3:
+                        showDialogForUserDefinedGameMode();
+                        break;
                     default:
                 }
                 break;
             case R.id.game_button_continue:
                 Intent intent = new Intent(this, SavedGamesActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.game_button_user_defined:
-                showDialogForUserDefinedGameMode();
                 break;
             default:
         }
@@ -327,6 +327,9 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
             return fragment;
         }
 
+        /**
+         * Default constructor
+         */
         public PageFragment() {
 
         }

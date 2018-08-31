@@ -35,7 +35,6 @@
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.AboutActivity"
             android:label="@string/about"
-            android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -44,7 +43,6 @@
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.HelpActivity"
             android:label="@string/help"
-            android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -54,7 +52,6 @@
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -79,7 +76,6 @@
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.SavedGamesActivity"
             android:label="@string/continueSavedGame"
-            android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -89,7 +85,6 @@
         <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.StatisticsActivity"
             android:label="@string/action_statistics"
-            android:screenOrientation="portrait"
             android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
