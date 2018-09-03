@@ -22,9 +22,12 @@
     <string name="game_mode_medium">Normal</string>
     <string name="game_mode_difficult">Schwer</string>
     <string name="game_mode_user_defined">Benutzerdefiniert</string>
+    <string name="game_mode_user_defined_2lines">Benutzer-\ndefiniert</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
     <string name="game_button_user_defined">Eigener Spielmodus</string>
+    <string name="too_much_cells_title">Zu viele Felder</string>
+    <string name="too_much_cells">Es sind maximal 20 Spalten und 25 Zeilen möglich.</string>
     <string name="screenTooSmall_title">Achtung</string>
     <string name="screenTooSmall">Bei dieser Anzahl an Feldern kann das Spielerlebnis aufgrund der Displaygröße eingeschränkt sein.</string>
     <string name="startGame">Weiter</string>

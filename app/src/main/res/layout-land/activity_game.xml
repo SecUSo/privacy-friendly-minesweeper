@@ -31,15 +31,15 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             tools:showIn="@layout/activity_game"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:weightSum="10"
             style="?android:buttonBarStyle">
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layoutDirection="ltr"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                 <android.support.v4.view.ViewPager
@@ -73,9 +73,9 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
@@ -85,7 +85,7 @@
                 android:weightSum="8"
                 android:divider="#000"
                 android:baselineAligned="false"
-                android:gravity="center_horizontal">
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/game_button_start"

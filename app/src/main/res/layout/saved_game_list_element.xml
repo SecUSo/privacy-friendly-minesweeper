@@ -23,21 +23,21 @@
 
         <ImageView
             android:id="@+id/saved_game_mine1"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center"/>
 
         <ImageView
             android:id="@+id/saved_game_mine2"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center"/>
 
         <ImageView
             android:id="@+id/saved_game_mine3"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center"/>
@@ -74,8 +74,8 @@
             android:maxHeight="10dp"
             android:paddingTop="8dp"
             android:paddingBottom="5dp"
-            android:progressTint="@color/colorAccent"
-            android:progressBackgroundTint="@color/middleblue"
+            android:progressTint="@color/middleblue"
+            android:progressBackgroundTint="@color/lightgrey"
             android:max="100" />
 
         <TextView

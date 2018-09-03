@@ -119,7 +119,6 @@
         android:max="2"
         android:progressTint="@color/colorAccent"
         android:progressBackgroundTint="@color/middlegrey"
-        android:thumb="@drawable/ic_mine"
         android:theme="@style/Base.Widget.AppCompat.SeekBar.Discrete">
     </SeekBar>
 

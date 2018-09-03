@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -38,9 +37,7 @@ import android.view.View;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.AboutActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.GameActivity;
-import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.HelpActivity;
-import org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.StatisticsActivity;
 import org.secuso.privacyfriendlyminesweeper.activities.TutorialActivity;
 
@@ -180,12 +177,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 break;
             case R.id.nav_help:
                 intent = new Intent(this, HelpActivity.class);
-                createBackStack(intent);
-                break;
-            case R.id.nav_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-                intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true );
                 createBackStack(intent);
                 break;
             default:

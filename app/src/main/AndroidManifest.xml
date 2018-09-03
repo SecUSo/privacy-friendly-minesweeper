@@ -50,15 +50,6 @@
                 android:value="org.secuso.privacyfriendlyminesweeper.activities.GameActivity" />
         </activity>
         <activity
-            android:name="org.secuso.privacyfriendlyminesweeper.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.secuso.privacyfriendlyminesweeper.activities.GameActivity" />
-        </activity>
-        <activity
             android:name="org.secuso.privacyfriendlyminesweeper.activities.GameActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"

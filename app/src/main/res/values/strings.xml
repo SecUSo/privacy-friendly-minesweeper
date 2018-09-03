@@ -23,9 +23,12 @@
     <string name="game_mode_medium">Medium</string>
     <string name="game_mode_difficult">Difficult</string>
     <string name="game_mode_user_defined">User-defined</string>
+    <string name="game_mode_user_defined_2lines">User-\ndefined</string>
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
     <string name="game_button_user_defined">Customized game mode</string>
+    <string name="too_much_cells_title">Too much fields</string>
+    <string name="too_much_cells">There are 20 columns and 25 rows possible at most.</string>
     <string name="screenTooSmall_title">Please note</string>
     <string name="screenTooSmall">With this number of fields the user experience might be limited due to the size of the screen.</string>
     <string name="startGame">Continue</string>

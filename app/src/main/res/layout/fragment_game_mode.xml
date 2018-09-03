@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="50sp" />
+        android:textSize="40sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,21 +22,21 @@
 
         <ImageView
             android:id="@+id/mine1"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:padding="4dp" />
 
         <ImageView
             android:id="@+id/mine2"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:padding="4dp" />
 
         <ImageView
             android:id="@+id/mine3"
-            android:src="@drawable/ic_mine"
+            android:src="@drawable/mine"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:padding="4dp" />

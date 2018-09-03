@@ -35,7 +35,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.dialogs.UserDefinedGameModeDialogFragment;
@@ -259,12 +258,34 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
      */
     public void userDefinedGameDialog_positiveClick(int nrOfColumns, int nrOfRows, int nrOfMines){
 
-        if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
-            showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfMines);
+        if(nrOfColumns > 20 || nrOfRows > 25){
+            showDialogTooMuchCells();
         }
         else{
-            startGame(nrOfColumns, nrOfRows, nrOfMines);
+            if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
+                showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfMines);
+            }
+            else{
+                startGame(nrOfColumns, nrOfRows, nrOfMines);
+            }
         }
+    }
+
+    /**
+     * This method creates and shows a dialog to inform the user that the entered number of columns and rows is too large
+     */
+    private void showDialogTooMuchCells(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.too_much_cells_title);
+        builder.setMessage(R.string.too_much_cells);
+        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //do nothing
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
@@ -342,12 +363,26 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                 id = getArguments().getInt(ARG_SECTION_NUMBER);
             }
 
-            View rootView = inflater.inflate(R.layout.fragment_game_mode, container, false);
+            View rootView;
+            ImageView image_mine1;
+            ImageView image_mine2;
+            ImageView image_mine3;
+
+            if(id == 3){
+                rootView = inflater.inflate(R.layout.fragment_user_defined_game_mode, container, false);
+                image_mine1 = null;
+                image_mine2 = null;
+                image_mine3 = null;
+            }
+            else{
+                rootView = inflater.inflate(R.layout.fragment_game_mode, container, false);
+                image_mine1 = (ImageView) rootView.findViewById(R.id.mine1);
+                image_mine2 = (ImageView) rootView.findViewById(R.id.mine2);
+                image_mine3 = (ImageView) rootView.findViewById(R.id.mine3);
+            }
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            ImageView image_mine1 = (ImageView) rootView.findViewById(R.id.mine1);
-            ImageView image_mine2 = (ImageView) rootView.findViewById(R.id.mine2);
-            ImageView image_mine3 = (ImageView) rootView.findViewById(R.id.mine3);
+
             switch (id){
                 case 0:
                     textView.setText(R.string.game_mode_easy);
@@ -368,10 +403,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     image_mine3.setImageAlpha(255);
                     break;
                 case 3:
-                    textView.setText(R.string.game_mode_user_defined);
-                    image_mine1.setImageAlpha(0);
-                    image_mine2.setImageAlpha(0);
-                    image_mine3.setImageAlpha(0);
+                    textView.setText(R.string.game_mode_user_defined_2lines);
                     break;
             }
             return rootView;

@@ -190,7 +190,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 text_game_mode.setText(getResources().getString(R.string.game_mode_difficult));
             }
             if(game_mode.equals("user-defined")){
-                text_game_mode.setText(getResources().getString(R.string.game_mode_user_defined));
+                text_game_mode.setText(getResources().getString(R.string.game_mode_user_defined_2lines));
             }
         }
 
@@ -299,7 +299,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         mines.setText(String.valueOf(bombsLeft));
 
         ImageView mines_pic = (ImageView) toolbar.findViewById(R.id.mines_pic);
-        mines_pic.setImageResource(R.drawable.ic_mine_with_background);
+        mines_pic.setImageResource(R.drawable.mine);
 
         handler = new Handler();
 
@@ -572,7 +572,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 countDownToWin--;
             } else if (status[i] == 2) {
                 SpannableStringBuilder builder = new SpannableStringBuilder();
-                Drawable img = getDrawable(R.drawable.ic_flag);
+                Drawable img = getDrawable(R.drawable.flagge);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
                 bombsLeft--;
@@ -756,7 +756,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 } else {
                     status[position] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
-                    Drawable img = getDrawable(R.drawable.ic_flag);
+                    Drawable img = getDrawable(R.drawable.flagge);
                     img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                     cell.setCompoundDrawables(img,null,null,null);
 
@@ -1030,17 +1030,9 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             //check for gameloss
             if (data[position] == 9) {
 
-                Drawable img = getDrawable(R.drawable.ic_mine);
+                Drawable img = getDrawable(R.drawable.mine_x);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
                 cell.setCompoundDrawables(img,null,null,null);
-
-                cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
-                handler.postDelayed(new Runnable(){
-                    @Override
-                    public void run(){
-                        cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.yellow, null));
-                    }
-                }, 0);
 
                 timer.stop();
 
