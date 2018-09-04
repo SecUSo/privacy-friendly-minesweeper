@@ -56,7 +56,6 @@ public class DatabaseSavedGameWriter extends AsyncTask<Object, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        parent.done();
         super.onPostExecute(aVoid);
     }
 }

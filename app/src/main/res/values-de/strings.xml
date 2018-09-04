@@ -40,7 +40,7 @@
     <string name="help_feature_one">Gibt es verschiedene Spielmodi?</string>
     <string name="help_feature_one_answer">Ja, es gibt die Schwierigkeitsgrade \'einfach\', \'normal\', \'schwer\' und \'benutzerdefiniert\'.</string>
     <string name="help_feature_two">Wie kann ich Minen finden?</string>
-    <string name="help_feature_two_answer">Die Anzahl an Minen in den 9 umliegenden Feldern eines Feldes entspricht der Zahl auf diesem Feld. Die Zahl eines Feldes wird sichtbar, wenn es durch Anklicken aufgedeckt wird. Durch logische Kombination der Zahlen auf aufgedeckten Feldern können die Felder identifiziert werden, die Minen enthalten.</string>
+    <string name="help_feature_two_answer">Die Anzahl an Minen in den 8 umliegenden Feldern eines Feldes entspricht der Zahl auf diesem Feld. Die Zahl eines Feldes wird sichtbar, wenn es durch Anklicken aufgedeckt wird. Durch logische Kombination der Zahlen auf aufgedeckten Feldern können die Felder identifiziert werden, die Minen enthalten.</string>
     <string name="help_feature_three">Welchen Nutzen hat das Markieren von Feldern?</string>
     <string name="help_feature_three_answer">Mit einer Flagge markierte Felder können nicht aus Versehen aufgedeckt werden. Zudem wird durch markieren die Möglichkeit des Schnellaufdeckens durch Klicken auf aufgedeckte Felder eröffentlicht.</string>
     <string name="help_feature_three_point_five">Kann ich auf bereits aufgedeckte Felder klicken?</string>
@@ -121,8 +121,8 @@
     <!-- ### PLAY ### -->
     <item type="id" name="height" />
     <item type="id" name="width" />
-    <string name="untoggled">Minen markieren</string>
-    <string name="toggled">Am markieren…</string>
+    <string name="untoggled">markieren</string>
+    <string name="toggled">aufdecken</string>
     <string name="gameSaved">Spiel gespeichert…</string>
 
     <!-- ### SAVED GAMES ### -->
