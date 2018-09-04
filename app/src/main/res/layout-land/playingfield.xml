@@ -32,7 +32,8 @@
             android:typeface="monospace"
             android:textSize="20dp"
             android:background="@drawable/button_highlighted"
-            android:padding="2dp"/>
+            android:padding="7dp"
+            android:layout_marginRight="2dp"/>
 
         <TextView
             android:layout_width="4dp"
@@ -54,7 +55,7 @@
             android:typeface="monospace"
             android:textSize="20dp"
         android:background="@drawable/button_highlighted"
-        android:padding="2dp" />
+        android:padding="7dp"/>
 
     <TextView
         android:layout_width="match_parent"

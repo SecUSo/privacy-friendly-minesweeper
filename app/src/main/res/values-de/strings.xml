@@ -94,7 +94,7 @@
     <string name="slide1_text">Unter manchen Feldern sind Minen versteckt. Klicke auf ein Feld um den Inhalt aufzudecken. Die Zahl eines Feldes gibt die Anzahl an Minen in den Acht umliegenden Feldern an. Aber pass auf, klicke auf eine Mine und das Spiel ist verloren!</string>
 
     <string name="slide2_heading">Makiere die Minen</string>
-    <string name="slide2_text">Benutze the Knopf um zwischen Markieren und Aufedecken der Felder zu wechseln. Makiere all Feldern mit Minen und decke den Rest auf um zu gewinnen</string>
+    <string name="slide2_text">Benutze den Knopf um zwischen Markieren und Aufdecken der Felder zu wechseln. Makiere all Feldern mit Minen und decke den Rest auf um zu gewinnen</string>
 
     <string name="slide3_heading">Mehr Minen</string>
     <string name="slide3_text">Es gibt verschiedene Schwierigkeitsstufen. Je höher die Schwierigkeit, desto größer wird das Feld und es müssen deutlich mehr Minen gefunden werden!</string>
