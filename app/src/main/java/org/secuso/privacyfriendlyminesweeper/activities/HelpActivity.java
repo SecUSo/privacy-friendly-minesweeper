@@ -74,7 +74,9 @@ public class HelpActivity extends AppCompatActivity {
         expandableListDetail.put(getString(R.string.help_feature_eleven), Collections.singletonList(getString(R.string.help_feature_eleven_answer)));
         expandableListDetail.put(getString(R.string.help_feature_five), Collections.singletonList(getString(R.string.help_feature_five_answer)));
         expandableListDetail.put(getString(R.string.help_feature_three), Collections.singletonList(getString(R.string.help_feature_three_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_three_point_five), Collections.singletonList(getString(R.string.help_feature_three_point_five_answer)));
         expandableListDetail.put(getString(R.string.help_feature_one), Collections.singletonList(getString(R.string.help_feature_one_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_twelve), Collections.singletonList(getString(R.string.help_feature_twelve_answer)));
         expandableListDetail.put(getString(R.string.help_feature_seven), Collections.singletonList(getString(R.string.help_feature_seven_answer)));
         expandableListDetail.put(getString(R.string.help_feature_eight), Collections.singletonList(getString(R.string.help_feature_eight_answer)));
         expandableListDetail.put(getString(R.string.help_feature_ten), Collections.singletonList(getString(R.string.help_feature_ten_answer)));

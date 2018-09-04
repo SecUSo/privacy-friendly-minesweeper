@@ -41,14 +41,16 @@
     <string name="help_feature_one">Are there different game modes available?</string>
     <string name="help_feature_one_answer">Yes, you can choose between the game modes \'easy\', \'medium\', \'difficult\' and \'user-defined\'.</string>
     <string name="help_feature_two">How can I find mines?</string>
-    <string name="help_feature_two_answer">Every field has exactly as much mines under the 9 fields in its surrounding as the number on the field indicates. The number becomes visible when the field is uncovered by clicking on it. Logically combining the numbers on several uncovered fields enables you to identify fields that contain a mine.</string>
+    <string name="help_feature_two_answer">Every field has exactly as much mines under the 8 fields in its surrounding as the number on the field indicates. The number becomes visible when the field is uncovered by clicking on it. Logically combining the numbers on several uncovered fields enables you to identify fields that contain a mine.</string>
     <string name="help_feature_three">What is the use of setting a flag on a field?</string>
-    <string name="help_feature_three_answer">Marked fields can not be uncovered by accident. Moreover, if you click on an already uncovered field and the number of flags on the 9 surrounding fields equals its number, all 9 surrounding fields are uncovered.</string>
+    <string name="help_feature_three_answer">Marked fields can not be uncovered by accident. Moreover, it allows for faster uncovering by clicking on already revealed fields with marks next to them.</string>
+    <string name="help_feature_three_point_five">Can I click on already uncovered fields?</string>
+    <string name="help_feature_three_point_five_answer">If you click on an already uncovered field and the number of flags on the 8 surrounding fields equals the number displayed on the field, all covered surrounding fields are uncovered, since they should not be mines.</string>
     <string name="help_feature_four">What does the toolbar show while playing?</string>
     <string name="help_feature_four_answer">While playing, the toolbar displays the level of difficulty, the difference between marked fields and the number of mines and the time played so far.</string>
     <string name="help_feature_five">Can I mark fields when I think there is a mine?</string>
     <string name="help_feature_five_answer">You can mark fields with a flag if you think that they contain a mine. You need to activate the marking mode to do so. You can remove flags by clicking on a marked field again.</string>
-    <string name="help_feature_six">Can I track the my performance?</string>
+    <string name="help_feature_six">Can I track my performance?</string>
     <string name="help_feature_six_answer">You can track your performance and top times on the statistics page.</string>
     <string name="help_feature_seven">What is the difference between the levels of difficulty?</string>
     <string name="help_feature_seven_answer">The higher the level of difficulty, the higher is the portion of mines on the playing field. Additionally, the number of fields on the playing field increases with the degree of difficulty. \nEasy: 6x10 fields, 7 mines \nMedium: 10x16 fields, 24 mines \nDifficult: 12x19 fields, 46 mines</string>
@@ -59,7 +61,9 @@
     <string name="help_feature_ten">Can I continue games I started earlier?</string>
     <string name="help_feature_ten_answer">Yes. Games that are left using the Back-Button are saved and can be continued from the saved games menu, accessible over the Button \'Continue Game\' in the main menu. The last ten games are stored.</string>
     <string name="help_feature_eleven">What happens if I uncover a field that contains a mine?</string>
-    <string name="help_feature_eleven_answer">If you uncover a field that contains a mine, you lost.</string>
+    <string name="help_feature_eleven_answer">If you uncover a field that contains a mine, you lose.</string>
+    <string name="help_feature_twelve">I uncovered all non-mines, why have I not won yet?</string>
+    <string name="help_feature_twelve_answer">To win the Game you have to uncover all non-mines and mark every field with a mine.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Minesweeper does not require any permission. It does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions does the app require?</string>
@@ -86,13 +90,16 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
-    <string name="slide1_text">Find and uncover all fields that do not contain a mine. The number on a field indicates the number of mines in its surrounding. Mark suspicious fields with a flag.</string>
+    <string name="slide1_text">There are Mines hidden in some fields. Click on a field to uncover it and reveal the content. The number on a field indicates the number of mines in the eight surrounding fields. But be careful, hitting a mine loses the game!</string>
 
-    <string name="slide2_heading">Track your achievements</string>
-    <string name="slide2_text">You can check some statistics about your achievements on the statistics page.</string>
+    <string name="slide2_heading">Mark The Mines</string>
+    <string name="slide2_text">Use the button to toggle between marking and revealing fields. Mark all fields where the mines are and uncover the rest to win the game!</string>
 
-    <string name="slide3_heading">Github and Guide</string>
-    <string name="slide3_text">The sourcecode of this app is available on GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
+    <string name="slide3_heading">More Mines</string>
+    <string name="slide3_text">There are different difficulties. The higher the difficulty the bigger the board, but the number and density of mines increases as well!</string>
+
+    <string name="slide4_heading">Track your achievements</string>
+    <string name="slide4_text">You can check some statistics about your achievements on the statistics page.</string>
 
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>

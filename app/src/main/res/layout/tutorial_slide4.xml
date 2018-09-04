@@ -16,43 +16,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/slide3_heading"
+            android:text="@string/slide4_heading"
             android:textColor="@android:color/white"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingBottom="5dp"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/mine1"
-                android:src="@drawable/mine"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:padding="4dp"
-                android:alpha="255"/>
-
-            <ImageView
-                android:id="@+id/mine2"
-                android:src="@drawable/mine"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:padding="4dp"
-                android:alpha="255"/>
-
-            <ImageView
-                android:id="@+id/mine3"
-                android:src="@drawable/mine"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:padding="4dp"
-                android:alpha="100"/>
-
-        </LinearLayout>
+        <ImageView
+            android:layout_width="@dimen/img_width_height"
+            android:layout_height="@dimen/img_width_height"
+            android:background="@drawable/ic_trending_up_black_24dp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,7 +34,7 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/desc_padding"
             android:paddingRight="@dimen/desc_padding"
-            android:text="@string/slide3_text"
+            android:text="@string/slide4_text"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@android:color/white"
