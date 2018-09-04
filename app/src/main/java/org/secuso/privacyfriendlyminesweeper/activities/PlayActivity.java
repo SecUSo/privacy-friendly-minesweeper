@@ -703,9 +703,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 countDownToWin--;
                 mines.setText(String.valueOf(bombsLeft));
             }
-
-
-            cell.setText(String.valueOf(i));
         }
 
         timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
@@ -1335,8 +1332,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     //if we are in landscape mode we have to change our data back to normal before saving
                     if(landscape){
 
-                        System.out.println("landsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacpe");
-
                         landscape_data = new int[data.length];
                         int x = 1;
                         int start = numberOfColumns;
@@ -1377,8 +1372,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     //check if we need to save into database or not
                     if(isChangingConfigurations()) {
                     } else {
-
-                        System.out.println("saviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing");
                         StringBuilder content = new StringBuilder();
                         StringBuilder states = new StringBuilder();
                         for (int i = 0; i < data.length; i++) {
@@ -1419,10 +1412,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
-        System.out.println("cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooonfig");
-
         if(isChangingConfigurations()) {
-            System.out.println("chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange");
 
             if(landscape){
 
@@ -1475,9 +1465,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
             // Save the current game state
             savedInstanceState.putInt("columns", numberOfColumns);
-            System.out.println(savedInstanceState.getInt("columns") + "="+numberOfColumns);
-            System.out.println();
-            System.out.println();
             savedInstanceState.putInt("rows", numberOfRows);
             savedInstanceState.putIntArray("data", data);
             savedInstanceState.putIntArray("status", status);
