@@ -19,6 +19,8 @@ package org.secuso.privacyfriendlyminesweeper.database;
 
 import android.os.AsyncTask;
 
+import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
+
 /**
  * @author I3ananas
  * @version 20180806
@@ -27,9 +29,11 @@ import android.os.AsyncTask;
 public class DatabaseSavedGameWriter extends AsyncTask<Object, Void, Void> {
 
     private final PFMSQLiteHelper helper;
+    private PlayActivity parent;
 
-    public DatabaseSavedGameWriter(PFMSQLiteHelper helper){
+    public DatabaseSavedGameWriter(PFMSQLiteHelper helper, PlayActivity parent){
         this.helper = helper;
+        this.parent = parent;
     }
 
     @Override
@@ -48,5 +52,11 @@ public class DatabaseSavedGameWriter extends AsyncTask<Object, Void, Void> {
         helper.close();
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        parent.done();
+        super.onPostExecute(aVoid);
     }
 }

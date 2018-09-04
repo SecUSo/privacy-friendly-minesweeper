@@ -135,7 +135,7 @@
     <string name="newBestTime">New best time!</string>
     <string name="statistics">Go to stats</string>
     <string name="replay">Replay same gamemode</string>
-    <string name="ok">OK, sweet!</string>
+    <string name="ok">OK!</string>
 
     <!-- ### USER DEFINED GAME MODE ### -->
     <string name="title_dialog_user_defined">Settings</string>

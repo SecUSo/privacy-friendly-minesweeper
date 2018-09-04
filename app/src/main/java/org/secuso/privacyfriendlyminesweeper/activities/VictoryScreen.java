@@ -2,9 +2,11 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,20 +29,23 @@ public class VictoryScreen extends Activity{
 
         setContentView(R.layout.activity_victory);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.playingfield);
-       // int height = recyclerView.getMeasuredHeight();
-      //  int width = recyclerView.getMeasuredWidth();
 
-      //  DisplayMetrics dm = new DisplayMetrics();
-      //  getWindowManager().getDefaultDisplay().getMetrics(dm);
+        DisplayMetrics dm = new DisplayMetrics();
+       getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-       // int height = dm.heightPixels;
-       // int width = dm.widthPixels;
+       int height = dm.heightPixels;
+       int width = dm.widthPixels;
 
-        int height = 1794;
-        int width = 1080;
+       // int height = 1794;
+       // int width = 1080;
 
-        getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            getWindow().setLayout((int)(width*0.5),(int)(height*0.8));
+        } else {
+            getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
+        }
+
 
         //get time and get it ready for correct display
         int time = infoForScreen.getInt("time");

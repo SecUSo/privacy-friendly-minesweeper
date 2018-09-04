@@ -7,7 +7,8 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@drawable/bordered_window">
+    android:background="@drawable/bordered_window"
+    android:screenOrientation="unspecified">
 
     <TextView
         android:id="@+id/victory_text"

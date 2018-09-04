@@ -19,7 +19,9 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -185,12 +187,19 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onResume(){
         super.onResume();
-        DatabaseSavedGamesCheck check = new DatabaseSavedGamesCheck(new PFMSQLiteHelper(getApplicationContext()), this);
-        check.execute();
+        final DatabaseSavedGamesCheck check = new DatabaseSavedGamesCheck(new PFMSQLiteHelper(getApplicationContext()), this);
+        final Handler handler = new Handler();handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                check.execute();
+            }
+        }, 400);
     }
 
     public void updateContinueButton(boolean savedGamesExist) {
         continueButton = (Button) findViewById(R.id.game_button_continue);
+        continueButton.setEnabled(true);
+        continueButton.setBackground(getResources().getDrawable(R.drawable.button_fullwidth));
         if(savedGamesExist){
             continueButton.setEnabled(true);
             continueButton.setBackground(getResources().getDrawable(R.drawable.button_fullwidth));
@@ -209,8 +218,15 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
      */
     private boolean checkIfScreenLargeEnough(int nrOfColumns, int nrOfRows){
         boolean screenLargeEnough = false;
-        if(((screen_width_dp / nrOfColumns) >= min_dp_per_field) && ((screen_height_dp / nrOfRows) >= min_dp_per_field)){
-            screenLargeEnough = true;
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            if(((screen_width_dp / nrOfRows) >= min_dp_per_field) && ((screen_height_dp / nrOfColumns) >= min_dp_per_field)){
+                screenLargeEnough = true;
+            }
+        } else {
+            if(((screen_width_dp / nrOfColumns) >= min_dp_per_field) && ((screen_height_dp / nrOfRows) >= min_dp_per_field)){
+                screenLargeEnough = true;
+            }
         }
         return screenLargeEnough;
     }

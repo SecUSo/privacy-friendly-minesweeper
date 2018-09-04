@@ -19,6 +19,8 @@ package org.secuso.privacyfriendlyminesweeper.database;
 
 import android.os.AsyncTask;
 
+import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
+
 import java.util.List;
 
 /**

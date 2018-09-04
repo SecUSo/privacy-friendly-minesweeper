@@ -16,29 +16,45 @@
     android:orientation="vertical"
     style="@style/AlertDialog.AppCompat">
 
+
+
+    <LinearLayout
+    android:id="@+id/play_sidebar"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/toggle"
+            android:layout_height="match_parent"
+            android:layout_width="25dp"
+            android:text="@string/untoggled"
+            android:typeface="monospace"
+            android:textSize="20dp"
+            android:background="@drawable/button_highlighted"
+            android:padding="2dp"/>
+
+        <TextView
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:id="@+id/wastespace" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/playingfield"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start">
+            android:layout_gravity="center">
         </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-    android:id="@+id/play_sidebar"
-    android:layout_height="25dp"
-    android:layout_weight="1"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
-
-    <Button
-        android:id="@+id/toggle"
-        android:layout_weight="6"
-        android:layout_height="25dp"
-        android:layout_width="0dp"
+        <Button
+        android:id="@+id/toggle2"
+        android:layout_height="match_parent"
+        android:layout_width="25dp"
         android:text="@string/untoggled"
+            android:typeface="monospace"
+            android:textSize="20dp"
         android:background="@drawable/button_highlighted"
-        android:padding="0dp"
-        android:layout_gravity="bottom"/>
+        android:padding="2dp" />
 
     <TextView
         android:layout_width="match_parent"

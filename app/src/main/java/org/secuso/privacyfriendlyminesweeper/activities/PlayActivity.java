@@ -19,6 +19,7 @@ package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -93,6 +94,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int totalSavedSeconds;
     Toolbar toolbar;
     Handler handler;
+    int[] landscape_data;
+    int[] landscape_status;
+    int[] not_in_use_data;
+    int[] not_in_use_status;
+    boolean savedinstancestate;
+    int desired_width;
+    boolean game_saved;
 
     protected void onCreate(Bundle param){
         super.onCreate(param);
@@ -106,6 +114,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         newBestTime = false;
         gameEnded = true;
+        game_saved = false;
 
         //check if this is loading a saved game
         parameter = this.getIntent().getExtras();
@@ -206,16 +215,67 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             status[i] = 0;
         }
 
+        //check if there is a saved instance state
+        if (param != null) {
+            numberOfRows = param.getInt("rows");
+            numberOfColumns = param.getInt("columns");
+            data = param.getIntArray("data");
+            status = param.getIntArray("status");
+            totalSavedSeconds = param.getInt("time");
+            boolean noinfo = param.getBoolean("empty");
+            if (noinfo) {
+                savecheck = false;
+
+            } else {
+                savecheck = true;
+                savedinstancestate = true;
+            }
+        }
+
         //parce the Content and Status String if this is loading a saved game
         if (savecheck) {
-            String[] parcedContent = savedContent.split("");
-            String[] parcedStatus = savedStatus.split("");
+            if (!savedinstancestate) {
+                String[] parcedContent = savedContent.split("");
+                String[] parcedStatus = savedStatus.split("");
 
-            StringBuilder line = new StringBuilder();
-            for (int i = 0; i < numberOfCells; i++) {
-                line.append(parcedContent[i + 1]);
-                data[i] = Integer.parseInt(parcedContent[i + 1]);
-                status[i] = Integer.parseInt(parcedStatus[i + 1]);
+                StringBuilder line = new StringBuilder();
+                for (int i = 0; i < numberOfCells; i++) {
+                    line.append(parcedContent[i + 1]);
+                    data[i] = Integer.parseInt(parcedContent[i + 1]);
+                    status[i] = Integer.parseInt(parcedStatus[i + 1]);
+                }
+            }
+            //flip the info if we are in landscape mode
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                landscape_data = new int[data.length];
+                int x = 1;
+                int start = numberOfCells - numberOfColumns;
+                int now = start;
+                for (int i = 0; i < data.length; i++) {
+                    landscape_data[i] = data[now];
+                    now = now - numberOfColumns;
+                    if(now < 0) {
+                        now = start + x;
+                        x++;
+                    }
+                }
+                not_in_use_data = data;
+                data = landscape_data;
+
+                x = 1;
+                start = numberOfCells - numberOfColumns;
+                landscape_status = new int[status.length];
+                now = start;
+                for (int i = 0; i < status.length; i++) {
+                    landscape_status[i] = status[now];
+                    now = now - numberOfColumns;
+                    if(now < 0) {
+                        now = start + x;
+                        x++;
+                    }
+                }
+                not_in_use_status = status;
+                status = landscape_status;
             }
         }
 
@@ -232,13 +292,21 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             @Override
             public void run() {
                 //subtract the height of the play_sidebar
-                int height = recyclerView.getHeight()- Math.round(32*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+                int height;
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    height = recyclerView.getHeight();
+                    desired_width = recyclerView.getWidth() - Math.round(25*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+                } else {
+                    height = recyclerView.getHeight()- Math.round(32*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+                    desired_width = recyclerView.getWidth();
+                }
                 //set height of recyclerView so it does not overlap the play_sidebar
                 ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
                 params.height = height;
+                params.width = desired_width;
                 maxHeight = height/numberOfRows;
                 //cells have a buffer of 2dp, so substract 1dp*2 transformed into pixel value
-                maxHeight = maxHeight - Math.round(3*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+                maxHeight = maxHeight - Math.round(2*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
 
                 if (firstTime) {
                     firstTime=false;
@@ -266,7 +334,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         });
 
         //fistLaunch
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            int save = numberOfColumns;
+            numberOfColumns = numberOfRows;
+            numberOfRows = save;
+        }
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
+
         createAdapter(maxHeight);
 
         firstClick = true;
@@ -279,11 +353,24 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             @Override
             public void onClick(View view) {
                 if (marking) {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        Button button2 = (Button) findViewById(R.id.toggle2);
+                        button2.callOnClick();
+                        button2.setBackground(getDrawable(R.drawable.button_highlighted));
+                        button2.setText(getString(R.string.untoggled));
+                        button2.setTextColor(getResources().getColor(R.color.white));
+                    }
                     button.setBackground(getDrawable(R.drawable.button_highlighted));
                     marking = false;
                     button.setText(getString(R.string.untoggled));
                     button.setTextColor(getResources().getColor(R.color.white));
                 } else {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        Button button2 = (Button) findViewById(R.id.toggle2);
+                        button2.setText(getString(R.string.toggled));
+                        button2.setTextColor(getResources().getColor(R.color.black));
+                        button2.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
+                    }
                     view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
                     marking = true;
                     button.setText(getString(R.string.toggled));
@@ -292,6 +379,33 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 }
             }
         });
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            final Button button2 = (Button) findViewById(R.id.toggle2);
+            button2.setTextColor(getResources().getColor(R.color.white));
+            button2.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if (marking) {
+                        button2.setBackground(getDrawable(R.drawable.button_highlighted));
+                        button2.setText(getString(R.string.untoggled));
+                        button2.setTextColor(getResources().getColor(R.color.white));
+                        marking = false;
+                        button.setBackground(getDrawable(R.drawable.button_highlighted));
+                        button.setText(getString(R.string.untoggled));
+                        button.setTextColor(getResources().getColor(R.color.white));
+                    } else {
+                        view.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
+                        button.setBackground(getDrawable(R.drawable.button_highlighted_clicked));
+                        marking = true;
+                        button.setText(getString(R.string.toggled));
+                        button.setTextColor(getResources().getColor(R.color.black));
+                        button2.setText(getString(R.string.toggled));
+                        button2.setTextColor(getResources().getColor(R.color.black));
+
+                    }
+                }
+            });
+        }
 
         revealingAround = false;
         bombsLeft = numberOfBombs;
@@ -517,13 +631,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     public void fillSavedGame(String savedContent, String savedStatus){
 
         //Parce the Stings
-        String[] parcedContent = savedContent.split("");
-        String[] parcedStatus = savedStatus.split("");
+      //  String[] parcedContent = savedContent.split("");
+      //  String[] parcedStatus = savedStatus.split("");
 
         //Fill the Playing Field by going through Cell by Cell, filling it with the saved content and setting it to the appropriate status
         for (int i = 0; i < numberOfCells; i++) {
-            data[i] = Integer.parseInt(parcedContent[i+1]);
-            status[i] = Integer.parseInt(parcedStatus[i+1]);
+         //   data[i] = Integer.parseInt(parcedContent[i+1]);
+         //   status[i] = Integer.parseInt(parcedStatus[i+1]);
 
             RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(i);
             CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
@@ -1198,36 +1312,83 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 if (firstClick) {
                     time = totalSavedSeconds;
                 } else {
+                    timer.stop();
                     long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
                     long gametime = gametimeInMillis / 1000;
                     time = (int) gametime;
                 }
 
-                StringBuilder content = new StringBuilder();
-                StringBuilder states = new StringBuilder();
-                for (int i = 0; i < data.length; i++) {
-                    content.append(data[i]);
-                    states.append(status[i]);
+                //if we are in landscape mode we have to change our data back to normal before saving
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    landscape_data = new int[data.length];
+                    int x = 1;
+                    int start = numberOfColumns;
+                    int now = start;
+                    for (int i = 0; i < data.length; i++) {
+                        landscape_data[i] = data[now - x];
+                        now = now + numberOfColumns;
+                        if(now > numberOfCells) {
+                            now = start;
+                            x++;
+                        }
+                    }
+                    not_in_use_data = data;
+                    data = landscape_data;
+
+
+                    landscape_status = new int[status.length];
+                    x = 1;
+                    start = numberOfColumns;
+                    now = start;
+                    for (int i = 0; i < status.length; i++) {
+                        landscape_status[i] = status[now - x];
+                        now = now + numberOfColumns;
+                        if(now > numberOfCells) {
+                            now = start;
+                            x++;
+                        }
+                    }
+                    not_in_use_status = status;
+                    status = landscape_status;
+
+                    //switch back
+                    int save = numberOfColumns;
+                    numberOfColumns = numberOfRows;
+                    numberOfRows = save;
                 }
 
-                //Save game
-                //first parameter: game mode
-                //second parameter: game time
-                //third parameter: date
-                //fourth parameter: progress
-                //fifth parameter: string coding the content of the playingfield
-                //sixth parameter: string coding the status of the playingfield
-                DatabaseSavedGameWriter writer = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()));
-                Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
-                writer.execute(data);
+                //check if we need to save into database or not
+                if(isChangingConfigurations()) {
+                    onSaveInstanceState(new Bundle());
+                } else {
+                    StringBuilder content = new StringBuilder();
+                    StringBuilder states = new StringBuilder();
+                    for (int i = 0; i < data.length; i++) {
+                        content.append(data[i]);
+                        states.append(status[i]);
+                    }
 
-                //notify that game is saved
-                Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
-                saveGameInfo.show();
+
+                    //Save game
+                    //first parameter: game mode
+                    //second parameter: game time
+                    //third parameter: date
+                    //fourth parameter: progress
+                    //fifth parameter: string coding the content of the playingfield
+                    //sixth parameter: string coding the status of the playingfield
+                    DatabaseSavedGameWriter writer = new DatabaseSavedGameWriter(new PFMSQLiteHelper(getApplicationContext()), this);
+                    Object[] data = {game_mode, time, DateFormat.getDateTimeInstance().format(new Date()), (((double)numberOfCells - countDownToWin)/numberOfCells), content, states};
+                    writer.execute(data);
+
+                    //notify that game is saved
+                    Toast saveGameInfo = Toast.makeText(getApplicationContext(), getResources().getString(R.string.gameSaved), Toast.LENGTH_SHORT);
+                    saveGameInfo.show();
+
+                    doneCheck();
+                }
             }
         }
         super.onStop();
-        finish();
     }
 
     /**
@@ -1235,5 +1396,103 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
      */
     public void setBestTime(int bt){
         bestTime = bt;
+    }
+
+    private void doneCheck() {
+        if (!game_saved) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    doneCheck();
+                }
+            }, 75);
+        }
+    }
+
+    public void done() {
+        game_saved = true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+
+
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+
+                landscape_data = new int[data.length];
+                int x = 1;
+                int start = numberOfColumns;
+                int now = start;
+                for (int i = 0; i < data.length; i++) {
+                    landscape_data[i] = data[now - x];
+                    now = now + numberOfColumns;
+                    if(now > numberOfCells) {
+                        now = start;
+                        x++;
+                    }
+                }
+                not_in_use_data = data;
+                data = landscape_data;
+
+
+                landscape_status = new int[status.length];
+                x = 1;
+                start = numberOfColumns;
+                now = start;
+                for (int i = 0; i < status.length; i++) {
+                    landscape_status[i] = status[now - x];
+                    now = now + numberOfColumns;
+                    if(now > numberOfCells) {
+                        now = start;
+                        x++;
+                    }
+                }
+                not_in_use_status = status;
+                status = landscape_status;
+
+                int save = numberOfColumns;
+                numberOfColumns = numberOfRows;
+                numberOfRows = save;
+            }
+            int time;
+            if (firstClick) {
+                time = totalSavedSeconds;
+            } else {
+                timer.stop();
+                long gametimeInMillis = SystemClock.elapsedRealtime() - timer.getBase();
+                long gametime = gametimeInMillis / 1000;
+                time = (int) gametime;
+            }
+
+            if (numberOfRows < numberOfColumns) {
+                int save = numberOfColumns;
+                numberOfColumns = numberOfRows;
+                numberOfRows = save;
+            }
+            // Save the current game state
+            savedInstanceState.putInt("columns", numberOfColumns);
+            System.out.println(savedInstanceState.getInt("columns") + "="+numberOfColumns);
+            System.out.println();
+            System.out.println();
+            savedInstanceState.putInt("rows", numberOfRows);
+            savedInstanceState.putIntArray("data", data);
+            savedInstanceState.putIntArray("status", status);
+            savedInstanceState.putInt("time", time);
+            savedInstanceState.putBoolean("firstclick", firstClick);
+
+            Boolean empty;
+            if (firstClick && !savecheck) {
+                empty  = true;
+            } else {
+                empty = false;
+            }
+            savedInstanceState.putBoolean("empty", empty);
+
+
+            // Always call the superclass so it can save the view hierarchy state
+            super.onSaveInstanceState(savedInstanceState);
+
     }
 }
