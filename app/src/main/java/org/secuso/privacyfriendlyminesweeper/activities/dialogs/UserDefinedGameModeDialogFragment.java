@@ -34,6 +34,7 @@ import org.secuso.privacyfriendlyminesweeper.activities.GameActivity;
  * @author I3ananas
  * @version 20180824
  * This class describes a DialogFragment handling an AlertDialog that is shown to set up a user defined game
+ * It contains checks of the values entered in the dialog and corresponding actions
  */
 public class UserDefinedGameModeDialogFragment extends DialogFragment {
 

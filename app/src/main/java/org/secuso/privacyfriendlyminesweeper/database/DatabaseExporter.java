@@ -32,7 +32,6 @@ import java.util.ArrayList;
  * @version 20180530
  * Structure based on http://tech.sarathdr.com/android-app/convert-database-cursor-result-to-json-array-android-app-development/
  * accessed at 25th December 2016
- * <p>
  * This class turns a database into a JSON string
  */
 

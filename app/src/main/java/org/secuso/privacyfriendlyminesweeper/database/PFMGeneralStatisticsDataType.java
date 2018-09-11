@@ -20,7 +20,7 @@ package org.secuso.privacyfriendlyminesweeper.database;
 /**
  * @author Karola Marky, I3ananas
  * @version 20180614
- * This class represents the "data type" of general statistics that will be stored in a table
+ * This class represents the data type of general statistics that will be stored in a table
  * Each column of the table is a private variable in this class
  */
 public class PFMGeneralStatisticsDataType {

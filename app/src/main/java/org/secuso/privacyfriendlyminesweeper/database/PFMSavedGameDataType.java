@@ -20,7 +20,7 @@ package org.secuso.privacyfriendlyminesweeper.database;
 /**
  * @author I3ananas
  * @version 20180803
- * This class represents the "data type" of a saved game that will be stored in a table
+ * This class represents the data type of a saved game that will be stored in a table
  * Each column in the table is a private variable in this class
  */
 public class PFMSavedGameDataType {

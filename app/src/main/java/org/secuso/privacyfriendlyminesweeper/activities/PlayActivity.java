@@ -17,14 +17,12 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
@@ -62,7 +60,13 @@ import java.util.Random;
 /**
  * @author I3ananas, max-dreger
  * @version 20180809
- * This class implements functions required to handle the process of playing
+ * This class implements all functions required to handle the process of playing:
+ * - creation of the playing field and its content
+ * - uncovering fields
+ * - check for victory and/or defeat
+ * - save statistics on victory and/or defeat
+ * - save games
+ * - load saved games
  */
 public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewAdapter.ItemClickListener, BestTimeReaderReceiver {
     PlayRecyclerViewAdapter adapter;
@@ -476,7 +480,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
-        //Fill the Playingfield with numbers depending on bomb position
+        //Fill the playing field with numbers depending on bomb position
         for (int pos= 0; pos < numberOfCells; pos++) {
 
             if (data[pos] != 9) {
@@ -1482,6 +1486,5 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
             // Always call the superclass so it can save the view hierarchy state
             super.onSaveInstanceState(savedInstanceState);
-
     }
 }

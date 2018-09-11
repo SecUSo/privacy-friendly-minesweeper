@@ -56,8 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginStart="4dp"
-                android:layout_toEndOf="@+id/textFieldVersion" />
+                android:layout_marginStart="4dp" />
 
         </RelativeLayout>
 

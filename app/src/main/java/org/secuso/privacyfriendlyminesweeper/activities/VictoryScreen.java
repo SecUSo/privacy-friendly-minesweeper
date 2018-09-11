@@ -16,7 +16,9 @@ import org.secuso.privacyfriendlyminesweeper.R;
 /**
  * @author max-dreger
  * @version 20180430
- * This class implements the popup when winning
+ * This class implements the popup activity when a game is finished (won/lost)
+ * It shows information about the recently played game (won/lost, played time, game mode)
+ * It implements options to play the same game mode again, to return to the game activity and to go to the statistics activity (options are accessible over buttons)
  */
 public class VictoryScreen extends Activity{
     Bundle infoForScreen;

@@ -29,7 +29,9 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
 
 /**
- * Created by yonjuni on 15.06.16.
+ * @author yonjuni, Christopher Beckmann, I3ananas
+ * @version 20180606
+ * This class describes the about page and how its content is set
  */
 public class AboutActivity extends AppCompatActivity {
 

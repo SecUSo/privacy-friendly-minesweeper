@@ -33,6 +33,7 @@ import java.util.List;
  * Structure based on http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
  * accessed at 16th June 2016
  * This class defines structure and methods of the database
+ * It contains all methods that are used to work with the database (store data, delete data, update data, ...)
  */
 public class PFMSQLiteHelper extends SQLiteOpenHelper {
 

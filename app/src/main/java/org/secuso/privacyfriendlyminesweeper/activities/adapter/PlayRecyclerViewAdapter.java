@@ -18,7 +18,7 @@ import java.util.LinkedList;
 /**
  * @author max-dreger
  * @version 20180809
- * This class implements an adapter of handle the Views of the Cells in the Playing Field
+ * This class implements an adapter to handle the views of the cells on the playing field
  */
 public class PlayRecyclerViewAdapter extends RecyclerView.Adapter<PlayRecyclerViewAdapter.ViewHolder> {
 

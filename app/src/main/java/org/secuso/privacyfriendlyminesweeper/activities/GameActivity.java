@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.dialogs.UserDefinedGameModeDialogFragment;
@@ -275,7 +276,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     public void userDefinedGameDialog_positiveClick(int nrOfColumns, int nrOfRows, int nrOfMines){
 
         if(nrOfColumns > 20 || nrOfRows > 25){
-            showDialogTooMuchCells();
+            Toast.makeText(this, getResources().getString(R.string.too_much_cells), Toast.LENGTH_SHORT).show();
         }
         else{
             if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
