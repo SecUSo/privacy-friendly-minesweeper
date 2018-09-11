@@ -1,10 +1,18 @@
-﻿# Privacy Friendly App Example
+﻿# Privacy Friendly Minesweeper
 
-This application contains the basic design of a Privacy Friendly App without any other functionality. It includes a Navigation Drawer, examples for buttons, a help page and the about page. It further shows an example of the main menu for a Privacy Friendly Game App. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
+Privacy Friendly Minesweeper is a version of the game minesweeper, that is optimized regarding user's privacy.
+The app enables to choose between different degrees of difficulty and to create user-defined games. 
+Furthermore, it is possible to save and continue games later. 
+The performance in the played games is illustrated as well. 
+ 
+The app neither uses any tracking mechanisms nor does it contain any kind of advertisment. 
+To use this app with its full functionality, no permissions are required. 
+Privacy Friendly Minesweeper belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institute of Technology (Germany). 
 
 ## Motivation
 
-This application has been developed to be used as a basis for a Privacy Friendly App. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on https://secuso.org/pfa
+As it is part of the Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institute of Technology (Germany), this minesweeper app takes into account the user's privacy.
+Further information can be found on https://secuso.org/pfa
 
 ## Download and more Information
 
@@ -17,23 +25,25 @@ Target SDK: 27
 
 ## License
 
-Privacy Friendly App Example is licensed under the GPLv3.
-Copyright (C) 2016-2018  Karola Marky
+Privacy Friendly Minesweeper is licensed under the GPLv3.
+Copyright (C) 2016-2018  Karola Marky, Christopher Beckmann, Max Dreger and Benedikt Schulz
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
+the Free Software Foundation, either version 3 of the License or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016-2018).
+The icons used in the navigation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). 
+In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. 
+All other images (the logo of Privacy Friendly Minesweeper and of the group of Privacy Friendly Apps and the SECUSO logo) copyright [Karlsruhe Institute of Technology](www.kit.edu) (2016-2018).
 
 ## Contributors
 
