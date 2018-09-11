@@ -26,6 +26,7 @@ import org.secuso.privacyfriendlyminesweeper.helpers.FirstLaunchManager;
 /**
  * @author Karola Marky
  * @version 20161022
+ * This class implements the function that the tutorial is shown on the first startup of the app only
  */
 
 public class SplashActivity extends AppCompatActivity {
@@ -49,5 +50,4 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(mainIntent);
         finish();
     }
-
 }

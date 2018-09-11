@@ -38,7 +38,7 @@ import java.util.ArrayList;
 /**
  * @author I3ananas, max-dreger
  * @version 20180802
- * This class implements an adapter to handle the items/views in a list of saved games
+ * This class implements an adapter and its functionality to handle the items/views in a list of saved games
  * Saved games can be restarted from this list
  */
 public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGamesRecyclerViewAdapter.ViewHolder> {

@@ -40,10 +40,10 @@ import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.helpers.FirstLaunchManager;
 
 /**
- * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
- *
  * @author Karola Marky, Christopher Beckmann, I3ananas, max-dreger
  * @version 20180604
+ * This class describes the tutorial and its contents
+ * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  */
 public class TutorialActivity extends AppCompatActivity {
 
@@ -54,8 +54,7 @@ public class TutorialActivity extends AppCompatActivity {
     private Button btnSkip, btnNext;
     private FirstLaunchManager firstLaunchManager;
 
-    // layouts of all welcome sliders
-    // add few more layouts if you want
+    // layouts of all tutorial pages
     private int[] layouts = new int[]{
             R.layout.tutorial_slide1,
             R.layout.tutorial_slide2,

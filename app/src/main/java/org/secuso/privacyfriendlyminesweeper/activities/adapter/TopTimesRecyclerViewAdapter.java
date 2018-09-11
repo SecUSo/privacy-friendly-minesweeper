@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * @author I3ananas
  * @version 20180803
- * This class implements an adapter to handle the items/views in a list of top times
+ * This class implements an adapter and its functionality to handle the items/views in a list of top times
  */
 public class TopTimesRecyclerViewAdapter extends RecyclerView.Adapter<TopTimesRecyclerViewAdapter.ViewHolder> {
 

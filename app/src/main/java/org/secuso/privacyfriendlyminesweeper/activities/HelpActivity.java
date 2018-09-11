@@ -35,6 +35,7 @@ import java.util.List;
 /**
  * @author Karola Marky, Christopher Beckmann, I3ananas, max-dreger
  * @version 20180813
+ * This class describes the help page and how it is populated with the single help sections
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016
  */
@@ -75,8 +76,8 @@ public class HelpActivity extends AppCompatActivity {
         expandableListDetail.put(getString(R.string.help_feature_five), Collections.singletonList(getString(R.string.help_feature_five_answer)));
         expandableListDetail.put(getString(R.string.help_feature_three), Collections.singletonList(getString(R.string.help_feature_three_answer)));
         expandableListDetail.put(getString(R.string.help_feature_three_point_five), Collections.singletonList(getString(R.string.help_feature_three_point_five_answer)));
-        expandableListDetail.put(getString(R.string.help_feature_one), Collections.singletonList(getString(R.string.help_feature_one_answer)));
         expandableListDetail.put(getString(R.string.help_feature_twelve), Collections.singletonList(getString(R.string.help_feature_twelve_answer)));
+        expandableListDetail.put(getString(R.string.help_feature_one), Collections.singletonList(getString(R.string.help_feature_one_answer)));
         expandableListDetail.put(getString(R.string.help_feature_seven), Collections.singletonList(getString(R.string.help_feature_seven_answer)));
         expandableListDetail.put(getString(R.string.help_feature_eight), Collections.singletonList(getString(R.string.help_feature_eight_answer)));
         expandableListDetail.put(getString(R.string.help_feature_ten), Collections.singletonList(getString(R.string.help_feature_ten_answer)));

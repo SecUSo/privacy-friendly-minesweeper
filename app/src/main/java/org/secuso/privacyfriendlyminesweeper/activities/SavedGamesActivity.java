@@ -39,6 +39,7 @@ import java.util.ArrayList;
  * @author I3ananas, max-dreger
  * @version 20180809
  * This class implements functions to handle a list of saved games that can be continued
+ * The database for saved games is requested for saved games and if there are any they are displayed
  */
 public class SavedGamesActivity extends AppCompatActivity implements DatabaseSavedGamesReader.DatabaseSavedGamesReaderReceiver {
 

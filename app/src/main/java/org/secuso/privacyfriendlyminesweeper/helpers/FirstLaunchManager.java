@@ -27,6 +27,7 @@ import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
  * @author Karola Marky, I3ananas
  * @version 20180601
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
+ * This class manages the first startup of the app (database is created)
  */
 public class FirstLaunchManager {
     private PFMSQLiteHelper dbHandler;

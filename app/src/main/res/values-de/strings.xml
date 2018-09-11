@@ -37,9 +37,9 @@
     <string name="help_feature_two">Wie kann ich Minen finden?</string>
     <string name="help_feature_two_answer">Die Anzahl an Minen in den 8 umliegenden Feldern eines Feldes entspricht der Zahl auf diesem Feld. Die Zahl eines Feldes wird sichtbar, wenn es durch Anklicken aufgedeckt wird. Durch logische Kombination der Zahlen auf aufgedeckten Feldern können die Felder identifiziert werden, die Minen enthalten.</string>
     <string name="help_feature_three">Welchen Nutzen hat das Markieren von Feldern?</string>
-    <string name="help_feature_three_answer">Mit einer Flagge markierte Felder können nicht aus Versehen aufgedeckt werden. Zudem wird durch markieren die Möglichkeit des Schnellaufdeckens durch Klicken auf aufgedeckte Felder eröffentlicht.</string>
+    <string name="help_feature_three_answer">Mit einer Flagge markierte Felder können nicht aus Versehen aufgedeckt werden. Zudem wird durch Markieren das Schnellaufdecken mehrerer Felder durch Klicken auf aufgedeckte Felder möglich (siehe nächster Punkt).</string>
     <string name="help_feature_three_point_five">Kann ich auf bereits aufgedeckte Felder klicken?</string>
-    <string name="help_feature_three_point_five_answer">Beim Anklicken eines bereits aufgedeckten Felds werden die unaufgedeckten Felder in der Umgebung aufgedeckt, falls die Anzahl an Flaggen in den 8 Umgebungsfeldern mit der Zahl des Felds übereinstimmt</string>
+    <string name="help_feature_three_point_five_answer">Beim Anklicken eines bereits aufgedeckten Felds werden die unaufgedeckten Felder in der Umgebung aufgedeckt, falls die Anzahl an Flaggen in den 8 umliegenden Feldern mit der Zahl des Felds übereinstimmt.</string>
     <string name="help_feature_four">Was zeigt die Symbolleiste im Spiel an?</string>
     <string name="help_feature_four_answer">Während eines Spiels wird in der Symbolleiste der Schwierigkeitsgrad, die aktuelle Differenz zwischen markierten Feldern und Minen sowie die bisher gespielte Zeit angezeigt.</string>
     <string name="help_feature_five">Kann ich Felder markieren, unter denen ich Minen vermute?</string>
@@ -51,13 +51,13 @@
     <string name="help_feature_eight">Was ist der benutzerdefinierte Modus?</string>
     <string name="help_feature_eight_answer">Im benutzerdefinierten Modus können die Größe des Spielfelds sowie der Schwierigkeitsgrad beliebig festgelegt werden.</string>
     <string name="help_feature_nine">Wie funktioniert das Spiel?</string>
-    <string name="help_feature_nine_answer">Unter den Feldern des Spielfelds befinden sich Zahlen und Minen. Ziel des Spiels ist es, alle Nicht-Minen Felder des Spielfelds aufzudecken und alle Minien zu markieren, ohne dabei eine Mine auszulösen.</string>
+    <string name="help_feature_nine_answer">Unter den Feldern des Spielfelds befinden sich Zahlen und Minen. Ziel des Spiels ist es, alle Nicht-Minen Felder des Spielfelds aufzudecken und alle Minen-Felder zu markieren, ohne dabei eine Mine auszulösen.</string>
     <string name="help_feature_ten">Kann ich angefangene Spiele später fortsetzen?</string>
     <string name="help_feature_ten_answer">Ja. Spiele, die über den Zurück-Button verlassen werden, werden automatisch gespeichert und können über den Button \'Spiel fortsetzen\' vom Hauptmenü aus wieder aufgerufen werden. Es werden die 10 letzten Spiele gespeichert.</string>
     <string name="help_feature_eleven">Was passiert, wenn ich ein Feld mit einer Mine aufdecke?</string>
     <string name="help_feature_eleven_answer">Wird ein Feld aufgedeckt, das eine Mine enthält, ist das Spiel verloren.</string>
     <string name="help_feature_twelve">Ich habe alle Felder ohne Minen aufgedeckt, wieso habe ich noch nicht gewonnen?</string>
-    <string name="help_feature_twelve_answer">Um das Spiel zu gewinnen müssen sowohl alle Nicht-Minen aufgedeckt sein, als auch alle Minen sicher markiert sein.</string>
+    <string name="help_feature_twelve_answer">Um das Spiel zu gewinnen müssen sowohl alle Nicht-Minen aufgedeckt sein, als auch alle Minen markiert sein.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Die App benötigt keine Berechtigungen, enthält keine Werbung und zeichnet das Benutzerverhalten in keiner Weise auf.</string>
     <string name="help_permission">Welche Berechtigungen braucht die App?</string>
@@ -79,13 +79,13 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
-    <string name="slide1_text">Unter manchen Feldern sind Minen versteckt. Klicke auf ein Feld um den Inhalt aufzudecken. \nDie Zahl eines Feldes gibt die Anzahl an Minen in den Acht umliegenden Feldern an. \nAber pass auf, klicke auf eine Mine und das Spiel ist verloren!</string>
+    <string name="slide1_text">Klicke auf die Felder des Spielfeld um den Inhalt aufzudecken. Unter manchen Feldern sind Minen versteckt. \nDie Zahl eines Feldes gibt die Anzahl an Minen in den Acht umliegenden Feldern an. \nAber pass auf, klicke auf eine Mine und das Spiel ist verloren!</string>
 
     <string name="slide2_heading">Makiere die Minen</string>
-    <string name="slide2_text">Benutze den Knopf um zwischen Markieren und Aufdecken der Felder zu wechseln. \nMakiere all Feldern mit Minen und decke den Rest auf um zu gewinnen</string>
+    <string name="slide2_text">Benutze den Knopf um zwischen Markieren und Aufdecken der Felder zu wechseln. \nMakiere alle Felder mit Minen und decke den Rest auf um zu gewinnen</string>
 
     <string name="slide3_heading">Mehr Minen</string>
-    <string name="slide3_text">Es gibt verschiedene Schwierigkeitsstufen. \nJe höher die Schwierigkeit, desto größer wird das Feld und es müssen deutlich mehr Minen gefunden werden!</string>
+    <string name="slide3_text">Es gibt verschiedene Schwierigkeitsstufen. \nJe höher die Schwierigkeit, desto größer wird das Feld und es müssen mehr Minen gefunden werden!</string>
 
     <string name="slide4_heading">Performance entdecken</string>
     <string name="slide4_text">Auf der Statistik-Seite kann die bisherige Performance angesehen werden</string>

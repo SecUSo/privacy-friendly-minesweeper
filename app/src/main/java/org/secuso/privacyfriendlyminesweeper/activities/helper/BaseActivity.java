@@ -45,11 +45,8 @@ import org.secuso.privacyfriendlyminesweeper.activities.TutorialActivity;
  * @author Christopher Beckmann, Karola Marky
  * @version 20171017
  * This class is a parent class of all activities that can be accessed from the Navigation Drawer
- * The default NavigationDrawer functionality is implemented in this class. To inherit the default
- * behaviour, the content view requires a NavigationDrawer with the id 'nav_view', the header should
- * point to 'nav_header_main' and the menu should load from 'main_drawer'
- * The main layout that holds the content of the activity should have the id 'main_content'.
- * This way it will automatically fade in and out every time a transition is happening.
+ * Those activities are: GameActivity, StatisticsActivity, TutorialActivity, HelpActivity, AboutActivity
+ * This class implements the logic of starting activities from the navigation drawer and the behavior of the navigation drawer
  */
 public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 

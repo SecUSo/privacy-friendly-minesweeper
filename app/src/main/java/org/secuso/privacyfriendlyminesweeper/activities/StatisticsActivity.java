@@ -57,6 +57,8 @@ import java.util.List;
  * @author I3ananas
  * @version 20180809
  * This class implements an activity with three tabs to show statistics about the three different game modes
+ * Stored statistics for the three game modes are requested from the database and are displayed when returned
+ * There is a function in this activity to delete all stored statistics
  */
 public class StatisticsActivity extends AppCompatActivity implements DatabaseReaderReceiver, DatabaseReset.DatabaseResetReceiver {
 
