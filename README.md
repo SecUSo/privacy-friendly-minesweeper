@@ -1,12 +1,12 @@
 ﻿# Privacy Friendly Minesweeper
 
-Privacy Friendly Minesweeper is a version of the game minesweeper, that is optimized regarding user's privacy.
+Privacy Friendly Minesweeper is a version of the game 'Minesweeper', that is optimized regarding user's privacy.
 The app enables to choose between different degrees of difficulty and to create user-defined games. 
-Furthermore, it is possible to save and continue games later. 
-The performance in the played games is illustrated as well. 
+It is possible to save a started game and to continue it later. 
+The performance in the finished games can be displayed. 
  
 The app neither uses any tracking mechanisms nor does it contain any kind of advertisment. 
-To use this app with its full functionality, no permissions are required. 
+No permissions are required to use the app with its full functionality.
 Privacy Friendly Minesweeper belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institute of Technology (Germany). 
 
 ## Motivation
@@ -26,7 +26,7 @@ Target SDK: 27
 ## License
 
 Privacy Friendly Minesweeper is licensed under the GPLv3.
-Copyright (C) 2016-2018  Karola Marky, Christopher Beckmann, Max Dreger and Benedikt Schulz
+Copyright (C) 2016-2018  Karola Marky, Christopher Beckmann, Max Dreger and Benedikt Schulz.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
