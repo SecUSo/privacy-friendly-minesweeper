@@ -5,19 +5,15 @@
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
     <string name="action_about">Über</string>
-    <string name="action_settings">Einstellungen</string>
     <string name="action_main">Hauptmenü</string>
-    <string name="action_game">Spiel</string>
     <string name="action_tutorial">Tutorial</string>
     <string name="action_statistics">Statistik</string>
-    <string name="action_play">Spielen</string>
     <string name="action_end">Spiel beendet</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- ###GAME###-->
-    <string name="title_activity_game">Spiel</string>
     <string name="game_mode_easy">Einfach</string>
     <string name="game_mode_medium">Normal</string>
     <string name="game_mode_difficult">Schwer</string>
@@ -25,7 +21,6 @@
     <string name="game_mode_user_defined_2lines">Benutzer-\ndefiniert</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
-    <string name="game_button_user_defined">Eigener Spielmodus</string>
     <string name="too_much_cells_title">Zu viele Felder</string>
     <string name="too_much_cells">Es sind maximal 20 Spalten und 25 Zeilen möglich.</string>
     <string name="screenTooSmall_title">Achtung</string>
@@ -62,7 +57,7 @@
     <string name="help_feature_eleven">Was passiert, wenn ich ein Feld mit einer Mine aufdecke?</string>
     <string name="help_feature_eleven_answer">Wird ein Feld aufgedeckt, das eine Mine enthält, ist das Spiel verloren.</string>
     <string name="help_feature_twelve">Ich habe alle Felder ohne Minen aufgedeckt, wieso habe ich noch nicht gewonnen?</string>
-    <string name="help_feature_twelve_answer">Um das Spie zu gewinnen müssen Sowohl alle Nicht-Minen aufgedeckt sein, als auch alle Minen sicher markiert sein.</string>
+    <string name="help_feature_twelve_answer">Um das Spiel zu gewinnen müssen sowohl alle Nicht-Minen aufgedeckt sein, als auch alle Minen sicher markiert sein.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Die App benötigt keine Berechtigungen, enthält keine Werbung und zeichnet das Benutzerverhalten in keiner Weise auf.</string>
     <string name="help_permission">Welche Berechtigungen braucht die App?</string>
@@ -78,16 +73,9 @@
     <string name="more_info">Weitere Infos unter:</string>
 
     <!-- ###SETTINGS### -->
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="pref_header_general">Allgemein</string>
-    <string name="pref_example_switch">Schwebend</string>
-    <string name="pref_example_switch_summary">Beispiel Switch Summary</string>
-    <string name="pref_example_summary">Beispiel Summary</string>
 
     <!-- ### WELCOME DIALOG ### -->
     <string name="okay">Okay</string>
-    <string name="viewhelp">Hilfe</string>
-    <string name="main_floating_button">Schwebender Knopf</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
@@ -111,8 +99,6 @@
     <string name="averagePlayedTime">Ø Zeit pro Sieg</string>
     <string name="numberOfUncoveredFields">Aufgedeckte Felder</string>
     <string name="topTenTimes">Top 10 - Bestzeiten</string>
-    <string name="time">Zeit</string>
-    <string name="date">Datum</string>
     <string name="resetAllStatistics">Alle Statistiken zurücksetzen</string>
     <string name="resetAllStatisticsDialogText">Alle Statistiken zurücksetzen?</string>
     <string name="resetAllStatisticsDialogYes">Ja</string>
