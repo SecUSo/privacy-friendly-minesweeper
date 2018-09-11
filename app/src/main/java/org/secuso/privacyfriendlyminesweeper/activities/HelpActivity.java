@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author Karola Marky, Christopher Beckmann, I3ananas
+ * @author Karola Marky, Christopher Beckmann, I3ananas, max-dreger
  * @version 20180813
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016

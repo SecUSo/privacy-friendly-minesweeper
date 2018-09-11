@@ -51,7 +51,7 @@
     <string name="help_feature_eight">Was ist der benutzerdefinierte Modus?</string>
     <string name="help_feature_eight_answer">Im benutzerdefinierten Modus können die Größe des Spielfelds sowie der Schwierigkeitsgrad beliebig festgelegt werden.</string>
     <string name="help_feature_nine">Wie funktioniert das Spiel?</string>
-    <string name="help_feature_nine_answer">Unter den Feldern des Spielfelds befinden sich Zahlen und Minen. Ziel des Spiels ist es, alle Felder des Spielfelds aufzudecken, ohne dabei eine Mine auszulösen.</string>
+    <string name="help_feature_nine_answer">Unter den Feldern des Spielfelds befinden sich Zahlen und Minen. Ziel des Spiels ist es, alle Nicht-Minen Felder des Spielfelds aufzudecken und alle Minien zu markieren, ohne dabei eine Mine auszulösen.</string>
     <string name="help_feature_ten">Kann ich angefangene Spiele später fortsetzen?</string>
     <string name="help_feature_ten_answer">Ja. Spiele, die über den Zurück-Button verlassen werden, werden automatisch gespeichert und können über den Button \'Spiel fortsetzen\' vom Hauptmenü aus wieder aufgerufen werden. Es werden die 10 letzten Spiele gespeichert.</string>
     <string name="help_feature_eleven">Was passiert, wenn ich ein Feld mit einer Mine aufdecke?</string>
@@ -79,13 +79,13 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
-    <string name="slide1_text">Unter manchen Feldern sind Minen versteckt. Klicke auf ein Feld um den Inhalt aufzudecken. Die Zahl eines Feldes gibt die Anzahl an Minen in den Acht umliegenden Feldern an. Aber pass auf, klicke auf eine Mine und das Spiel ist verloren!</string>
+    <string name="slide1_text">Unter manchen Feldern sind Minen versteckt. Klicke auf ein Feld um den Inhalt aufzudecken. \nDie Zahl eines Feldes gibt die Anzahl an Minen in den Acht umliegenden Feldern an. \nAber pass auf, klicke auf eine Mine und das Spiel ist verloren!</string>
 
     <string name="slide2_heading">Makiere die Minen</string>
-    <string name="slide2_text">Benutze den Knopf um zwischen Markieren und Aufdecken der Felder zu wechseln. Makiere all Feldern mit Minen und decke den Rest auf um zu gewinnen</string>
+    <string name="slide2_text">Benutze den Knopf um zwischen Markieren und Aufdecken der Felder zu wechseln. \nMakiere all Feldern mit Minen und decke den Rest auf um zu gewinnen</string>
 
     <string name="slide3_heading">Mehr Minen</string>
-    <string name="slide3_text">Es gibt verschiedene Schwierigkeitsstufen. Je höher die Schwierigkeit, desto größer wird das Feld und es müssen deutlich mehr Minen gefunden werden!</string>
+    <string name="slide3_text">Es gibt verschiedene Schwierigkeitsstufen. \nJe höher die Schwierigkeit, desto größer wird das Feld und es müssen deutlich mehr Minen gefunden werden!</string>
 
     <string name="slide4_heading">Performance entdecken</string>
     <string name="slide4_text">Auf der Statistik-Seite kann die bisherige Performance angesehen werden</string>

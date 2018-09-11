@@ -21,7 +21,7 @@
     <string name="game_mode_user_defined_2lines">User-\ndefined</string>
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
-    <string name="too_much_cells_title">Too much fields</string>
+    <string name="too_much_cells_title">Too many fields</string>
     <string name="too_much_cells">There are 20 columns and 25 rows possible at most.</string>
     <string name="screenTooSmall_title">Please note</string>
     <string name="screenTooSmall">With this number of fields the user experience might be limited due to the size of the screen.</string>
@@ -35,7 +35,7 @@
     <string name="help_feature_one">Are there different game modes available?</string>
     <string name="help_feature_one_answer">Yes, you can choose between the game modes \'easy\', \'medium\', \'difficult\' and \'user-defined\'.</string>
     <string name="help_feature_two">How can I find mines?</string>
-    <string name="help_feature_two_answer">Every field has exactly as much mines under the 8 fields in its surrounding as the number on the field indicates. The number becomes visible when the field is uncovered by clicking on it. Logically combining the numbers on several uncovered fields enables you to identify fields that contain a mine.</string>
+    <string name="help_feature_two_answer">Every field has exactly as many mines under the 8 fields in its surrounding as the number on the field indicates. The number becomes visible when the field is uncovered by clicking on it. Logically combining the numbers on several uncovered fields enables you to identify fields that contain a mine.</string>
     <string name="help_feature_three">What is the use of setting a flag on a field?</string>
     <string name="help_feature_three_answer">Marked fields can not be uncovered by accident. Moreover, it allows for faster uncovering by clicking on already revealed fields with marks next to them.</string>
     <string name="help_feature_three_point_five">Can I click on already uncovered fields?</string>
@@ -51,7 +51,7 @@
     <string name="help_feature_eight">What is the user defined game mode?</string>
     <string name="help_feature_eight_answer">In the user defined game mode, you can freely choose the size of the playing field and the degree of difficulty.</string>
     <string name="help_feature_nine">How does the game work?</string>
-    <string name="help_feature_nine_answer">Under the fields of the playing field are numbers and mines. The aim of the game is to uncover all fields of the playing field without triggering a mine.</string>
+    <string name="help_feature_nine_answer">Under the fields of the playing field are numbers and mines. The aim of the game is to uncover all non-mine fields of the playing field and marking every mine without triggering a mine.</string>
     <string name="help_feature_ten">Can I continue games I started earlier?</string>
     <string name="help_feature_ten_answer">Yes. Games that are left using the Back-Button are saved and can be continued from the saved games menu, accessible over the Button \'Continue Game\' in the main menu. The last ten games are stored.</string>
     <string name="help_feature_eleven">What happens if I uncover a field that contains a mine?</string>
@@ -60,7 +60,7 @@
     <string name="help_feature_twelve_answer">To win the game you have to uncover all non-mines and mark every field with a mine.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Minesweeper does not require any permission. It does not include any tracking mechanisms or advertisement.</string>
-    <string name="help_permission">Which permissions does the app require?</string>
+    <string name="help_permission">What permissions does the app require?</string>
     <string name="help_permission_answer">Privacy Friendly Minesweeper does not require any permission.</string>
 
     <!--###ABOUT###-->
@@ -79,13 +79,13 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
-    <string name="slide1_text">There are Mines hidden in some fields. Click on a field to uncover it and reveal the content. The number on a field indicates the number of mines in the eight surrounding fields. But be careful, hitting a mine loses the game!</string>
+    <string name="slide1_text">There are Mines hidden in some fields. Click on a field to uncover it and reveal the content. \nThe number on a field indicates the number of mines in the eight surrounding fields. \nBut be careful, hitting a mine loses the game!</string>
 
     <string name="slide2_heading">Mark The Mines</string>
-    <string name="slide2_text">Use the button to toggle between marking and revealing fields. Mark all fields where the mines are and uncover the rest to win the game!</string>
+    <string name="slide2_text">Use the button to toggle between marking and revealing fields. \nMark all fields where the mines are and uncover the rest to win the game!</string>
 
     <string name="slide3_heading">More Mines</string>
-    <string name="slide3_text">There are different difficulties. The higher the difficulty the bigger the board, but the number and density of mines increases as well!</string>
+    <string name="slide3_text">There are different difficulties.\n The higher the difficulty the bigger the board, but the number and density of mines increases as well!</string>
 
     <string name="slide4_heading">Track your achievements</string>
     <string name="slide4_text">You can check some statistics about your achievements on the statistics page.</string>
