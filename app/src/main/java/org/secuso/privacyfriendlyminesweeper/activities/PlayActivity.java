@@ -118,7 +118,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         landscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         newBestTime = false;
-        gameEnded = true;
+        gameEnded = false;
         game_saved = false;
 
         //check if this is loading a saved game
@@ -228,6 +228,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             status = param.getIntArray("status");
             totalSavedSeconds = param.getInt("time");
             boolean noinfo = param.getBoolean("empty");
+            gameEnded = param.getBoolean("gameended");
             if (noinfo) {
                 savecheck = false;
 
@@ -709,7 +710,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
 
         firstClick = true;
-        gameEnded = false;
 
     }
 
@@ -1169,6 +1169,8 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 parameter.putString("gameMode", game_mode);
                 parameter.putBoolean("newBestTime", newBestTime);
 
+                gameEnded = true;
+
                 final Intent tempI = new Intent(this, VictoryScreen.class);
                 tempI.putExtras(parameter);
                 handler.postDelayed(new Runnable(){
@@ -1191,7 +1193,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     Object[] result_params = {game_mode, 1, 0, (numberOfCells - countDownToWin), 0, time, "lost"};
                     writer.execute(result_params);
                 }
-                gameEnded = true;
 
             } else {
                 //set cell to revealed
@@ -1470,6 +1471,7 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             savedInstanceState.putIntArray("status", status);
             savedInstanceState.putInt("time", time);
             savedInstanceState.putBoolean("firstclick", firstClick);
+            savedInstanceState.putBoolean("gameended", gameEnded);
 
             Boolean empty;
             if (firstClick && !savecheck) {

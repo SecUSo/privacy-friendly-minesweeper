@@ -156,4 +156,13 @@ public class VictoryScreen extends Activity{
         startActivity(intent_for_replay);
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        if(isChangingConfigurations()) {
+            setResult(RESULT_OK, null);
+            finish();
+        }
+        super.onPause();
+    }
 }
