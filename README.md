@@ -42,7 +42,9 @@ Markus Hau<br />
 
 Github-Users: <br />
 Yonjuni (Karola Marky)<br />
-Kamuno (Christopher Beckmann)
+Kamuno (Christopher Beckmann)<br />
+max-dreger (Max Dreger)<br />
+I3ananas (Benedikt Schulz)
 
 
 
