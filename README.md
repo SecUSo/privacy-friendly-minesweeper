@@ -1,4 +1,4 @@
-﻿# Privacy Friendly Minesweeper
+# Privacy Friendly Minesweeper
 
 Privacy Friendly Minesweeper is a version of the game 'Minesweeper', that is optimized regarding user's privacy.
 The app enables to choose between different degrees of difficulty and to create user-defined games. 
@@ -8,6 +8,13 @@ The performance in the finished games can be displayed.
 The app neither uses any tracking mechanisms nor does it contain any kind of advertisment. 
 No permissions are required to use the app with its full functionality.
 Privacy Friendly Minesweeper belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institute of Technology (Germany). 
+
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=org.secuso.privacyfriendlyminesweeper)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/org.secuso.privacyfriendlyminesweeper/)
 
 ## Motivation
 
@@ -55,7 +62,3 @@ Yonjuni (Karola Marky)<br />
 Kamuno (Christopher Beckmann)<br />
 max-dreger (Max Dreger)<br />
 I3ananas (Benedikt Schulz)
-
-
-
-
