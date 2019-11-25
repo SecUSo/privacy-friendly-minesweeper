@@ -1,0 +1,16 @@
+Privacy Friendly Minesweeper ist eine mobile Version des Spiels Minesweeper. Ziel des Spiels ist es, alle Minen unter den Feldern des Spielfelds zu finden, ohne diese auszulösen.
+
+Durch Anklicken bzw. Antippen der Felder des Spielfelds werden diese aufgedeckt. Verbirgt sich unter einem aufgedeckten Feld eine Mine, wird diese ausgelöst. Alle anderen aufgedeckten Felder zeigen an, wie viele Minen es unter den acht umliegenden Feldern gibt. Anhand dieser Zahlen können die Minen durch logisches Kombinieren und teilweise durch Raten lokalisiert werden.
+
+Die App stellt sicher, dass das erste geöffnete Feld keine Mine enthält, da diese zuvor nicht lokalisiert werden könnte. Allerdings werden die Minen in jedem neuen Spiel neu positioniert, sodass dem Nutzer stets neue, unbekannte Spielfelder bereitgestellt werden können. Bei der Positionierung der Minen werden Cluster (vier oder mehr Minen unter benachbarten Feldern) vermieden, da diese die Wahrscheinlichkeit für das Auftreten nicht durch logisches Kombinieren auflösbarer Situationen erhöhen.
+
+Es stehen drei verschiedene Spielmodi mit verschiedenen Schwierigkeitsgraden zur Verfügung, die sich in der Größe des Spielfelds und dem Anteil an Minen unterscheiden:
+
+- 6x10 Spielfeld mit 7 Minen
+- 10x16 Spielfeld mit 24 Minen
+- 12x19 Spielfeld mit 46 Minen
+Zudem können eigene Spielmodi erstellt werden. Dabei kann die Größe des Spielfelds (Anzahl der Zeilen und Spalten) sowie der Anteil an Minen (einfach / mittel / schwer) beliebig gewählt werden.
+
+Die App ermöglicht es, bis zu 10 angefangene Spiele zu speichern und später fortzusetzen. Für die drei Standard-Spielmodi werden Statistiken über die bisherige Performance erstellt. Diese können auf einer Statistik-Seite abgerufen werden. Es werden die Anzahl der gespielten Spiele, der Anteil gewonnener Spiele, die durchschnittliche Zeit bis zum Gewinnen eines Spiels, die Anzahl der aufgedeckten Felder sowie die 10 bisherigen Bestzeiten für jeden der drei Spielmodi angezeigt.
+
+Auf einer Hilfe-Seite können verschiedene Informationen über die App sowie zu den Regeln und der Logik des Spiels abgerufen werden. Der grundlegende Ablauf und die Logik des Spiels werden zudem in einem Tutorial erklärt, das sich beim ersten Start der App öffnet und danach bei Bedarf erneut aufgerufen werden kann.
