@@ -59,7 +59,6 @@ import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
