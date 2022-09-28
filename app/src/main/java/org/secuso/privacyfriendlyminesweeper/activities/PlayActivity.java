@@ -858,6 +858,13 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
             } else {
+                // check if the game was initialized -> any cell not empty
+                boolean initialized = false;
+                for (int cellData : data) {
+                    if (cellData != 0) initialized = true;
+                }
+                // if game was not initialized -> generate bombs
+                if (!initialized) fillPlayingField(position);
                 firstClick = false;
                 timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
                 timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
