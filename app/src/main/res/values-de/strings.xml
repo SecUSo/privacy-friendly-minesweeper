@@ -114,6 +114,7 @@
     <!-- ### SAVED GAMES ### -->
     <string name="continueSavedGame">Spiel fortsetzen</string>
     <string name="progress">Fortschritt</string>
+    <string name="saveDeleted">Spiel gelöscht</string>
 
     <!-- ### GAME END ### -->
     <string name="victory">Gratulation!
