@@ -36,6 +36,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
@@ -60,6 +61,7 @@ import org.secuso.privacyfriendlyminesweeper.database.PFMSQLiteHelper;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -85,8 +87,8 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int maxHeight;
     boolean firstTime;
     boolean marking;
-    int[] data;
-    int[] status;
+    int[][] data;
+    int[][] status;
     TextView mines;
     int bombsLeft;
     int countDownToWin;
@@ -105,10 +107,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     int totalSavedSeconds;
     Toolbar toolbar;
     Handler handler;
-    int[] landscape_data;
-    int[] landscape_status;
-    int[] not_in_use_data;
-    int[] not_in_use_status;
+    int[][] landscape_data;
+    int[][] landscape_status;
+    int[][] not_in_use_data;
+    int[][] not_in_use_status;
     boolean savedinstancestate;
     int desired_width;
     boolean game_saved;
@@ -219,22 +221,24 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
         //Creating the right sized the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
-        data = new int[numberOfCells];
+        data = new int[numberOfRows][numberOfColumns];
         countDownToWin = numberOfCells;
 
         //status saves the state of the cell
         //0 = normal, 1 = revealed, 2 = marked
-        status = new int[numberOfCells];
-        for (int i = 0; i < numberOfCells; i++) {
-            status[i] = 0;
+        status = new int[numberOfRows][numberOfColumns];
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; ++j) {
+                status[i][j] = 0;
+            }
         }
 
         //check if there is a saved instance state
         if (param != null) {
             numberOfRows = param.getInt("rows");
             numberOfColumns = param.getInt("columns");
-            data = param.getIntArray("data");
-            status = param.getIntArray("status");
+            data = delinearize_data(param.getIntArray("data"), numberOfRows, numberOfColumns);
+            status = delinearize_data(param.getIntArray("status"), numberOfRows, numberOfColumns);
             totalSavedSeconds = param.getInt("time");
             boolean noinfo = param.getBoolean("empty");
             gameEnded = param.getBoolean("gameended");
@@ -259,43 +263,39 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 String[] parcedStatus = savedStatus.split("");
 
                 StringBuilder line = new StringBuilder();
+                int[] grid = new int[numberOfCells];
+                int[] grid_status = new int[numberOfCells];
                 for (int i = 0; i < numberOfCells; i++) {
                     line.append(parcedContent[i + 1]);
-                    data[i] = Integer.parseInt(parcedContent[i + 1]);
-                    status[i] = Integer.parseInt(parcedStatus[i + 1]);
+                    grid[i] = Integer.parseInt(parcedContent[i + 1]);
+                    grid_status[i] = Integer.parseInt(parcedStatus[i + 1]);
                 }
+                data = delinearize_data(grid, numberOfRows, numberOfColumns);
+                status = delinearize_data(grid_status, numberOfRows, numberOfColumns);
             }
             //flip the info if we are in landscape mode
             if(landscape){
-                landscape_data = new int[data.length];
-                int x = 1;
-                int start = numberOfCells - numberOfColumns;
-                int now = start;
-                for (int i = 0; i < data.length; i++) {
-                    landscape_data[i] = data[now];
-                    now = now - numberOfColumns;
-                    if(now < 0) {
-                        now = start + x;
-                        x++;
+                landscape_data = new int[numberOfColumns][numberOfRows];
+                for (int row = 0; row < numberOfRows; ++row) {
+                    for (int col = 0; col < numberOfColumns; ++col) {
+                        landscape_data[numberOfColumns - col - 1][row] = data[row][col];
                     }
                 }
                 not_in_use_data = data;
                 data = landscape_data;
 
-                x = 1;
-                start = numberOfCells - numberOfColumns;
-                landscape_status = new int[status.length];
-                now = start;
-                for (int i = 0; i < status.length; i++) {
-                    landscape_status[i] = status[now];
-                    now = now - numberOfColumns;
-                    if(now < 0) {
-                        now = start + x;
-                        x++;
+                landscape_status = new int[numberOfColumns][numberOfRows];
+                for (int row = 0; row < numberOfRows; ++row) {
+                    for (int col = 0; col < numberOfColumns; ++col) {
+                        landscape_status[numberOfColumns - col - 1][row] = status[row][col];
                     }
                 }
                 not_in_use_status = status;
                 status = landscape_status;
+
+                int save = numberOfColumns;
+                numberOfColumns = numberOfRows;
+                numberOfRows = save;
             }
         }
 
@@ -353,12 +353,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         });
 
-        //fistLaunch
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            int save = numberOfColumns;
-            numberOfColumns = numberOfRows;
-            numberOfRows = save;
-        }
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns, LinearLayoutManager.VERTICAL, false));
 
         createAdapter(maxHeight);
@@ -442,201 +436,103 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         writer = new DatabaseWriter(new PFMSQLiteHelper(getApplicationContext()));
     }
 
+    private int[][] delinearize_data(int[] data, int numberOfRows, int numberOfColumns) {
+        int[][] grid = new int[numberOfRows][numberOfColumns];
+        for (int row = 0; row < numberOfRows; ++row) {
+            for (int col = 0; col < numberOfColumns; ++col) {
+                grid[row][col] = data[linearize_index(row, col)];
+            }
+        }
+        return grid;
+    }
+
+    private int[] linearize_data(int[][] data, int numberOfRows, int numberOfColumns) {
+        int[] grid = new int[numberOfRows * numberOfColumns];
+        for (int row = 0; row < numberOfRows; ++row) {
+            for (int col = 0; col < numberOfColumns; ++col) {
+                grid[linearize_index(row, col)] = data[row][col];
+            }
+        }
+        return grid;
+    }
+
+    private Pair<Integer, Integer> delinearize_index(int index) {
+        return new Pair<>(index / numberOfColumns, index % numberOfColumns);
+    }
+
+    private int linearize_index(Pair<Integer, Integer> index) {
+        return linearize_index(index.first, index.second);
+    }
+
+    private int linearize_index(int row, int col) {
+        return row * numberOfColumns + col;
+    }
+
     /**
      * This method creates a new PlayRecyclerViewAdapter with the given parameters and connects it to the RecyclerView with the Playing Field
      * @param maximumHeight the maximum height of the singe Cells of the Playing Field
      */
     private void createAdapter(int maximumHeight) {
-        adapter = new PlayRecyclerViewAdapter(this, data, maxHeight);
+        adapter = new PlayRecyclerViewAdapter(this, linearize_data(data, numberOfRows, numberOfColumns), maxHeight);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
     /**
      * This method fills the playing Field with data. First it puts the needed amount of bombs in random Cells, then Calculates the Number of Neighboring Bomb for each Cell
-     * @param notHere the position of the Cell where the user clicked first. This one can not have a Bomb in it
+     * @param click the position of the Cell where the user clicked first. This one can not have a Bomb in it
      */
-    private void fillPlayingField(int notHere){
+    private void fillPlayingField(Pair<Integer, Integer> click){
 
         //put bombs at random positions
         for (int i = 0; i < numberOfBombs; i++) {
-            int position;
+            int row, col;
             Random randomGen = new Random();
-            position = randomGen.nextInt(numberOfCells);
 
-            //redo if the first clicked cell would get a bomb
-            if(position == notHere) {
-                i--;
-            }
-            //9 equals a bomb
-            //redo random position if there is a bomb already
-            else if (data[position] == 9) {
-                i--;
-            }
-            //redo if placing a bomb at position would produce a cluster of bombs
-            //4 or more horizontally and vertically neighbouring bombs are considered to be a cluster
-            //possible arrangements that are prevented:
-            //1) XX  2) XX   3) XXXX  4) XXX  5) XXX
-            //   XX      XX              X        X
-            else if(numberOfNeighbouringBombs(position, 0, position, new ArrayList<Integer>()) >= 3){
-                i--;
-            }
-            else {
-                data[position] = 9;
-            }
+            // Generate random position until we have a valid bomb position.
+            // A position is valid iff:
+            //  * it is different from the position the user clicked on
+            //  * it is not already occupied by a bomb
+            //  * placing a bomb in this position does not create a cluster of bombs of size 4 or greater.
+            //
+            // A cluster of bombs of size n are n bombs which are horizontally and vertically connected.
+            // We want to prevent the following arrangements:
+            // 1) XX  2) XX   3) XXXX  4) XXX  5) XXX
+            //    XX      XX              X        X
+            do {
+                row = randomGen.nextInt(numberOfRows);
+                col = randomGen.nextInt(numberOfColumns);
+            } while (
+                    row == click.first && col == click.second
+                ||  data[row][col] == 9
+                ||  countClusterSize(new Pair<>(row, col)) >= 4
+            );
+            data[row][col] = 9;
         }
 
-        //Fill the playing field with numbers depending on bomb position
-        for (int pos= 0; pos < numberOfCells; pos++) {
+        // We want to look at all neighbours of a given cell
+        int[][] neighbourhood = {
+            {-1,-1},{0,-1},{1,-1},
+            {-1, 0},       {1, 0},
+            {-1, 1},{0, 1},{1, 1},
+        };
 
-            if (data[pos] != 9) {
-                data[pos] = 0;
-                //check if position is in one corner of the Field
-                //bottom left
-                if (pos == 0) {
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
+        // Fill the playing field with numbers depending on bomb position
+        // As we do not want to handle each case (aka borders of the grid) extra,
+        // we loop over all 8 neighbours of every cell and determine if the index is valid.
+        for (int row = 0; row < numberOfRows; ++row) {
+            for (int col = 0; col < numberOfColumns; ++col) {
+                if (data[row][col] == 9) {
+                    continue;
                 }
-                //bottom right
-                else if (pos == (numberOfColumns - 1)) {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //top left
-                else if (pos == (numberOfCells - numberOfColumns)) {
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //top right
-                else if (pos == numberOfCells - 1) {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //bottom row
-                else if (pos < numberOfColumns) {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //top row
-                else if (pos > numberOfCells - numberOfColumns) {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //left column
-                else if (pos % numberOfColumns == 0) {
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //right column
-                else if (pos % numberOfColumns == (numberOfColumns - 1)) {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                }
-                //the rest (inner cells)
-                else {
-                    if (data[pos - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos + numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns + 1] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns] == 9) {
-                        data[pos] = data[pos] + 1;
-                    }
-                    if (data[pos - numberOfColumns - 1] == 9) {
-                        data[pos] = data[pos] + 1;
+                data[row][col] = 0;
+                for (int[] neighbour : neighbourhood) {
+                    int offx = neighbour[0], offy = neighbour[1];
+                    if (    row + offx >= 0 && row + offx < numberOfRows
+                        &&  col + offy >= 0 && col + offy < numberOfColumns
+                        &&  data[row + offx][col + offy] == 9
+                    ) {
+                        data[row][col] += 1;
                     }
                 }
             }
@@ -653,65 +549,32 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         //Parce the Stings
       //  String[] parcedContent = savedContent.split("");
       //  String[] parcedStatus = savedStatus.split("");
+        int[] colors = {R.color.black, R.color.darkblue, R.color.darkgreen, R.color.red, R.color.darkblue, R.color.brown, R.color.cyan, R.color.black, R.color.black};
 
         //Fill the Playing Field by going through Cell by Cell, filling it with the saved content and setting it to the appropriate status
-        for (int i = 0; i < numberOfCells; i++) {
-         //   data[i] = Integer.parseInt(parcedContent[i+1]);
-         //   status[i] = Integer.parseInt(parcedStatus[i+1]);
-
-            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(i);
-            CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
-
-            if (status[i] == 1) {
-                switch (data[i]) {
-                    case 0:
+        for (int row = 0; row < numberOfRows; ++row) {
+            for (int col = 0; col < numberOfColumns; ++col) {
+                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(linearize_index(row, col));
+                CellView cell = (CellView) holder.itemView.findViewById(R.id.cell);
+                if (status[row][col] == 1) {
+                    if (data[row][col] == 0) {
                         cell.setText("");
-                        break;
-                    case 1:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.darkblue));
-                        break;
-                    case 2:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.darkgreen));
-                        break;
-                    case 3:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.red));
-                        break;
-                    case 4:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.darkblue));
-                        break;
-                    case 5:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.brown));
-                        break;
-                    case 6:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.cyan));
-                        break;
-                    case 7:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.black));
-                        break;
-                    case 8:
-                        cell.setText(String.valueOf(data[i]));
-                        cell.setTextColor(getResources().getColor(R.color.black));
-                        break;
+                    } else {
+                        cell.setText(String.valueOf(data[row][col]));
+                        cell.setTextColor(getResources().getColor(colors[data[row][col]]));
+                    }
+
+                    cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
+                    countDownToWin--;
+                } else if (status[row][col] == 2) {
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    Drawable img = getDrawable(R.drawable.flagge);
+                    img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
+                    cell.setCompoundDrawables(img,null,null,null);
+                    bombsLeft--;
+                    countDownToWin--;
+                    mines.setText(String.valueOf(bombsLeft));
                 }
-
-                cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
-
-                countDownToWin--;
-            } else if (status[i] == 2) {
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                Drawable img = getDrawable(R.drawable.flagge);
-                img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
-                cell.setCompoundDrawables(img,null,null,null);
-                bombsLeft--;
-                countDownToWin--;
-                mines.setText(String.valueOf(bombsLeft));
             }
         }
 
@@ -723,121 +586,49 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     }
 
     /**
-     * This method counts the number of horizontally and vertically neighbouring bombs of a cell
-     * @param position position of the cell on the playing field
-     * @param counterBombs variable to count number of bombs (recursively)
-     * @param rootPosition position / cell that invokes the method (mustn't considered as neighbour)
-     * @param checkedNeighbours all checked neighbours are stored to ensure that they are not counted twice
-     * @return number of (recursively) neighbouring bombs of the cell at position
+     * Count the size of the bomb cluster which contains the given cell.
+     * A cluster is the biggest set of bombs which are orthogonally connected.
+     * @param pos the index of the cell to determine the cluster size.
+     * @return int >= 0
      */
-    private int numberOfNeighbouringBombs(int position, int counterBombs, int rootPosition, ArrayList<Integer> checkedNeighbours){
+    private int countClusterSize(Pair<Integer, Integer> pos) {
+        return data[pos.first][pos.second] != 9 ? 0 : countClusterSize(pos, new ArrayList<>());
+    }
 
-        //increase counter if there is a bomb on the cell at position and store the position
-        if(data[position] == 9){
-            checkedNeighbours.add(position);
-            counterBombs++;
-        }
+    /**
+     * Recursively counts the size of the bomb cluster which contains the given cell.
+     * A cluster is the biggest set of bombs which are orthogonally connected.
+     * @param pos the index of the cell to determine the cluster size.
+     * @param cluster the current cluster set.
+     * @return int >= 0
+     */
+    private int countClusterSize(Pair<Integer, Integer> pos, List<Pair<Integer, Integer>> cluster) {
+        // We want to look at all neighbours of a given cell
+        int[][] neighbourhood = {
+            {-1,-1},{0,-1},{1,-1},
+            {-1, 0},       {1, 0},
+            {-1, 1},{0, 1},{1, 1},
+        };
 
-        //bottom left
-        if(position == 0){
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //bottom right
-        else if(position == (numberOfColumns - 1)){
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //top left
-        else if(position == (numberOfCells - numberOfColumns)){
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
+        int row = pos.first, col = pos.second;
+
+        // Add all bombs around this bomb, if they weren't already in the cluster.
+        // As we do not want to handle each case (aka borders of the grid) extra,
+        // we loop over all 8 neighbours of every cell and determine if the index is valid.
+        for (int[] neighbour : neighbourhood) {
+            int offx = neighbour[0], offy = neighbour[1];
+            int x = row + offx, y = col + offy;
+            Pair<Integer, Integer> cell = new Pair<>(x,y);
+            if (    x >= 0 && x < numberOfRows
+                &&  y >= 0 && y < numberOfColumns
+                &&  data[x][y] == 9
+                &&  !cluster.contains(cell)
+            ) {
+                cluster.add(cell);
+                countClusterSize(cell, cluster);
             }
         }
-        //top right
-        else if(position == (numberOfCells - 1)){
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //bottom row
-        else if(position < numberOfColumns){
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //top row
-        else if(position > (numberOfCells - numberOfColumns)){
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //left column
-        else if((position % numberOfColumns) == 0){
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //right column
-        else if((position % numberOfColumns) == (numberOfColumns - 1)){
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        //inner cells
-        else{
-            if ((data[position - 1] == 9) && ((position - 1) != rootPosition) && (!checkedNeighbours.contains(position - 1))) {
-                counterBombs += numberOfNeighbouringBombs(position - 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + 1] == 9) && ((position + 1) != rootPosition) && (!checkedNeighbours.contains(position + 1))) {
-                counterBombs += numberOfNeighbouringBombs(position + 1, 0, position, checkedNeighbours);
-            }
-            if ((data[position + numberOfColumns] == 9) && ((position + numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position + numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position + numberOfColumns, 0, position, checkedNeighbours);
-            }
-            if ((data[position - numberOfColumns] == 9) && ((position - numberOfColumns) != rootPosition) && (!checkedNeighbours.contains(position - numberOfColumns))) {
-                counterBombs += numberOfNeighbouringBombs(position - numberOfColumns, 0, position, checkedNeighbours);
-            }
-        }
-        return counterBombs;
+        return cluster.size();
     }
 
     /**
@@ -848,9 +639,10 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
     @Override
     public void onItemClick(View view, int position) {
         //on the first click the timer must be started and the PlayingField must be filled
+        Pair<Integer, Integer> index = delinearize_index(position);
         if (firstClick) {
             if (!savecheck) {
-                fillPlayingField(position);
+                fillPlayingField(index);
                 firstClick = false;
                 gameEnded = false;
 
@@ -860,14 +652,19 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             } else {
                 // check if the game was initialized -> any cell not empty
                 boolean initialized = false;
-                for (int cellData : data) {
-                    if (cellData != 0) initialized = true;
+                for (int[] row : data) {
+                    for (int cell : row) {
+                        if (cell != 0) {
+                            initialized = true;
+                            break;
+                        }
+                    }
                 }
                 // if game was not initialized -> generate bombs
-                if (!initialized) fillPlayingField(position);
+                if (!initialized) fillPlayingField(index);
                 firstClick = false;
                 timer = (Chronometer) toolbar.findViewById(R.id.chronometer);
-                timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds*1000));
+                timer.setBase(SystemClock.elapsedRealtime() - (totalSavedSeconds* 1000L));
                 timer.start();
             }
         }
@@ -876,25 +673,26 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         CellView cell = (CellView) cellview.getChildAt(0);
 
         //check if cell is already revealed and has the right amount of mines marked
-         if (status[position] == 1) {
+        int x = index.first, y = index.second;
+         if (status[x][y] == 1) {
              revealingAround = true;
-             revealAroundCell(position, true);
+             revealCells(index);
              revealingAround = false;
          } else
         //check if we are in marking mode
         if (marking) {
             //only if the cell is not revealed
-            if (status[position] != 1) {
+            if (status[x][y] != 1) {
                 //check if already marked
-                if (status[position] == 2) {
+                if (status[x][y] == 2) {
                     countDownToWin++;
-                    status[position] = 0;
+                    status[x][y] = 0;
                     cell.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
                     bombsLeft++;
                     mines.setText(String.valueOf(bombsLeft));
                 } else {
-                    status[position] = 2;
+                    status[x][y] = 2;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     Drawable img = getDrawable(R.drawable.flagge);
                     img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
@@ -909,245 +707,50 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
         }
         //normal revealing of the cell
         else {
-             revealCell(position);
+             revealCell(index);
         }
     }
 
     /**
-     * This method has two functions. Firstly it checks if the right amount of Bombs is marked around a revealed and clicked cell.
-     * Secondly it reveals every Cell that is not marked next to the given Position.
-     * @param position position of the cell on the playing field around witch we want to operate
-     * @param revealed if true we check if there is the right Amount of Bombs marked next to the revealed Cell at position,
-     *                 if false we reaveal all Cells in a Circle around position
+     * Recursively reveal all cells which are somehow attached to the given cell, if possible.
+     * A cell may only be revealed iff count of marked cells neighbouring the current cell is geq than the bomb hint of the cell.
+     * @param position
      */
-    private void revealAroundCell(int position, boolean revealed) {
+    private void revealCells(Pair<Integer, Integer> position) {
+        // We want to look at all neighbours of a given cell
+        int[][] neighbourhood = {
+                {-1,-1},{0,-1},{1,-1},
+                {-1, 0},       {1, 0},
+                {-1, 1},{0, 1},{1, 1},
+        };
 
-        //if revealed is true then
-        if (revealed) {
-            //check if the right amount of mines is tagged
-            int taggedCells = 0;
+        int row = position.first, col = position.second;
 
-            //check if position is in one corner of the Field
-            //bottom left
-            if (position == 0) {
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //bottom right
-            else if (position == (numberOfColumns - 1)) {
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //top left
-            else if (position == (numberOfCells - numberOfColumns)) {
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //top right
-            else if (position == numberOfCells - 1) {
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //bottom row
-            else if (position < numberOfColumns) {
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //top row
-            else if (position > numberOfCells - numberOfColumns) {
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //left column
-            else if (position % numberOfColumns == 0) {
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //right column
-            else if (position % numberOfColumns == (numberOfColumns - 1)) {
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            //the rest (inner cells)
-            else {
-                if (status[position - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position + numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns - 1] == 2) {
-                    taggedCells++;
-                }
-                if (status[position - numberOfColumns + 1] == 2) {
-                    taggedCells++;
-                }
-            }
-            if (taggedCells == data[position]) {
-                revealAroundCell(position, false);
+        int tagged = 0;
+
+        // Count all marked neighbours.
+        // As we do not want to handle each case (aka borders of the grid) extra,
+        // we loop over all 8 neighbours of every cell and determine if the index is valid.
+        for (int[] neighbour : neighbourhood) {
+            int offx = neighbour[0], offy = neighbour[1];
+            int x = row + offx, y = col + offy;
+            if (    x >= 0 && x < numberOfRows
+                &&  y >= 0 && y < numberOfColumns
+                &&  status[x][y] == 2
+            ) {
+                tagged += 1;
             }
         }
-        //revealing around the cell because the cell has 0 mines adjacent (or the right amount of marks)
-        else {
-            //check position of the cell
-            //bottom left
-            if (position == 0) {
-                revealCell(position + 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns + 1);
-            }
-            //bottom right
-            else if (position == (numberOfColumns - 1)) {
-                revealCell(position - 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns - 1);
-            }
-            //top left
-            else if (position == (numberOfCells - numberOfColumns)) {
-                revealCell(position + 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns + 1);
-            }
-            //top right
-            else if (position == numberOfCells - 1) {
-                revealCell(position - 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns - 1);
-            }
-            //bottom row
-            else if (position < numberOfColumns) {
-                revealCell(position + 1);
-                revealCell(position - 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns + 1);
-                revealCell(position + numberOfColumns - 1);
-            }
-            //top row
-            else if (position > numberOfCells - numberOfColumns) {
-                revealCell(position + 1);
-                revealCell(position - 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns + 1);
-                revealCell(position - numberOfColumns - 1);
-            }
-            //left column
-            else if (position % numberOfColumns == 0) {
-                revealCell(position + 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns + 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns + 1);
-            }
-            //right column
-            else if (position % numberOfColumns == (numberOfColumns - 1)) {
-                revealCell(position - 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns - 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns - 1);
-            }
-            //the rest (inner cells)
-            else {
-                revealCell(position + 1);
-                revealCell(position - 1);
-                revealCell(position + numberOfColumns);
-                revealCell(position + numberOfColumns + 1);
-                revealCell(position + numberOfColumns - 1);
-                revealCell(position - numberOfColumns);
-                revealCell(position - numberOfColumns + 1);
-                revealCell(position - numberOfColumns - 1);
+
+        if (tagged >= data[row][col]) {
+            for (int[] neighbour : neighbourhood) {
+                int offx = neighbour[0], offy = neighbour[1];
+                int x = row + offx, y = col + offy;
+                if (    x >= 0 && x < numberOfRows
+                    &&  y >= 0 && y < numberOfColumns
+                ) {
+                    revealCell(new Pair<>(x,y));
+                }
             }
         }
     }
@@ -1156,19 +759,22 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
      * This method handles the revealing of a Cell at a specific position
      * @param position position of the cell on the playing field
      */
-    private void revealCell(int position) {
+    private void revealCell(Pair<Integer, Integer> position) {
 
         //if another cell reveal already lost the game this Method doesnt do anything
         if (gameEnded) {
             return;
         }
-        RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+        RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(linearize_index(position));
         final CellView cell = (CellView) holder.itemView.findViewWithTag(maxHeight);
 
+        int[] colors = {R.color.black, R.color.darkblue, R.color.darkgreen, R.color.red, R.color.darkblue, R.color.brown, R.color.cyan, R.color.black, R.color.black};
+
+        int x = position.first, y = position.second;
         //only reveal if the cell is not marked or revealed
-        if (status[position] == 0) {
+        if (status[x][y] == 0) {
             //check for gameloss
-            if (data[position] == 9) {
+            if (data[x][y] == 9) {
 
                 Drawable img = getDrawable(R.drawable.mine_x);
                 img.setBounds(0, 0, img.getIntrinsicWidth() * cell.getMeasuredHeight() / img.getIntrinsicHeight(), cell.getMeasuredHeight());
@@ -1213,54 +819,22 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
             } else {
                 //set cell to revealed
-                status[position] = 1;
+                status[x][y] = 1;
 
-                switch (data[position]) {
-                    case 0:
-                        cell.setText("");
-                        break;
-                    case 1:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.darkblue));
-                        break;
-                    case 2:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.darkgreen));
-                        break;
-                    case 3:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.red));
-                        break;
-                    case 4:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.darkblue));
-                        break;
-                    case 5:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.brown));
-                        break;
-                    case 6:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.cyan));
-                        break;
-                    case 7:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.black));
-                        break;
-                    case 8:
-                        cell.setText(String.valueOf(data[position]));
-                        cell.setTextColor(getResources().getColor(R.color.black));
-                        break;
+                if (data[x][y] == 0) {
+                    cell.setText("");
+                } else {
+                    cell.setText(String.valueOf(data[x][y]));
+                    cell.setTextColor(getResources().getColor(colors[data[x][y]]));
                 }
 
                 cell.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.middleblue, null));
-
                 countDownToWin--;
                 victoryCheck();
 
                 //check if automatic reveal of surrounding cells is needed
-                if (data[position] == 0) {
-                    revealAroundCell(position, false);
+                if (data[x][y] == 0) {
+                    revealCells(position);
                 }
             }
         }
@@ -1351,32 +925,19 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     //if we are in landscape mode we have to change our data back to normal before saving
                     if(landscape){
 
-                        landscape_data = new int[data.length];
-                        int x = 1;
-                        int start = numberOfColumns;
-                        int now = start;
-                        for (int i = 0; i < data.length; i++) {
-                            landscape_data[i] = data[now - x];
-                            now = now + numberOfColumns;
-                            if(now > numberOfCells) {
-                                now = start;
-                                x++;
+                        landscape_data = new int[numberOfColumns][numberOfRows];
+                        for (int row = 0; row < numberOfRows; ++row) {
+                            for (int col = 0; col < numberOfColumns; ++col) {
+                                landscape_data[col][numberOfRows - row - 1] = data[row][col];
                             }
                         }
                         not_in_use_data = data;
                         data = landscape_data;
 
-
-                        landscape_status = new int[status.length];
-                        x = 1;
-                        start = numberOfColumns;
-                        now = start;
-                        for (int i = 0; i < status.length; i++) {
-                            landscape_status[i] = status[now - x];
-                            now = now + numberOfColumns;
-                            if(now > numberOfCells) {
-                                now = start;
-                                x++;
+                        landscape_status = new int[numberOfColumns][numberOfRows];
+                        for (int row = 0; row < numberOfRows; ++row) {
+                            for (int col = 0; col < numberOfColumns; ++col) {
+                                landscape_status[col][numberOfRows - row - 1] = status[row][col];
                             }
                         }
                         not_in_use_status = status;
@@ -1393,9 +954,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                     } else {
                         StringBuilder content = new StringBuilder();
                         StringBuilder states = new StringBuilder();
-                        for (int i = 0; i < data.length; i++) {
-                            content.append(data[i]);
-                            states.append(status[i]);
+                        for (int row = 0; row < numberOfRows; ++row) {
+                            for (int col = 0; col < numberOfColumns; ++col) {
+                                content.append(data[row][col]);
+                                states.append(status[row][col]);
+                            }
                         }
 
 
@@ -1435,37 +998,27 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
 
             if(landscape){
 
-                landscape_data = new int[data.length];
-                int x = 1;
-                int start = numberOfColumns;
-                int now = start;
-                for (int i = 0; i < data.length; i++) {
-                    landscape_data[i] = data[now - x];
-                    now = now + numberOfColumns;
-                    if(now > numberOfCells) {
-                        now = start;
-                        x++;
+                landscape_data = new int[numberOfColumns][numberOfRows];
+                for (int row = 0; row < numberOfRows; ++row) {
+                    for (int col = 0; col < numberOfColumns; ++col) {
+                        landscape_data[col][numberOfRows - row - 1] = data[row][col];
                     }
                 }
                 not_in_use_data = data;
                 data = landscape_data;
 
-
-                landscape_status = new int[status.length];
-                x = 1;
-                start = numberOfColumns;
-                now = start;
-                for (int i = 0; i < status.length; i++) {
-                    landscape_status[i] = status[now - x];
-                    now = now + numberOfColumns;
-                    if(now > numberOfCells) {
-                        now = start;
-                        x++;
+                landscape_status = new int[numberOfColumns][numberOfRows];
+                for (int row = 0; row < numberOfRows; ++row) {
+                    for (int col = 0; col < numberOfColumns; ++col) {
+                        landscape_status[col][numberOfRows - row - 1] = status[row][col];
                     }
                 }
                 not_in_use_status = status;
                 status = landscape_status;
 
+                int save = numberOfColumns;
+                numberOfColumns = numberOfRows;
+                numberOfRows = save;
             }
             int time;
             if (firstClick) {
@@ -1476,17 +1029,11 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
                 long gametime = gametimeInMillis / 1000;
                 time = (int) gametime;
             }
-
-            if (numberOfRows < numberOfColumns) {
-                int save = numberOfColumns;
-                numberOfColumns = numberOfRows;
-                numberOfRows = save;
-            }
             // Save the current game state
             savedInstanceState.putInt("columns", numberOfColumns);
             savedInstanceState.putInt("rows", numberOfRows);
-            savedInstanceState.putIntArray("data", data);
-            savedInstanceState.putIntArray("status", status);
+            savedInstanceState.putIntArray("data", linearize_data(data, numberOfRows, numberOfColumns));
+            savedInstanceState.putIntArray("status", linearize_data(status, numberOfRows, numberOfColumns));
             savedInstanceState.putInt("time", time);
             savedInstanceState.putBoolean("firstclick", firstClick);
             savedInstanceState.putBoolean("gameended", gameEnded);
