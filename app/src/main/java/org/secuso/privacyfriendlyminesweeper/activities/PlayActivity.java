@@ -219,6 +219,12 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
+        if (landscape && numberOfRows > numberOfColumns) {
+            int save = numberOfColumns;
+            numberOfColumns = numberOfRows;
+            numberOfRows = save;
+        }
+
         //Creating the right sized the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfRows][numberOfColumns];
