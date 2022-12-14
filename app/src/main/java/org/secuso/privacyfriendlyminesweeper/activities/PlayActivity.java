@@ -219,6 +219,12 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             }
         }
 
+        if (param == null && !savecheck && landscape) {
+            int save = numberOfColumns;
+            numberOfColumns = numberOfRows;
+            numberOfRows = save;
+        }
+
         //Creating the right sized the PlayingField
         numberOfCells = numberOfRows * numberOfColumns;
         data = new int[numberOfRows][numberOfColumns];
@@ -248,11 +254,6 @@ public class PlayActivity extends AppCompatActivity implements PlayRecyclerViewA
             } else {
                 savecheck = true;
                 savedinstancestate = true;
-            }
-            if (numberOfRows < numberOfColumns) {
-                int save = numberOfColumns;
-                numberOfColumns = numberOfRows;
-                numberOfRows = save;
             }
         }
 
