@@ -40,28 +40,31 @@
             android:layout_height="match_parent"
             android:id="@+id/wastespace" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/playingfield"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/playfield_wrapper"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playingfield"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
         <Button
-        android:id="@+id/toggle2"
-        android:layout_height="match_parent"
-        android:layout_width="25dp"
-        android:text="@string/untoggled"
+            android:id="@+id/toggle2"
+            android:layout_height="match_parent"
+            android:layout_width="25dp"
+            android:text="@string/untoggled"
             android:typeface="monospace"
             android:textSize="20dp"
-        android:background="@drawable/button_highlighted"
-        android:padding="7dp"/>
+            android:background="@drawable/button_highlighted"
+            android:padding="7dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/height_test" />
-
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

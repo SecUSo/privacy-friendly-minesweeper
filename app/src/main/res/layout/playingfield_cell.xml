@@ -6,15 +6,31 @@
     android:padding="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1">
+    android:layout_weight="1"
+    >
 
     <org.secuso.privacyfriendlyminesweeper.activities.helper.CellView
         android:id="@+id/cell"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="fill_parent"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:color="@color/colorAccent"
-        android:background="@color/colorAccent"/>
+        android:color="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/cell_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent" />
+        <TextView
+            android:id="@+id/cell_decoration"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </org.secuso.privacyfriendlyminesweeper.activities.helper.CellView>
 
 </LinearLayout>
