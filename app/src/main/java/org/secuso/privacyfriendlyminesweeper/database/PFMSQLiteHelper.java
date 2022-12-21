@@ -40,7 +40,7 @@ public class PFMSQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     //Name of the database
-    private static final String DATABASE_NAME = "PF_MINESWEEPER_DB";
+    public static final String DATABASE_NAME = "PF_MINESWEEPER_DB";
 
     //Names of tables in the database
     private static final String TABLE_GENERAL_STATISTICS = "GENERAL_STATISTICS";
