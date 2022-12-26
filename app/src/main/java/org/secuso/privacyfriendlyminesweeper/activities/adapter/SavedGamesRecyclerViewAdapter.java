@@ -17,6 +17,7 @@
 
 package org.secuso.privacyfriendlyminesweeper.activities.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,8 +89,20 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
             holder.savedGameProgress.setProgress((int) (Math.round(Double.parseDouble(savedGameParameters.get(position).get(4)) * 100)));
             holder.information = savedGameParameters.get(position);
 
-            int gameId = Integer.valueOf(holder.information.get(0));
-            holder.deleteButton.setOnClickListener(new SaveDeleteOnClickListener(gameId, position));
+            // delete saved game with speficied id and remove it on click
+            // It is easily possible to set the adapter position whilst creating the listener,
+            // as previous elements may have been deleted.
+            holder.deleteButton.setOnClickListener(v -> {
+                int gameId = Integer.parseInt(holder.information.get(0));
+                DatabaseSavedGameProvide provide = new DatabaseSavedGameProvide(new PFMSQLiteHelper(v.getContext()));
+                provide.execute(gameId);
+                int adapterPosition = holder.getAdapterPosition();
+                savedGameParameters.remove(adapterPosition);
+                SavedGamesRecyclerViewAdapter.this.notifyItemRemoved(adapterPosition);
+
+                Toast saveDeletedInfo = Toast.makeText(v.getContext(), v.getResources().getString(R.string.saveDeleted), Toast.LENGTH_SHORT);
+                saveDeletedInfo.show();
+            });
         }
     }
 
@@ -103,28 +116,6 @@ public class SavedGamesRecyclerViewAdapter extends RecyclerView.Adapter<SavedGam
     public SavedGamesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         ViewGroup savedGame = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_game_list_element, parent, false);
         return new ViewHolder(savedGame, savedGamesActivity);
-    }
-
-    // delete saved game with speficied id and remove it from the adapter on a click event
-    private class SaveDeleteOnClickListener implements View.OnClickListener {
-        private final int gameId;
-        private final int adapterPosition;
-
-        public SaveDeleteOnClickListener(int gameId, int adapterPosition){
-            this.gameId = gameId;
-            this.adapterPosition = adapterPosition;
-        }
-
-        @Override
-        public void onClick(View view) {
-            DatabaseSavedGameProvide provide = new DatabaseSavedGameProvide(new PFMSQLiteHelper(view.getContext()));
-            provide.execute(gameId);
-            savedGameParameters.remove(adapterPosition);
-            SavedGamesRecyclerViewAdapter.this.notifyItemRemoved(adapterPosition);
-
-            Toast saveDeletedInfo = Toast.makeText(view.getContext(), view.getResources().getString(R.string.saveDeleted), Toast.LENGTH_SHORT);
-            saveDeletedInfo.show();
-        }
     }
 
     //inner class for a list element representing a single saved game
