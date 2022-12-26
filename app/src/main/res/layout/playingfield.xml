@@ -16,35 +16,36 @@
     android:orientation="vertical"
     style="@style/AlertDialog.AppCompat">
 
-        <android.support.v7.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/playfield_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center">
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playingfield"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
     <LinearLayout
-    android:id="@+id/play_sidebar"
-    android:layout_height="25dp"
-    android:layout_weight="1"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
-
-    <Button
-        android:id="@+id/toggle"
-        android:layout_weight="6"
+        android:id="@+id/play_sidebar"
         android:layout_height="25dp"
-        android:layout_width="0dp"
-        android:text="@string/untoggled"
-        android:background="@drawable/button_highlighted"
-        android:padding="0dp"
-        android:layout_gravity="bottom"/>
-
-    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/height_test" />
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/toggle"
+            android:layout_weight="6"
+            android:layout_height="25dp"
+            android:layout_width="0dp"
+            android:text="@string/untoggled"
+            android:background="@drawable/button_highlighted"
+            android:padding="0dp"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
 
 </LinearLayout>

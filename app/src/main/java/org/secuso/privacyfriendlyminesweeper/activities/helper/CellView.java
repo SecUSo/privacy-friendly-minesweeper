@@ -2,18 +2,18 @@ package org.secuso.privacyfriendlyminesweeper.activities.helper;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
-import org.secuso.privacyfriendlyminesweeper.R;
-import org.secuso.privacyfriendlyminesweeper.activities.PlayActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * @author max-dreger
  * @version 20180430
  * This class implements one cell on the Playing Field
  */
-public class CellView extends android.support.v7.widget.AppCompatTextView {
+public class CellView extends FrameLayout {
 
     public CellView(Context context) {
         super(context);
