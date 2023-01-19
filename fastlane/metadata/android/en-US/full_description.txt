@@ -14,3 +14,16 @@ In addition there is the option to create your own gamemode where the size of th
 Up to 10 games can be saved and later continued. Your Performance for the three basic gamemodes is collected and analyzed and can be viewed at the statistic page. There you can check the number of games played, the ratio of won games, the average time of winning mgaes, the number of revealed fields and the 10 best times for each gamemode.
 
 The help page contains information about the app and the rules of the game.
+
+How does Privacy Friendly Notes differ from other similar apps?
+
+1. No Permissions
+No permissions are requested by the app. The only permissions granted are those, which Android grants per default.
+
+2. No advertisement
+Moreover, Privacy Friendly Notes distinguishes from many other applications in the way that it completely relinquishes advertisements. Advertisement might track a user's actions. It could also shorten battery life or use mobile data.
+
+You can reach us via
+Twitter - @SECUSOResearch https://twitter.com/secusoresearch
+Mastodon - @SECUSO_Research@bawü.social https://xn--baw-joa.social/@SECUSO_Research/
+Job opening - https://secuso.aifb.kit.edu/english/Job_Offers_1557.php
