@@ -70,12 +70,6 @@ All other images (the logo of Privacy Friendly Minesweeper and of the group of P
 App-Icon: <br />
 Markus Hau<br />
 
-Github-Users: <br />
-Yonjuni (Karola Marky)<br />
-Kamuno (Christopher Beckmann)<br />
-max-dreger (Max Dreger)<br />
-I3ananas (Benedikt Schulz)
-
 <a href="https://github.com/SecUSo/privacy-friendly-notes/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=SecUSo/privacy-friendly-notes&max=100&columns=20" />
 </a>
