@@ -7,7 +7,7 @@ import org.secuso.privacyfriendlybackup.api.pfa.BackupManager
 import org.secuso.privacyfriendlyminesweeper.backup.BackupCreator
 import org.secuso.privacyfriendlyminesweeper.backup.BackupRestorer
 
-class PFCircuitTrainingApplication : Application(), Configuration.Provider {
+class PFMinesweeperApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
