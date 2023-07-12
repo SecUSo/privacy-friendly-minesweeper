@@ -39,7 +39,7 @@ import org.secuso.privacyfriendlyminesweeper.activities.adapter.PlayRecyclerView
 import org.secuso.privacyfriendlyminesweeper.activities.model.Difficulty
 import org.secuso.privacyfriendlyminesweeper.activities.model.GameState
 import org.secuso.privacyfriendlyminesweeper.activities.model.Minesweeper
-import org.secuso.privacyfriendlyminesweeper.activities.model.grid.*
+import org.secuso.privacyfriendlyminesweeper.activities.model.grid.MinesweeperGridUtils
 import org.secuso.privacyfriendlyminesweeper.activities.model.view.Orientation
 import org.secuso.privacyfriendlyminesweeper.activities.viewmodel.PlayActivityViewModel
 import org.secuso.privacyfriendlyminesweeper.activities.viewmodel.PlayActivityViewModelFactory
@@ -212,9 +212,9 @@ class PlayActivity : AppCompatActivity(), PlayRecyclerViewAdapter.ItemClickListe
                     1,
                     if (it == GameState.WON) 1 else 0,
                     difficulty.cells - game.remainingCells,
+                    if (it == GameState.WON) time else 0,
                     time,
-                    time,
-                    DateFormat.getDateTimeInstance().format(Date())
+                    if (it == GameState.WON) DateFormat.getDateTimeInstance().format(Date()) else "lost"
                 )
                 writer!!.execute(*resultParams)
             }
