@@ -83,7 +83,15 @@ class BackupRestorer : IBackupRestorer {
 
     @Throws(IOException::class)
     private fun readPreferences(reader: JsonReader, preferences: SharedPreferences.Editor) {
-
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val name: String = reader.nextName()
+            when (name) {
+                "lastChosenPage" -> preferences.putInt(name, reader.nextInt())
+                else -> throw RuntimeException("Unknown preference $name")
+            }
+        }
+        reader.endObject()
     }
 
     override fun restoreBackup(context: Context, restoreData: InputStream): Boolean {
