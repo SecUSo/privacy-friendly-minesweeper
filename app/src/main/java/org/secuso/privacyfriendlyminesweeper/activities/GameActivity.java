@@ -18,17 +18,11 @@
 package org.secuso.privacyfriendlyminesweeper.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +30,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Intent;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.dialogs.UserDefinedGameModeDialogFragment;
@@ -72,26 +73,26 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screen_width_dp = dm.widthPixels/getResources().getDisplayMetrics().density;
-        screen_height_dp = dm.heightPixels/getResources().getDisplayMetrics().density;
+        screen_width_dp = dm.widthPixels / getResources().getDisplayMetrics().density;
+        screen_height_dp = dm.heightPixels / getResources().getDisplayMetrics().density;
         min_dp_per_field = 30;
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.scroller);
-        if(mViewPager != null) {
+        if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }
 
-        index = mSharedPreferences.getInt("firstChosenPage", 0);
+        index = mSharedPreferences.getInt("lastChosenPage", 0);
 
         mViewPager.setCurrentItem(index);
         mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
         mArrowRight = (ImageView) findViewById(R.id.arrow_right);
 
         //set initial postiton of the ViewPager
-        mArrowLeft.setVisibility((index==0)?View.INVISIBLE:View.VISIBLE);
-        mArrowRight.setVisibility((index==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
+        mArrowLeft.setVisibility((index == 0) ? View.INVISIBLE : View.VISIBLE);
+        mArrowRight.setVisibility((index == mSectionsPagerAdapter.getCount() - 1) ? View.INVISIBLE : View.VISIBLE);
 
         //Update ViewPager on change
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -102,8 +103,8 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onPageSelected(int position) {
-                mArrowLeft.setVisibility((position==0)?View.INVISIBLE:View.VISIBLE);
-                mArrowRight.setVisibility((position==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
+                mArrowLeft.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
+                mArrowRight.setVisibility((position == mSectionsPagerAdapter.getCount() - 1) ? View.INVISIBLE : View.VISIBLE);
 
                 index = position;
 
@@ -126,11 +127,11 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
     public void onClick(View view) {
 
-        if(view == null){
+        if (view == null) {
             return;
         }
 
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.arrow_left:
                 mViewPager.arrowScroll(View.FOCUS_LEFT);
                 //index--;      //satisfied by onPageSelected-method
@@ -144,31 +145,28 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
                     case 0:
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an easy game are 6,10,7
-                        if(!checkIfScreenLargeEnough(6, 10)){
-                            showDialogIfScreenTooSmall(6,10,7);
-                        }
-                        else{
-                            startGame(6,10,7);
+                        if (!checkIfScreenLargeEnough(6, 10)) {
+                            showDialogIfScreenTooSmall(6, 10, 7);
+                        } else {
+                            startGame(6, 10, 7);
                         }
                         break;
                     case 1:
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an medium game are 10,16,24
-                        if(!checkIfScreenLargeEnough(10, 16)){
-                            showDialogIfScreenTooSmall(10, 16,24);
-                        }
-                        else {
-                            startGame(10,16,24);
+                        if (!checkIfScreenLargeEnough(10, 16)) {
+                            showDialogIfScreenTooSmall(10, 16, 24);
+                        } else {
+                            startGame(10, 16, 24);
                         }
                         break;
                     case 2:
                         //values[0] = width, values[1] = height, values[2] = number of mines
                         //preset values for an hard game are 12,19,46
-                        if(!checkIfScreenLargeEnough(12, 19)){
+                        if (!checkIfScreenLargeEnough(12, 19)) {
                             showDialogIfScreenTooSmall(12, 19, 46);
-                        }
-                        else{
-                            startGame(12,19,46);
+                        } else {
+                            startGame(12, 19, 46);
                         }
                         break;
                     case 3:
@@ -186,10 +184,11 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         final DatabaseSavedGamesCheck check = new DatabaseSavedGamesCheck(new PFMSQLiteHelper(getApplicationContext()), this);
-        final Handler handler = new Handler();handler.postDelayed(new Runnable() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 check.execute();
@@ -201,11 +200,10 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         continueButton = (Button) findViewById(R.id.game_button_continue);
         continueButton.setEnabled(true);
         continueButton.setBackground(getResources().getDrawable(R.drawable.button_fullwidth));
-        if(savedGamesExist){
+        if (savedGamesExist) {
             continueButton.setEnabled(true);
             continueButton.setBackground(getResources().getDrawable(R.drawable.button_fullwidth));
-        }
-        else{
+        } else {
             continueButton.setEnabled(false);
             continueButton.setBackground(getResources().getDrawable(R.drawable.button_disabled));
         }
@@ -213,19 +211,20 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
     /**
      * This method checks if the screen of the device is large enough to play the selected game mode appropriate
+     *
      * @param nrOfColumns number of columns of the playing field
-     * @param nrOfRows number of rows of the playing field
+     * @param nrOfRows    number of rows of the playing field
      * @return true, if screen is large enough for selected game mode, false otherwise
      */
-    private boolean checkIfScreenLargeEnough(int nrOfColumns, int nrOfRows){
+    private boolean checkIfScreenLargeEnough(int nrOfColumns, int nrOfRows) {
         boolean screenLargeEnough = false;
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            if(((screen_width_dp / nrOfRows) >= min_dp_per_field) && ((screen_height_dp / nrOfColumns) >= min_dp_per_field)){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (((screen_width_dp / nrOfRows) >= min_dp_per_field) && ((screen_height_dp / nrOfColumns) >= min_dp_per_field)) {
                 screenLargeEnough = true;
             }
         } else {
-            if(((screen_width_dp / nrOfColumns) >= min_dp_per_field) && ((screen_height_dp / nrOfRows) >= min_dp_per_field)){
+            if (((screen_width_dp / nrOfColumns) >= min_dp_per_field) && ((screen_height_dp / nrOfRows) >= min_dp_per_field)) {
                 screenLargeEnough = true;
             }
         }
@@ -235,11 +234,12 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * This method shows a dialog if the screen is too small to play the selected game mode appropriate
      * If the user chooses to continue, the game is started
-     * @param columns Number of columns of the playing field
-     * @param rows Number of rows of the playing field
+     *
+     * @param columns   Number of columns of the playing field
+     * @param rows      Number of rows of the playing field
      * @param nrOfBombs Number of bombs on the playing field
      */
-    private void showDialogIfScreenTooSmall(final int columns, final int rows, final int nrOfBombs){
+    private void showDialogIfScreenTooSmall(final int columns, final int rows, final int nrOfBombs) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.screenTooSmall_title);
         builder.setMessage(R.string.screenTooSmall);
@@ -262,27 +262,26 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * This method starts a dialog, where the user can set up a user-defined game
      */
-    private void showDialogForUserDefinedGameMode(){
+    private void showDialogForUserDefinedGameMode() {
         DialogFragment dialogFragment = UserDefinedGameModeDialogFragment.newInstance();
         dialogFragment.show(getSupportFragmentManager(), "userDefinedGameDialog");
     }
 
     /**
      * This method implements the reaction to positive clicks ("Continue") in the dialog for setting up a user defined game
+     *
      * @param nrOfColumns Entered number of columns
-     * @param nrOfRows Entered number of rows
-     * @param nrOfMines Number of mines (follows from entered number of columns and rows and degree of difficulty)
+     * @param nrOfRows    Entered number of rows
+     * @param nrOfMines   Number of mines (follows from entered number of columns and rows and degree of difficulty)
      */
-    public void userDefinedGameDialog_positiveClick(int nrOfColumns, int nrOfRows, int nrOfMines){
+    public void userDefinedGameDialog_positiveClick(int nrOfColumns, int nrOfRows, int nrOfMines) {
 
-        if(nrOfColumns > 20 || nrOfRows > 25){
+        if (nrOfColumns > 20 || nrOfRows > 25) {
             Toast.makeText(this, getResources().getString(R.string.too_much_cells), Toast.LENGTH_SHORT).show();
-        }
-        else{
-            if(!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)){
+        } else {
+            if (!checkIfScreenLargeEnough(nrOfColumns, nrOfRows)) {
                 showDialogIfScreenTooSmall(nrOfColumns, nrOfRows, nrOfMines);
-            }
-            else{
+            } else {
                 startGame(nrOfColumns, nrOfRows, nrOfMines);
             }
         }
@@ -291,7 +290,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * This method creates and shows a dialog to inform the user that the entered number of columns and rows is too large
      */
-    private void showDialogTooMuchCells(){
+    private void showDialogTooMuchCells() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.too_much_cells_title);
         builder.setMessage(R.string.too_much_cells);
@@ -307,15 +306,16 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
     /**
      * This method starts a game with the passed parameters
-     * @param columns Number of columns of the playing field
-     * @param rows Number of rows of the playing field
+     *
+     * @param columns   Number of columns of the playing field
+     * @param rows      Number of rows of the playing field
      * @param nrOfBombs Number of bombs on the playing field
      */
-    private void startGame(int columns, int rows, int nrOfBombs){
+    private void startGame(int columns, int rows, int nrOfBombs) {
         //param will consist of the information needed to build the playing field with the desired width, height and number of mines
         Bundle param = new Bundle();
         Intent intent_with_param;
-        param.putShortArray("info", new short[]{(short)columns, (short)rows, (short)nrOfBombs});
+        param.putShortArray("info", new short[]{(short) columns, (short) rows, (short) nrOfBombs});
         intent_with_param = new Intent(this, PlayActivity.class);
         intent_with_param.putExtras(param);
         startActivity(intent_with_param);
@@ -376,7 +376,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             int id = 0;
-            if(getArguments() != null) {
+            if (getArguments() != null) {
                 id = getArguments().getInt(ARG_SECTION_NUMBER);
             }
 
@@ -385,13 +385,12 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
             ImageView image_mine2;
             ImageView image_mine3;
 
-            if(id == 3){
+            if (id == 3) {
                 rootView = inflater.inflate(R.layout.fragment_user_defined_game_mode, container, false);
                 image_mine1 = null;
                 image_mine2 = null;
                 image_mine3 = null;
-            }
-            else{
+            } else {
                 rootView = inflater.inflate(R.layout.fragment_game_mode, container, false);
                 image_mine1 = (ImageView) rootView.findViewById(R.id.mine1);
                 image_mine2 = (ImageView) rootView.findViewById(R.id.mine2);
@@ -400,7 +399,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
-            switch (id){
+            switch (id) {
                 case 0:
                     textView.setText(R.string.game_mode_easy);
                     image_mine1.setImageAlpha(255);
