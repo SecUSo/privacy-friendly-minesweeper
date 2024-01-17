@@ -43,6 +43,10 @@ Further development requires Android Studio, we recommend to use at least versio
 Mininum SDK: 21
 Target SDK: 33
 
+## Data Backup
+
+You can use the [Privacy Friendly Backup app](https://github.com/SecUSo/privacy-friendly-backup) to backup and restore this application's data. This can also be used to migrate your data to a new phone.
+
 ## License
 
 Privacy Friendly Minesweeper is licensed under the GPLv3.
@@ -70,6 +74,6 @@ All other images (the logo of Privacy Friendly Minesweeper and of the group of P
 App-Icon: <br />
 Markus Hau<br />
 
-<a href="https://github.com/SecUSo/privacy-friendly-notes/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=SecUSo/privacy-friendly-notes&max=100&columns=20" />
+<a href="https://github.com/SecUSo/privacy-friendly-minesweeper/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SecUSo/privacy-friendly-minesweeper&max=100&columns=20" />
 </a>
