@@ -19,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     buildFeatures {
         buildConfig true
     }
@@ -32,19 +33,19 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
-    android.applicationVariants.configureEach { variant ->
-        variant.outputs.configureEach {
-            def appName = "pfa-sudoku"
-            outputFileName = appName + "-${variant.name}-v${variant.versionName}.apk"
-        }
-    }
-
-    dataBinding {
-        enabled = true
+    kotlin {
+        jvmToolchain(17)
     }
 
     lint {
         lintConfig = file("lint.xml")
+    }
+}
+
+android.applicationVariants.configureEach { variant ->
+    variant.outputs.configureEach {
+        def appName = "pfa-minesweeper"
+        outputFileName = appName + "-${variant.name}-v${variant.versionName}.apk"
     }
 }
 
