@@ -25,9 +25,6 @@ Privacy Friendly Minesweeper belongs to the group of Privacy Friendly Apps devel
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=org.secuso.privacyfriendlyminesweeper)
-[<img src="https://f-droid.org/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/org.secuso.privacyfriendlyminesweeper/)
 
 ## Motivation
 
