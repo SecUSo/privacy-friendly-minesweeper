@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
+import org.secuso.privacyfriendlyminesweeper.GoodbyeGoogleHelperKt;
 import org.secuso.privacyfriendlyminesweeper.R;
 import org.secuso.privacyfriendlyminesweeper.activities.dialogs.UserDefinedGameModeDialogFragment;
 import org.secuso.privacyfriendlyminesweeper.activities.helper.BaseActivity;
@@ -117,6 +118,7 @@ public class GameActivity extends BaseActivity implements View.OnClickListener, 
             public void onPageScrollStateChanged(int state) {
             }
         });
+        GoodbyeGoogleHelperKt.checkGoodbyeGoogle(this, getLayoutInflater());
     }
 
     @Override
