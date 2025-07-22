@@ -15,7 +15,7 @@ class PFMinesweeperApplication : Application(), Configuration.Provider {
         BackupManager.backupRestorer = BackupRestorer()
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().setMinimumLoggingLevel(Log.INFO).build()
+    override val workManagerConfiguration by lazy {
+        Configuration.Builder().setMinimumLoggingLevel(Log.INFO).build()
     }
 }

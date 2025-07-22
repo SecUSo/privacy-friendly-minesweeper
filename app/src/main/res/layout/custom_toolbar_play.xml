@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="3dp"
-                android:tint="@color/middleblue" />
+                app:tint="@color/middleblue" />
 
             <Chronometer
                 android:id="@+id/chronometer"
