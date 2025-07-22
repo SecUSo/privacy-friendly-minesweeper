@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 34
 
+    namespace "org.secuso.privacyfriendlyminesweeper"
     defaultConfig {
         applicationId "org.secuso.privacyfriendlyminesweeper"
         minSdkVersion 21
@@ -16,6 +18,33 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    android.applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            def appName = "pfa-sudoku"
+            outputFileName = appName + "-${variant.name}-v${variant.versionName}.apk"
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lint {
+        lintConfig = file("lint.xml")
     }
 }
 
