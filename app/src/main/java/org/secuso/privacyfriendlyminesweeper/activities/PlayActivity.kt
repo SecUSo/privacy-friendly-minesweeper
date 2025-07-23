@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.secuso.privacyfriendlyminesweeper.R
@@ -60,8 +61,7 @@ import kotlin.math.roundToInt
  * @author I3ananas, max-dreger, Patrick Schneider
  * @version 20221218
  */
-class PlayActivity : AppCompatActivity(), PlayRecyclerViewAdapter.ItemClickListener,
-    BestTimeReaderReceiver {
+class PlayActivity : AppCompatActivity(), BestTimeReaderReceiver {
     private lateinit var parameter: Bundle
     private var bestTimeReader: DatabaseBestTimeReader? = null
     private var writer: DatabaseWriter? = null
@@ -332,33 +332,28 @@ class PlayActivity : AppCompatActivity(), PlayRecyclerViewAdapter.ItemClickListe
     }
 
     /**
-     * This method overrides the onItemClick of the Playing Field cells.
-     * @param view the View Containing the Cell where the event was triggered
-     * @param position the position of the Cell that was clicked
-     */
-    override fun onItemClick(view: View, position: Int) {
-        //on the first click the timer must be started
-        game.clickCell(MinesweeperGridUtils.delinearizeIndex(position, game.cols))
-        if (!timerIsRunning) {
-            timer.base = viewModel.startTime
-            timer.start()
-            timerIsRunning = true
-        }
-    }
-
-    /**
      * This method creates a new PlayRecyclerViewAdapter with the given parameters and connects it to the RecyclerView with the Playing Field
      */
     private fun createAdapter() {
         adapter = PlayRecyclerViewAdapter(
             this,
+            layoutInflater,
             game.grid.flatten().toTypedArray(),
             cellSize,
             cellSize,
             colors.map { color -> resources.getColor(color) }.toTypedArray().toIntArray(),
-            ResourcesCompat.getColor(resources, R.color.middleblue, null)
+            ResourcesCompat.getColor(resources, R.color.middleblue, null),
+            object : PlayRecyclerViewAdapter.ItemClickListener {
+                override fun onItemClick(view: View?, position: Int) {
+                    game.clickCell(MinesweeperGridUtils.delinearizeIndex(position, game.cols))
+                    if (!timerIsRunning) {
+                        timer.base = viewModel.startTime
+                        timer.start()
+                        timerIsRunning = true
+                    }
+                }
+            }
         )
-        adapter.setClickListener(this)
         recyclerView.adapter = adapter
     }
 
