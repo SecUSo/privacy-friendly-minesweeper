@@ -1,43 +1,66 @@
 # Changelog
 
-<a name="v1.2.0"></a>
-## [Minesweeper (Privacy Friendly) v1.2.0](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.2.0) - 24 Jan 2023
+<a id="v1.2.3"></a>
+## [Minesweeper (Privacy Friendly) v1.2.3](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.2.3) - 2025-09-19
 
 ## What's Changed
-* Fixes [#14](https://github.com/SecUSo/privacy-friendly-minesweeper/issues/14) - Game not initialized after resuming the game by [@coderPaddyS](https://github.com/coderPaddyS) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/15
-* Create button to delete saved games by [@john-h-kastner](https://github.com/john-h-kastner) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/9
-* Refactored grid to be 2-dimensional. by [@coderPaddyS](https://github.com/coderPaddyS) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/17
-* Fixed landscape starting bug. by [@coderPaddyS](https://github.com/coderPaddyS) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/19
-* Features/pfa backup integration by [@coderPaddyS](https://github.com/coderPaddyS) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/20
-* Fixed bug where the adapter position in the onclick handler is out of… by [@coderPaddyS](https://github.com/coderPaddyS) in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/21
+* Update changelog for "v1.2.0" by [@github-actions](https://github.com/github-actions)[bot] in [#25](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/25)
+* Update changelog for v1.2.0 by [@github-actions](https://github.com/github-actions)[bot] in [#26](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/26)
+* Fix losses stored incorrectly in the statistics by [@udenr](https://github.com/udenr) in [#31](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/31)
+* documentation changes by [@jahway603](https://github.com/jahway603) in [#35](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/35)
+* Adds ci and updates changelog workflow by [@coderPaddyS](https://github.com/coderPaddyS) in [#42](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/42)
+* Update to SDK 34. by [@coderPaddyS](https://github.com/coderPaddyS) in [#39](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/39)
+* Change versionCode to differentiate from last Google Play version by [@coderPaddyS](https://github.com/coderPaddyS) in [#43](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/43)
 
 ## New Contributors
-* [@Poussinou](https://github.com/Poussinou) made their first contribution in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/2
-* [@john-h-kastner](https://github.com/john-h-kastner) made their first contribution in https://github.com/SecUSo/privacy-friendly-minesweeper/pull/9
+* [@github-actions](https://github.com/github-actions)[bot] made their first contribution in [#25](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/25)
+* [@udenr](https://github.com/udenr) made their first contribution in [#31](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/31)
+* [@jahway603](https://github.com/jahway603) made their first contribution in [#35](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/35)
+
+**Full Changelog**: https://github.com/SecUSo/privacy-friendly-minesweeper/compare/v1.2.0...v1.2.3
+
+[Changes][v1.2.3]
+
+
+<a id="v1.2.0"></a>
+## [Minesweeper (Privacy Friendly) v1.2.0](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.2.0) - 2023-01-24
+
+## What's Changed
+* Fixes [#14](https://github.com/SecUSo/privacy-friendly-minesweeper/issues/14) - Game not initialized after resuming the game by [@coderPaddyS](https://github.com/coderPaddyS) in [#15](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/15)
+* Create button to delete saved games by [@john-h-kastner](https://github.com/john-h-kastner) in [#9](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/9)
+* Refactored grid to be 2-dimensional. by [@coderPaddyS](https://github.com/coderPaddyS) in [#17](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/17)
+* Fixed landscape starting bug. by [@coderPaddyS](https://github.com/coderPaddyS) in [#19](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/19)
+* Features/pfa backup integration by [@coderPaddyS](https://github.com/coderPaddyS) in [#20](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/20)
+* Fixed bug where the adapter position in the onclick handler is out of… by [@coderPaddyS](https://github.com/coderPaddyS) in [#21](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/21)
+
+## New Contributors
+* [@Poussinou](https://github.com/Poussinou) made their first contribution in [#2](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/2)
+* [@john-h-kastner](https://github.com/john-h-kastner) made their first contribution in [#9](https://github.com/SecUSo/privacy-friendly-minesweeper/pull/9)
 
 **Full Changelog**: https://github.com/SecUSo/privacy-friendly-minesweeper/compare/v1.1...v1.2
 
 [Changes][v1.2.0]
 
 
-<a name="v1.1"></a>
-## [Minesweeper (Privacy Friendly) v1.1](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.1) - 29 Oct 2018
+<a id="v1.1"></a>
+## [Minesweeper (Privacy Friendly) v1.1](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.1) - 2018-10-29
 
 - this release is for fdroid
 
 [Changes][v1.1]
 
 
-<a name="v1.0"></a>
-## [Minesweeper (Privacy Friendly) (v1.0)](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.0) - 29 Oct 2018
+<a id="v1.0"></a>
+## [Minesweeper (Privacy Friendly) (v1.0)](https://github.com/SecUSo/privacy-friendly-minesweeper/releases/tag/v1.0) - 2018-10-29
 
 - Initial Release
 
 [Changes][v1.0]
 
 
+[v1.2.3]: https://github.com/SecUSo/privacy-friendly-minesweeper/compare/v1.2.0...v1.2.3
 [v1.2.0]: https://github.com/SecUSo/privacy-friendly-minesweeper/compare/v1.1...v1.2.0
 [v1.1]: https://github.com/SecUSo/privacy-friendly-minesweeper/compare/v1.0...v1.1
 [v1.0]: https://github.com/SecUSo/privacy-friendly-minesweeper/tree/v1.0
 
-<!-- Generated by https://github.com/rhysd/changelog-from-release v3.7.0 -->
+<!-- Generated by https://github.com/rhysd/changelog-from-release v3.9.0 -->
