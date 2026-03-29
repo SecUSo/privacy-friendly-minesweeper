@@ -181,7 +181,7 @@ class PlayActivity : AppCompatActivity(), BestTimeReaderReceiver {
 
             timer.stop()
 
-            if (bestTime > time && difficulty.type != Difficulty.Type.CUSTOM) {
+            if (bestTime > time && difficulty.type != Difficulty.Type.CUSTOM && it == GameState.WON) {
                 newBestTime = true
             }
 
