@@ -107,27 +107,16 @@ public class VictoryScreen extends Activity{
 
         final Button ok = (Button) findViewById(R.id.victory_continue);
         final Button stats = (Button) findViewById(R.id.victory_statistics);
+        final Button show = (Button) findViewById(R.id.victory_show_board);
         final Button redo = (Button) findViewById(R.id.victory_redo);
-        ok.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                toGameActivity();
-            }
-        });
 
-        stats.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                toStatsActivity();
-            }
-        });
+        ok.setOnClickListener(view -> toGameActivity());
 
-        redo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                replaySameGamemode();
-            }
-        });
+        stats.setOnClickListener(view -> toStatsActivity());
+
+        redo.setOnClickListener(view -> replaySameGamemode());
+
+        show.setOnClickListener(view -> toShowBoardActivity());
 
         //result is important for the correct closing of the playactivity
         setResult(RESULT_OK, null);
@@ -139,6 +128,17 @@ public class VictoryScreen extends Activity{
     private void toGameActivity() {
         finish();
     }
+
+    /**
+     * This method closes the Victory screen to reveal the game board in a viewOnly mode.
+     */
+    private void toShowBoardActivity() {
+        Intent intent = new Intent(this, PlayActivity.class);
+        intent.putExtra("viewOnly", true);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     /**
      * This method starts the stat activity
      */

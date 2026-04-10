@@ -26,13 +26,13 @@ import android.util.Log
 import android.view.Surface
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.secuso.privacyfriendlyminesweeper.R
@@ -94,6 +94,17 @@ class PlayActivity : AppCompatActivity(), BestTimeReaderReceiver {
         R.color.black,
         R.color.black
     )
+
+    private var victoryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                val viewOnly = data?.getBooleanExtra("viewOnly", false)!!
+                if (!viewOnly) {
+                    finish()
+                }
+            }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -194,7 +205,7 @@ class PlayActivity : AppCompatActivity(), BestTimeReaderReceiver {
             lockActivityOrientation()
             val intent = Intent(this, VictoryScreen::class.java)
             intent.putExtras(parameter)
-            startActivityForResult(intent, 0)
+            victoryLauncher.launch(intent)
 
             //update general statistics (not for user-defined game mode)
 
@@ -355,21 +366,6 @@ class PlayActivity : AppCompatActivity(), BestTimeReaderReceiver {
             }
         )
         recyclerView.adapter = adapter
-    }
-
-    /**
-     * This method is used to close the PlayActivity when a button on the Victory Screen is pressed
-     * @param requestCode the Code for the request, should be 0 if all went well
-     * @param resultCode the Code for the result, should be RESULT_OK if nothing broke
-     * @param data the Intent of the Activity
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                finish()
-            }
-        }
     }
 
     /**
