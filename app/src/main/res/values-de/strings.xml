@@ -126,6 +126,7 @@
     <string name="gameMode">Modus</string>
     <string name="newBestTime">Neue Bestzeit!</string>
     <string name="statistics">Zur Statisik</string>
+    <string name="showBoard">Spielbrett anzeigen</string>
     <string name="replay">Versuchen wirs nochmal</string>
     <string name="ok">Alles klar!</string>
 
